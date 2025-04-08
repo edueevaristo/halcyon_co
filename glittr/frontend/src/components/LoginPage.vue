@@ -42,7 +42,6 @@ export default {
   height: 100vh;
   width: 100vw;
   display: flex;
-  min-height: 100vh;
   justify-content: center;
   align-items: center;
   background: linear-gradient(
@@ -52,7 +51,6 @@ export default {
     rgba(148, 0, 239) 100%
   );
   position: relative;
-  padding: 24px;
 }
 
 .sparkle {
