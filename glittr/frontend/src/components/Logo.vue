@@ -3,7 +3,7 @@
     <div class="logo-container">
       <div class="logo-wrapper">
         <img
-          src="https://cdn.builder.io/api/v1/image/assets/TEMP/78563c8e860c2b1a58a2243db04bcb9e38932f14"
+          src="../assets/images/logo-image.png"
           alt="Glittr Logo"
           class="logo-image"
         />
