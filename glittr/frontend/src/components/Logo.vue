@@ -2,14 +2,9 @@
   <header class="brand-header">
     <div class="logo-container">
       <div class="logo-wrapper">
-        <img
-          src="https://cdn.builder.io/api/v1/image/assets/TEMP/78563c8e860c2b1a58a2243db04bcb9e38932f14"
-          alt="Glittr Logo"
-          class="logo-image"
-        />
+        <img src="/src/assets/icons/LogoTexto.png" alt="">
       </div>
       <div class="brand-name-wrapper">
-        <h1 class="brand-name">Glittr</h1>
       </div>
     </div>
     <h2 class="login-heading">Entrar para continuar brilhando ✨</h2>

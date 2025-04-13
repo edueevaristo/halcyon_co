@@ -5,9 +5,9 @@
     <button class="category-button">🧖‍♀️ Cabelos</button>
     <button class="category-button">💅 Unhas</button>
     <button class="category-button">🌸 Fragrâncias</button>
-    <button class="category-button">🧔 Cuidados Masculinos</button>
     <button class="category-button">💄 Maquiagem</button>
     <button class="category-button">🚿 Corpo e Banho</button>
+    <button class="category-button">🧔 Cuidados Masculinos</button>
   </div>
 </template>
 

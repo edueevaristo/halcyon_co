@@ -26,7 +26,6 @@ export default {
             "https://cdn.builder.io/api/v1/image/assets/TEMP/1c87f2d0143f3f38e2659cb04530d8648daecaef",
           title: "Hidratante Facial Glow Up",
         },
-        // More products can be added here
       ],
     };
   },

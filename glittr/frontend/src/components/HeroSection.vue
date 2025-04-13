@@ -63,6 +63,7 @@ export default {
   gap: 10px;
   border-radius: 9999px;
   background-color: #ed008c;
+  justify-content: center;
 }
 
 .badge-text {
@@ -104,24 +105,6 @@ export default {
   }
 }
 
-.brand-name {
-  text-align: center;
-  font-family: Montserrat;
-  font-size: 36px;
-  font-weight: 700;
-  line-height: 40px;
-  background-color: clip-text;
-  --tw-gradient-from: [#9400EF];
-  --tw-gradient-stops: rgba(255, 255, 255, 0);
-  --tw-gradient-to: [#ED008C];
-  margin: 0;
-}
-
-@media (max-width: 640px) {
-  .brand-name {
-    font-size: 28px;
-  }
-}
 
 .description {
   color: #4b5563;
@@ -144,12 +127,10 @@ export default {
 .divider-line {
   width: 528.8px;
   height: 1px;
-  background-color: linear-gradient(
-    90deg,
-    rgba(0, 0, 0, 0) 0%,
-    rgba(148, 0, 239, 0.3) 50%,
-    rgba(0, 0, 0, 0) 100%
-  );
+  background-color: linear-gradient(90deg,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(148, 0, 239, 0.3) 50%,
+      rgba(0, 0, 0, 0) 100%);
 }
 
 .feature-badge {
@@ -168,5 +149,14 @@ export default {
   font-size: 14px;
   font-weight: 500;
   line-height: 20px;
+}
+
+.brand-name {
+  background: linear-gradient(90deg, #9400EF 0%, #ED008C 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 36px;
+  font-weight: 800 !important;
 }
 </style>

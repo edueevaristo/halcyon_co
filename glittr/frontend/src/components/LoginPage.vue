@@ -115,7 +115,9 @@ export default {
   justify-content: center;
   align-items: center;
   padding: 24px;
-  width: 100%;
+  width: 428px;
+  max-width: 428px;
+  text-align: center;
 }
 
 .signup-text {

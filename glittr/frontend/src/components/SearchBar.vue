@@ -1,11 +1,7 @@
 <template>
   <div class="search-container">
     <div v-html="searchIcon"></div>
-    <input
-      type="text"
-      placeholder="O que você quer comparar hoje?"
-      class="search-input"
-    />
+    <input type="text" placeholder="O que você quer comparar hoje?" class="search-input" />
   </div>
 </template>
 
@@ -25,14 +21,16 @@ export default {
 <style scoped>
 .search-container {
   display: flex;
-  width: 100%;
-  max-width: 963px;
+  width: 900px;
+  max-width: 1500px;
   padding: 16px 30px;
   align-items: center;
   gap: 10px;
   border-radius: 30px;
   border-width: 1px;
   border-color: #9400ef;
+  border-style: solid; 
+
 }
 
 .search-input {

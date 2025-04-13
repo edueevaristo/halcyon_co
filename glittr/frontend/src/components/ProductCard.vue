@@ -83,13 +83,9 @@ export default {
   width: 100%;
   padding: 8px 16px;
   border-radius: 14px;
-  background-color: gradient-to-r;
-  --tw-gradient-from: [#9400EF];
-  --tw-gradient-stops: rgba(255, 255, 255, 0);
-  --tw-gradient-to: [#E10CFF];
-  box-shadow:
-    0px 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0px 2px 4px -2px rgba(0, 0, 0, 0.1);
+  border-radius: 14px;
+  background: linear-gradient(90deg, #9400EF 0%, #E10CFF 100%);
+  box-shadow: 0px 4px 6px -1px rgba(0, 0, 0, 0.10), 0px 2px 4px -2px rgba(0, 0, 0, 0.10);
   border: none;
   cursor: pointer;
 }
@@ -101,5 +97,15 @@ export default {
   font-size: 14px;
   font-weight: 600;
   line-height: 20px;
+}
+
+
+.product-card:hover {
+  box-shadow: 0px 4px 35px 0px rgba(250, 144, 171, 0.5);
+  cursor: pointer;
+}
+
+.product-card:hover .product-title {
+  color: #ED008C;
 }
 </style>
