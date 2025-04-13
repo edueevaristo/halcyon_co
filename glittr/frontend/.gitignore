@@ -1,0 +1,29 @@
+# Dependências
+node_modules/
+
+# Build
+dist/
+*.log
+
+# Diretórios do sistema
+.DS_Store
+Thumbs.db
+
+# Ambiente local
+.env
+.env.local
+.env.*.local
+
+# Cache do Vite (se estiver usando Vite)
+.vite
+
+# Cache do Vue CLI (se estiver usando)
+node_modules/
+public/css/
+public/js/
+
+# Editor configs
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
