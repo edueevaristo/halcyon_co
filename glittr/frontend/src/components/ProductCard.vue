@@ -1,20 +1,27 @@
 <template>
-  <article class="product-card">
-    <img :src="imageUrl" :alt="title" class="product-image" />
-    <div class="product-content">
-      <h3 class="product-title">{{ title }}</h3>
-      <button class="compare-button">
-        <div v-html="compareIcon"></div>
-        <span class="button-text">Comparar produto</span>
-      </button>
-    </div>
-  </article>
+  <RouterLink :to="`/product/${id}`">
+    <article class="product-card">
+      <img :src="imageUrl" :alt="title" class="product-image" />
+      <div class="product-content">
+        <h3 class="product-title">{{ title }}</h3>
+        <button class="compare-button">
+          <div v-html="compareIcon"></div>
+          <span class="button-text">Comparar produto</span>
+        </button>
+      </div>
+    </article>
+  </RouterLink>
+
 </template>
 
 <script>
 export default {
   name: "ProductCard",
   props: {
+    id : {
+      type: Number,
+      required: true
+    },
     imageUrl: {
       type: String,
       required: true,
