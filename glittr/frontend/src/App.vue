@@ -1,5 +1,4 @@
 <script setup>
-import HelloWorld from './components/LoginPage.vue'
 </script>
 
 <template>

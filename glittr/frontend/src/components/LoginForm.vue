@@ -1,21 +1,9 @@
 <template>
   <form class="login-form">
-    <FormInput
-      type="email"
-      id="email"
-      placeholder="seu@email.com"
-      label="Email"
-      :icon="emailIcon"
-    />
+    <FormInput type="email" id="email" placeholder="seu@email.com" label="Email" :icon="emailIcon" />
 
-    <FormInput
-      type="password"
-      id="password"
-      placeholder="••••••••"
-      label="Senha"
-      :icon="passwordIcon"
-      :forgotPassword="true"
-    />
+    <FormInput type="password" id="password" placeholder="••••••••" label="Senha" :icon="passwordIcon"
+      :forgotPassword="true" />
 
     <button type="submit" class="login-button">
       <div class="button-icon" v-html="loginIcon"></div>
@@ -25,7 +13,7 @@
 </template>
 
 <script>
-import FormInput from "./FormInput.vue";
+import FormInput from "./FormInputComponent.vue";
 
 export default {
   name: "LoginForm",
@@ -70,7 +58,8 @@ export default {
   background: linear-gradient(90deg, #ed008c 0%, #e10cff 100%);
   border: none;
   cursor: pointer;
-  margin:0;
+  margin: 0;
+  width: 428px;
 }
 
 .button-text {
