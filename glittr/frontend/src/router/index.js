@@ -4,6 +4,7 @@ import HomeGlittrComponent from '../components/HomeGlittrComponent.vue'
 import LogoComponent from '../components/Logo.vue'
 import PresentationPage from '../components/PresentationPage.vue'
 import LandingPageComponent from '../components/LandingPageComponent.vue'
+import ProductInfo from "../components/ProductInfo.vue";
 
 const routes = [
   {
@@ -30,6 +31,11 @@ const routes = [
       path: '/landing',
       name: 'Landing',
       component: LandingPageComponent,
+    },
+    {
+      path: '/product/:id',
+      name: 'product',
+      component: ProductInfo,
     }
 ]
 
