@@ -4,19 +4,13 @@ import HomeGlittrComponent from '../components/HomeGlittrComponent.vue'
 import LogoComponent from '../components/Logo.vue'
 import PresentationPage from '../components/PresentationPage.vue'
 import LandingPageComponent from '../components/LandingPageComponent.vue'
-import ProductInfo from "../components/ProductInfo.vue";
-import CadastroPage from "@/components/CadastroPage.vue";
+import ProductInfo from "../pages/ProductInfo.vue";
 
 const routes = [
   {
     path: '/login',
     name: 'Login',
     component: LoginPage,
-  },
-  {
-    path: '/register',
-    name: 'Registro',
-    component: CadastroPage,
   },
   {
     path: '/',

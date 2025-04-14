@@ -3,14 +3,18 @@
     <NavbarProductComponent />
 
     <article class="content">
-      <div class="content-wrapper">
-        <h4 class="return-products-list">
+
+      <RouterLink to="/">
+        <div class="content-wrapper">
+          <h4 class="return-products-list">
         <span>
-          <img src="@/assets/icons/arrow-outline-left.svg" alt="Voltar" />
+          <img src="../assets/icons/arrow-outline-left.svg" alt="Voltar" />
         </span>
-          Voltar para produtos
-        </h4>
-      </div>
+            Voltar para produtos
+          </h4>
+        </div>
+      </RouterLink>
+
 
 <!--      <div v-if="loading">Carregando...</div>-->
 <!--      <div v-else-if="error">{{ error }}</div>-->
@@ -57,7 +61,7 @@ export default {
 <style scoped>
 
 .content {
-  margin-top: 3%;
+  margin-top: 2%;
 }
 .main-product-info {
   width: 100%;

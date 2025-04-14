@@ -42,6 +42,7 @@
     </section>
 
     <section class="product-physical-characteristics">
+
       <h1 class="product-info-title-section-text">Caracterísiticas físicas</h1>
 
       <div class="product-physical-characteristics-content">
@@ -76,12 +77,41 @@
         </div>
       </div>
     </section>
+
+    <section class="product-details-feedback">
+
+      <div class="toggle-and-title-feedback">
+        <h1 class="toggle-title-feedback">Opiniões</h1>
+        <span class="toggle-icon-feedback">
+          <img src="@/assets/icons/arrow-up.svg" alt="Icone indicando seta pra cima">
+        </span>
+      </div>
+
+      <div class="product-feedback-add">
+
+        <button class="product-feedback-button-add">
+          <img src="@/assets/icons/icon-conversation.svg" class="product-feedback-button-icon" alt="Icone de conversa">
+          <span class="product-feedback-button-text">Adicionar avaliação</span>
+        </button>
+      </div>
+
+    </section>
+
+    <section class="product-details-feedbacks">
+
+        <FeedbackComponent />
+        <FeedbackComponent />
+
+    </section>
   </main>
 </template>
 
 <script>
+import FeedbackComponent from "@/components/FeedbackComponent.vue";
+
 export default {
   name: 'ProductInfoComponent',
+  components: {FeedbackComponent},
   props: {
     product: {
       type: Object,
@@ -243,5 +273,74 @@ export default {
   flex-direction: column;
   align-items: flex-start;
   gap: 5px;
+}
+
+.product-details-feedback {
+  border-top: 1px solid #D9D9D9;
+  display: flex;
+  padding: 30px 30px 15px 30px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 30px;
+  align-self: stretch;
+}
+
+.toggle-and-title-feedback {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-self: stretch;
+}
+
+.toggle-title-feedback {
+  color: #141414;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 120%;
+}
+
+.product-feedback-add {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 10px;
+  align-self: stretch;
+}
+
+
+.toggle-icon-feedback {
+  width: 24px;
+  height: 24px;
+  aspect-ratio: 1/1;
+}
+
+
+.product-feedback-button-add {
+  display: flex;
+  padding: 10px;
+  align-items: center;
+  gap: 15px;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #ED008C 0%, rgba(244, 72, 156, 0.50) 50%, #FA90AB 100%);
+}
+
+.product-feedback-button-text {
+  color: #FFF;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 120%;
+}
+
+.product-feedback-button-icon {
+  width: 24px;
+  height: 24px;
+  aspect-ratio: 1/1;
 }
 </style>
