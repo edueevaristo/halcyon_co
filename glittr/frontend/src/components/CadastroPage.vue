@@ -11,7 +11,8 @@
     <section class="card">
       <header class="header">
         <div class="logo-container">
-          <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/78563c8e860c2b1a58a2243db04bcb9e38932f14" alt="Glittr Logo" class="logo">
+          <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/78563c8e860c2b1a58a2243db04bcb9e38932f14"
+               alt="Glittr Logo" class="logo">
           <h1 class="brand">Gittr</h1>
         </div>
         <h2 class="title">Crie sua conta</h2>
@@ -20,41 +21,53 @@
         </p>
       </header>
 
-      <form class="form">
+      <form class="form" @submit.prevent="submitForm">
         <div class="input-group">
           <label class="label">
-            <UserIcon />
+            <UserIcon/>
             <span>Nome completo</span>
           </label>
-          <input type="text" class="input" placeholder="Seu nome completo">
+          <input type="text"
+                 class="input"
+                 name="name"
+                 placeholder="Seu nome completo"
+                 v-model="form.name">
         </div>
 
         <div class="input-group">
           <label class="label">
-            <EmailIcon />
+            <EmailIcon/>
             <span>Email</span>
           </label>
-          <input type="email" class="input" placeholder="Nos diga seu melhor e-mail">
+          <input type="email"
+                 class="input"
+                 name="email"
+                 placeholder="Nos diga seu melhor e-mail"
+                 v-model="form.email">
         </div>
 
         <div class="input-group">
           <label class="label">
-            <PasswordIcon />
+            <PasswordIcon/>
             <span>Senha</span>
           </label>
-          <input type="password" class="input" placeholder="••••••••">
+          <input type="password"
+                 class="input"
+                 name="password"
+                 placeholder="••••••••"
+                 v-model="form.password">
         </div>
 
         <div class="input-group">
           <label class="label">
-            <ConfirmIcon />
+            <ConfirmIcon/>
             <span>Confirmar senha</span>
           </label>
           <input type="password" class="input" placeholder="••••••••">
         </div>
 
         <button class="submit-button">
-          <UserAddIcon />
+          <UserAddIcon/>
           <span>Criar minha conta</span>
         </button>
       </form>
@@ -68,6 +81,9 @@
 </template>
 
 <script>
+
+import PostUserDataService from "@/services/PostUserDataService.js";
+
 
 const UserIcon = {
   template: `
@@ -125,6 +141,27 @@ export default {
     PasswordIcon,
     ConfirmIcon,
     UserAddIcon
+  },
+  data() {
+    return {
+      form: {
+        name: '',
+        email: '',
+        password: '',
+      }
+    }
+  },
+  methods: {
+    async submitForm() {
+      try {
+        const response = await PostUserDataService.create(this.form)
+        console.log("Usuário cadastrado com sucesso:", response.data)
+        // TODO: Redirecionar para a tela de login, validar com a Amanda se terá algo "animado" após ações, ex: sweetalert.
+
+      } catch (error) {
+        console.error("Erro ao cadastrar usuário:", error.response?.data || error.message)
+      }
+    }
   }
 }
 </script>
@@ -163,11 +200,30 @@ html, body {
   background-color: #e10cff;
 }
 
-.elemento-1 { left: 25%; top: 25%; }
-.elemento-2 { left: 33.33%; top: 75%; }
-.elemento-3 { left: 75%; top: 50%; }
-.elemento-4 { left: 50%; top: 33.33%; }
-.elemento-5 { left: 66.67%; top: 75%; }
+.elemento-1 {
+  left: 25%;
+  top: 25%;
+}
+
+.elemento-2 {
+  left: 33.33%;
+  top: 75%;
+}
+
+.elemento-3 {
+  left: 75%;
+  top: 50%;
+}
+
+.elemento-4 {
+  left: 50%;
+  top: 33.33%;
+}
+
+.elemento-5 {
+  left: 66.67%;
+  top: 75%;
+}
 
 .card {
   width: 100%;
