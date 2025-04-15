@@ -8,14 +8,23 @@
     <section class="hero">
       <div class="hero-content">
         <div class="badge">
-          <img src="/src/assets/icons/LogoGlittr.svg" alt="Logo da Glittr. Uma estrela rosa." id="logo">
+          <img
+            src="/src/assets/icons/LogoGlittr.svg"
+            alt="Logo da Glittr. Uma estrela rosa."
+            id="logo"
+          />
           <p>Faça parte da nossa comunidade brilhante ✨</p>
         </div>
-        <h1>Compare. Descubra. <shine>Brilhe.</shine>
-        </h1>
-        <p>O Glittr te ajuda a encontrar os melhores produtos de beleza com comparações reais e avaliações honestas.</p>
+        <h1>Compare. Descubra. <shine>Brilhe.</shine></h1>
+        <p>
+          O Glittr te ajuda a encontrar os melhores produtos de beleza com
+          comparações reais e avaliações honestas.
+        </p>
         <div class="cta-buttons">
-          <button class="primary-button">Começar agora <img src="/src/assets/icons/chevron-right.svg" alt=""></button>
+          <button class="primary-button">
+            Começar agora
+            <img src="/src/assets/icons/chevron-right.svg" alt="" />
+          </button>
           <button class="secondary-button">Como funciona</button>
         </div>
       </div>
@@ -28,19 +37,33 @@
 
     <!-- Features Section -->
     <section class="features">
-      <h2>Compare o que <span class="highlight-pink"> realmente importa </span> </h2>
+      <h2>
+        Compare o que <span class="highlight-pink"> realmente importa </span>
+      </h2>
       <div class="feature-cards">
         <div class="feature-card">
-          <span class="emoji"><img src="/src/assets/icons/solar_heart-bold-duotone.svg" alt=""></span>
+          <span class="emoji"
+            ><img src="/src/assets/icons/solar_heart-bold-duotone.svg" alt=""
+          /></span>
           <p>Veja feedbacks reais de outras entusiastas de beauty & glam ✨</p>
         </div>
         <div class="feature-card">
-          <span class="emoji"><img src="/src/assets/icons/mingcute_love-fill.svg" alt=""></span>
-          <p>Compare as características dos produtos para encontrar sua combinação perfeita 💘 </p>
+          <span class="emoji"
+            ><img src="/src/assets/icons/mingcute_love-fill.svg" alt=""
+          /></span>
+          <p>
+            Compare as características dos produtos para encontrar sua
+            combinação perfeita 💘
+          </p>
         </div>
         <div class="feature-card">
-          <span class="emoji"><img src="/src/assets/icons/solar_card-bold.svg" alt=""></span>
-          <p>Encontre os produtos com o melhor custo-benefício que se encaixam no seu orçamento 💰</p>
+          <span class="emoji"
+            ><img src="/src/assets/icons/solar_card-bold.svg" alt=""
+          /></span>
+          <p>
+            Encontre os produtos com o melhor custo-benefício que se encaixam no
+            seu orçamento 💰
+          </p>
         </div>
       </div>
     </section>
@@ -48,29 +71,37 @@
     <!-- Como Funciona Section -->
     <section class="how-it-works">
       <h2>Como <span class="highlight">funciona?</span></h2>
-      <p class="subtitle">Encontrar os seus matches de beleza nunca foi tão fácil.</p>
+      <p class="subtitle">
+        Encontrar os seus matches de beleza nunca foi tão fácil.
+      </p>
 
       <div class="steps">
-
         <div class="step">
-          <div class="step-icon search"> <img src="/src/assets/icons/search.svg" alt=""></div>
+          <div class="step-icon search">
+            <img src="/src/assets/icons/search.svg" alt="" />
+          </div>
           <h3>Busque cosméticos</h3>
           <p>Procure seus produtos de beleza favoritos</p>
         </div>
 
-
         <div class="step">
-          <div class="step-icon compare"><img src="/src/assets/icons/compare.svg" alt=""></div>
+          <div class="step-icon compare">
+            <img src="/src/assets/icons/compare.svg" alt="" />
+          </div>
           <h3>Compare até 2 produtos</h3>
           <p>Veja comparações lado a lado para tomar a melhor decisão</p>
         </div>
         <div class="step">
-          <div class="step-icon choose"><img src="/src/assets/icons/buy.svg" alt=""></div>
+          <div class="step-icon choose">
+            <img src="/src/assets/icons/buy.svg" alt="" />
+          </div>
           <h3>Faça escolhas melhores</h3>
           <p>Escolha produtos que realmente combinam com você</p>
         </div>
         <div class="step">
-          <div class="step-icon share"><img src="/src/assets/icons/like.svg" alt=""></div>
+          <div class="step-icon share">
+            <img src="/src/assets/icons/like.svg" alt="" />
+          </div>
           <h3>Influencie & receba conselhos</h3>
           <p>Faça parte da comunidade Glittr para descobrir e compartilhar</p>
         </div>
@@ -82,35 +113,50 @@
       <div class="cta-card">
         <div class="text-section">
           <div class="badge">
-            <img src="/src/assets/icons/LogoGlittr.svg" alt="" id="logo">
+            <img src="/src/assets/icons/LogoGlittr.svg" alt="" id="logo" />
             Faça parte da nossa comunidade brilhante ✨
           </div>
-          <p class="CTA-Text">pront@ pra dar seu <span class="highlight-cta">beauty match?</span></p>
-          <p style="color: #141414;">Junte-se a uma comunidade incrível de beauty lovers online! 💄</p>
+          <p class="CTA-Text">
+            pront@ pra dar seu <span class="highlight-cta">beauty match?</span>
+          </p>
+          <p style="color: #141414">
+            Junte-se a uma comunidade incrível de beauty lovers online! 💄
+          </p>
           <router-link to="/presentation" class="primary-button">
             <div v-html="loginIcon"></div>
             <span class="login-text">Começar agora </span>
-            <img src="/src/assets/icons/chevron-right.svg" alt="Seta pra direita.">
+            <img
+              src="/src/assets/icons/chevron-right.svg"
+              alt="Seta pra direita."
+            />
           </router-link>
         </div>
 
         <div class="img-section">
-          <img src="/src/assets/images/imgCTA.svg" alt="">
+          <img src="/src/assets/images/imgCTA.svg" alt="" />
         </div>
-
       </div>
     </section>
 
     <!-- Newsletter Section -->
     <section class="newsletter">
       <div class="newsletter-content">
-        <h2>Brilhe mais com o Glittr ✨</h2>
-        <p>Mantenha-se por dentro das novidades exclusivas de beauty & tech do universo do Glittr!</p>
-        <div class="newsletter-form">
-          <input type="email" placeholder="Digite seu e-mail" />
-          <button class="primary-button">Enviar</button>
+        <div class="text-content">
+          <h2 style="color: #fff !important; margin-bottom: 10px">
+            Brilhe mais com a Glittr 💖
+          </h2>
+          <p>
+            Inscreva-se para receber novidades exclusivas de beauty & tech do
+            universo da Glittr!
+          </p>
+          <section style="display: inline-flex; gap: 15px">
+            <div class="newsletter-form">
+              <input type="email" placeholder="Seu melhor e-mail 💌" />
+            </div>
+            <button class="send-button">Inscrever-se</button>
+          </section>
+          <small>Não enviaremos spam. Prometemos! 💅 </small>
         </div>
-        <small>Não enviamos spam, prometemos! ✨</small>
       </div>
     </section>
 
@@ -118,7 +164,16 @@
     <footer class="footer">
       <div class="footer-content">
         <div class="footer-logo">
-          <img src="/src/assets/icons/LogoGlittr.svg" alt="Glittr" />
+          <section style="display: inline-flex; gap: 15px; margin: 0">
+            <img src="/src/assets/icons/LogoGlittr.svg" alt="Glittr" />
+            <p class="brand-name">Glittr</p>
+          </section>
+          <div class="social-links">
+            <a href="#"><img src="/src/assets/icons/x.svg" alt="" /></a>
+            <a href="#"><img src="/src/assets/icons/instagram.svg" alt="" /></a>
+            <a href="#"><img src="/src/assets/icons/youtube.svg" alt="" /></a>
+            <a href="#"><img src="/src/assets/icons/tiktok.svg" alt="" /></a>
+          </div>
         </div>
         <div class="footer-links">
           <div class="footer-section">
@@ -134,34 +189,40 @@
             <a href="#">Como funciona</a>
           </div>
         </div>
-        <div class="social-links">
-          <a href="#" class="social-icon youtube"></a>
-          <a href="#" class="social-icon instagram"></a>
-          <a href="#" class="social-icon twitter"></a>
-        </div>
       </div>
       <div class="footer-bottom">
-        <p>Glittr 2023. Todos os direitos reservados.</p>
+        <p>Glittr 2025. Todos os direitos reservados.</p>
         <p>Feito com 💖 pela Halcyon & CO</p>
       </div>
     </footer>
   </div>
+
+  <GlitterBackground /> 
 </template>
 
-<script setup>
-import HeaderSection from './HeaderSection.vue';
-import MarqueeSlider from './MarqueeSliderComponent.vue';
+<script>
+import HeaderSection from "./HeaderSection.vue";
+import MarqueeSlider from "./MarqueeSliderComponent.vue";
 
+export default {
+  components: {
+    HeaderSection,
+    MarqueeSlider,
+  }
+};
 
 </script>
 
 <style scoped>
+* {
+  font-family: Poppins;
+}
+
 .landing-page {
   width: 100vw;
   margin: 0 auto;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
-
 
 .hero {
   padding: 8rem 2rem 4rem;
@@ -169,7 +230,11 @@ import MarqueeSlider from './MarqueeSliderComponent.vue';
   grid-template-columns: 1fr 1fr;
   gap: 4rem;
   align-items: center;
-  background: radial-gradient(227.2% 227.14% at 50% -195.88%, #ED008C 0%, #141414 100%);
+  background: radial-gradient(
+    227.2% 227.14% at 50% -195.88%,
+    #ed008c 0%,
+    #141414 100%
+  );
   display: flex;
   width: 1980px;
   height: 947px;
@@ -183,8 +248,8 @@ import MarqueeSlider from './MarqueeSliderComponent.vue';
   align-items: center;
   gap: 15px;
   border-radius: 20px;
-  border: 1px solid var(--Roxo-Shockkk, #9400EF);
-  background: rgba(225, 12, 255, 0.50);
+  border: 1px solid var(--Roxo-Shockkk, #9400ef);
+  background: rgba(225, 12, 255, 0.5);
   font-family: Poppins;
   font-size: 16px;
   font-style: normal;
@@ -195,7 +260,6 @@ import MarqueeSlider from './MarqueeSliderComponent.vue';
   p {
     margin: 0;
   }
-
 }
 
 .p tag {
@@ -219,7 +283,7 @@ h1 {
 }
 
 p {
-  color: var(--Brancoh, #FFF);
+  color: var(--Brancoh, #fff);
   font-family: Poppins;
   font-size: 18px;
   font-style: normal;
@@ -227,7 +291,6 @@ p {
   line-height: 150%;
   /* 27px */
 }
-
 
 .primary-button {
   display: flex;
@@ -237,13 +300,12 @@ p {
   align-items: center;
   gap: 10px;
   border-radius: 10px;
-  background: linear-gradient(90deg, #ED008C 0%, #9400EF 100%);
+  background: linear-gradient(90deg, #ed008c 0%, #9400ef 100%);
   border: none;
   font-weight: 600;
   font-size: 16px;
   color: #fff;
   border-radius: 30px;
-
 }
 
 .secondary-button {
@@ -255,8 +317,8 @@ p {
   align-items: center;
   gap: 10px;
   border-radius: 10px;
-  background: var(--Brancoh, #FFF);
-  color: var(--Roxo-Shockkk, #9400EF);
+  background: var(--Brancoh, #fff);
+  color: var(--Roxo-Shockkk, #9400ef);
   text-align: center;
   font-family: Poppins;
   font-size: 16px;
@@ -290,7 +352,6 @@ p {
   /* Isso centraliza horizontalmente */
 }
 
-
 .feature-card {
   display: flex;
   width: 405px;
@@ -318,7 +379,7 @@ p {
   align-items: center;
   gap: 60px;
   align-self: stretch;
-  background: #F9FAFB;
+  background: #f9fafb;
   padding: 4rem 2rem;
   text-align: center;
 }
@@ -332,7 +393,7 @@ p {
 
 .highlight {
   color: #ff00ff;
-  background: var(--Preto, linear-gradient(90deg, #9400EF 0%, #FF648C 100%));
+  background: var(--Preto, linear-gradient(90deg, #9400ef 0%, #ff648c 100%));
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -344,17 +405,25 @@ p {
 }
 
 .newsletter {
-  background: linear-gradient(45deg, #ff00ff22, #00ffff22);
-  padding: 4rem 2rem;
-  text-align: center;
-  border-radius: 1rem;
-  margin: 4rem 2rem;
+  display: flex;
+  width: 1980px;
+  height: 445px;
+  padding: 0px 21px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  background: #1f1f1f;
 }
 
 .footer {
-  background: #1a1a1a;
-  color: white;
-  padding: 4rem 2rem 2rem;
+  display: flex;
+  padding: 100px 250px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 60px;
+  align-self: stretch;
+  background: var(--Preto, #141414);
 }
 
 .footer-content {
@@ -406,14 +475,13 @@ h2 {
 }
 
 .highlight-pink {
-  color: #ED008C;
+  color: #ed008c;
   font-family: Poppins;
   font-size: 42px;
   font-style: normal;
   font-weight: 600;
   line-height: normal;
 }
-
 
 .step {
   max-width: 350px;
@@ -436,14 +504,13 @@ h2 {
 
 .step-icon:hover {
   border-radius: 100px;
-  background: var(--Rosa-Shockkk, #ED008C);
+  background: var(--Rosa-Shockkk, #ed008c);
 
-  box-shadow: 0px 4px 10px 0px #ED008C;
-
+  box-shadow: 0px 4px 10px 0px #ed008c;
 }
 
 .cta-section {
-  background: var(--Rosa-Dark, #B33974);
+  background: var(--Rosa-Dark, #b33974);
   display: flex;
   height: 746px;
   padding: 10px;
@@ -463,7 +530,7 @@ h2 {
   align-items: center;
   flex-shrink: 0;
   border-radius: 20px;
-  background: var(--Brancoh, #FFF);
+  background: var(--Brancoh, #fff);
   box-shadow: 0px 3px 40px 0px rgba(225, 12, 255, 0.75);
   overflow: hidden;
 }
@@ -474,7 +541,6 @@ h2 {
   align-items: flex-start;
   gap: 30px;
 }
-
 
 .CTA-Text {
   color: var(--Preto, #141414);
@@ -487,7 +553,13 @@ h2 {
 }
 
 .highlight-cta {
-  background: linear-gradient(90deg, #9400EF 0%, #ED008C 50%, #E10CFF 75%, #FF648C 100%);
+  background: linear-gradient(
+    90deg,
+    #9400ef 0%,
+    #ed008c 50%,
+    #e10cff 75%,
+    #ff648c 100%
+  );
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -497,4 +569,181 @@ h2 {
   font-weight: 700;
   line-height: normal;
 }
+
+.newsletter-content {
+  width: 1070px;
+  height: 337px;
+  flex-shrink: 0;
+  background: url("/src/assets/images/sixpointedbg.svg");
+  display: flex;
+  justify-content: center;
+}
+
+.text-content {
+  height: 337px;
+  flex-shrink: 0;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+
+  p {
+    font-family: Poppins;
+    font-size: 16px;
+    font-weight: 500;
+    color: #fff;
+    margin: 0;
+  }
+}
+
+.newsletter-form {
+  display: flex;
+  align-items: center;
+  width: 244px;
+  height: 44px;
+  padding: 0 10px;
+  gap: 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.15);
+  box-sizing: border-box;
+}
+
+.send-button {
+  display: flex;
+  width: 140px;
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 10px;
+  border: 1px solid var(--Brancoh, #fff);
+  background: var(--Brancoh, #fff);
+  color: var(--Fuksiah, #e10cff);
+  font-size: 16px;
+  font-weight: 400;
+  height: 44px;
+}
+
+.newsletter-form input {
+  flex: 1;
+  height: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: white;
+  font-size: 14px;
+  font-family: inherit;
+  padding: 0 4px;
+}
+
+.newsletter-form input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+small {
+  color: var(--Brancoh, #fff);
+  text-align: center;
+  font-size: 15px;
+  font-weight: 400;
+}
+
+.footer-bottom {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  text-align: center;
+}
+
+.footer-links {
+  display: flex;
+  width: 1017px;
+  align-items: flex-start;
+  gap: 120px;
+}
+
+h4 {
+  color: #fff;
+}
+
+a {
+  color: #fff;
+}
+
+.brand-name {
+  color: var(--Rosa-Shockkk, #ed008c);
+  font-family: Montserrat;
+  font-size: 56px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  margin: 0;
+  margin-bottom: 15px;
+}
+
+.footer-logo {
+  display: inline-flex;
+  flex-direction: column;
+}
+
+.social-links {
+  display: flex;
+  gap: 30px;
+}
+
+.newsletter {
+  position: relative;
+  background-color: #000;
+  overflow: hidden;
+}
+
+.newsletter::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  z-index: 0;
+  pointer-events: none;
+
+  background-image:
+    radial-gradient(12px 2px at 5% 10%, #fff 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 15% 20%, #ff66cc 0%, transparent 100%),
+    radial-gradient(2px 2px at 25% 30%, #ffffffcc 0%, transparent 100%),
+    radial-gradient(1.8px 1.8px at 35% 40%, #ff99cc 0%, transparent 100%),
+    radial-gradient(1.2px 1.2px at 45% 50%, #fff 0%, transparent 100%),
+    radial-gradient(2px 2px at 55% 60%, #ff66cc 0%, transparent 100%),
+    radial-gradient(1.4px 1.4px at 65% 70%, #fff 0%, transparent 100%),
+    radial-gradient(1.8px 1.8px at 75% 80%, #ff99cc 0%, transparent 100%),
+    radial-gradient(2px 2px at 85% 90%, #fff 0%, transparent 100%),
+    radial-gradient(9.5px 1.5px at 95% 25%, #ff66cc 0%, transparent 100%);
+
+
+  animation: sparkle 12s ease-in-out infinite;
+  opacity: 1;
+}
+
+@keyframes sparkle {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0.9;
+  }
+  50% {
+    transform: translate(10px, 10px);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(0, 0);
+    opacity: 0.9;
+  }
+}
+
+.newsletter-content {
+  position: relative;
+  z-index: 1;
+}
+
+
 </style>
