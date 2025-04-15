@@ -9,7 +9,12 @@ class PostUserDataService {
 
     create(data) {
 
-        return http.post("/User", data)
+        return http.post("/register", data)
+    }
+
+    login(data) {
+
+        return http.post("/login", data)
     }
 
     update(data) {

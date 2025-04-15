@@ -10,10 +10,12 @@
       </div>
     </div>
     <input
-      :type="type"
-      :id="id"
-      :placeholder="placeholder"
-      class="form-input"
+        :type="type"
+        :id="id"
+        :placeholder="placeholder"
+        class="form-input"
+        :value="modelValue"
+        @input="$emit('update:modelValue', $event.target.value)"
     />
   </div>
 </template>
@@ -22,6 +24,10 @@
 export default {
   name: "FormInput",
   props: {
+    modelValue: {
+      type: [String, Number],
+      default: "",
+    },
     type: {
       type: String,
       default: "text",
@@ -47,6 +53,7 @@ export default {
       default: false,
     },
   },
+  emits: ["update:modelValue"],
 };
 </script>
 
@@ -57,7 +64,7 @@ export default {
   gap: 8px;
   width: 100%;
   padding: 0;
-  margin:0;
+  margin: 0;
 }
 
 .field-header {
@@ -104,7 +111,7 @@ export default {
   font-size: 14px;
 }
 
-.icon-wrapper{
+.icon-wrapper {
   padding: 0;
   margin-bottom: -6px;
 }
