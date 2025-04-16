@@ -8,27 +8,29 @@
 
         <section class="landing-container">
             <div class="landing-content">
-                    <img src="/src/assets/icons/LogoTexto.png" alt="Glittr logo"  />
+                    <img src="@/assets/icons/LogoTexto.png" alt="Glittr logo"  />
 
                     <div class="headline">
                         <h1>Compare e descubra o melhor<br />em produtos de beleza</h1>
-                        <img src="/src/assets/icons/beijo.png" alt="beijo" class="beijo-icon" />
+                        <img src="@/assets/icons/beijo.png" alt="beijo" class="beijo-icon" />
                     </div>
 
                     <h2>Encontre seu match perfeito com avaliações reais e comparações detalhadas.</h2>
 
                     <div class="button-group">
                         <router-link to="/login" class="btn-primary">
-                            <img src="/src/assets/icons/sign-in.svg" alt="">Entrar</router-link>
+                            <img src="@/assets/icons/sign-in.svg" alt="">Entrar</router-link>
 
-                        <router-link to="/cadastro" class="btn-secondary">
-                            <img src="/src/assets/icons/create-profile.svg" alt="">
-                            Criar Conta</router-link>
+                        <RouterLink to="/register" class="btn-secondary">
+                            <img src="@/assets/icons/create-profile.svg" alt="">
+                            Criar Conta</RouterLink>
                     </div>
 
-                    <button class="shine-btn" router-link to="/">
+                    <RouterLink to="/">
+                      <button class="shine-btn">
                         <span>✨ born to shine</span>
-                    </button>
+                      </button>
+                    </RouterLink>
 
                 </div>
         </section>
@@ -37,13 +39,13 @@
 
 <script>
 import Logo from "./Logo.vue";
-import LoginForm from "./LoginForm.vue";
+import LoginFormComponent from "../components/LoginFormComponent.vue";
 
 export default {
     name: "LoginPage",
     components: {
         Logo,
-        LoginForm,
+        LoginForm: LoginFormComponent,
     },
 };
 </script>

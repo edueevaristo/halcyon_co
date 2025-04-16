@@ -25,13 +25,13 @@
 
 <script>
 import Logo from "./Logo.vue";
-import LoginForm from "./LoginForm.vue";
+import LoginFormComponent from "../components/LoginFormComponent.vue";
 
 export default {
   name: "LoginPage",
   components: {
     Logo,
-    LoginForm,
+    LoginForm: LoginFormComponent,
   },
 };
 </script>

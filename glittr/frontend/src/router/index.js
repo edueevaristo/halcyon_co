@@ -1,53 +1,53 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import LoginPage from "../components/LoginPage.vue";
-import HomeGlittrComponent from "../components/HomeGlittrComponent.vue";
-import LogoComponent from "../components/Logo.vue";
-import PresentationPage from "../components/PresentationPage.vue";
-import LandingPageComponent from "../components/LandingPageComponent.vue";
+import {createRouter, createWebHistory} from 'vue-router'
+import Login from "../pages/Login.vue";
+import Home from "../pages/Home.vue";
+import Logo from "../pages/Logo.vue";
+import Presentation from "../pages/Presentation.vue";
+import LandingPage from "../pages/LandingPage.vue";
 import ProductInfo from "../pages/ProductInfo.vue";
-import CadastroPage from "../components/CadastroPage.vue";
+import Register from "../pages/Register.vue";
 
 const routes = [
-  {
-    path: '/login',
-    name: 'Login',
-    component: LoginPage,
-  },
-  {
-    path: '/register',
-    name: 'Registro',
-    component: CadastroPage,
-  },
-  {
-    path: '/',
-    name: 'Home',
-    component: HomeGlittrComponent,
-  },
-  {
-    path: '/logo',
-    name: 'Logo',
-    component: LogoComponent,
+    {
+        path: '/login',
+        name: 'Login',
+        component: Login,
     },
     {
-      path: '/presentation',
-      name: 'Presentation',
-      component: PresentationPage,
+        path: '/register',
+        name: 'Registro',
+        component: Register,
     },
     {
-      path: '/landing',
-      name: 'Landing',
-      component: LandingPageComponent,
+        path: '/',
+        name: 'Home',
+        component: Home,
     },
     {
-      path: '/product/:id',
-      name: 'product',
-      component: ProductInfo,
+        path: '/logo',
+        name: 'Logo',
+        component: Logo,
+    },
+    {
+        path: '/presentation',
+        name: 'Presentation',
+        component: Presentation,
+    },
+    {
+        path: '/landing',
+        name: 'Landing',
+        component: LandingPage,
+    },
+    {
+        path: '/product/:id',
+        name: 'product',
+        component: ProductInfo,
     }
 ]
 
 const router = createRouter({
-  history: createWebHistory(),
-  routes,
+    history: createWebHistory(),
+    routes,
 })
 
 export default router

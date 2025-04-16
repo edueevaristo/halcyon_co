@@ -22,7 +22,7 @@
                 </div>
 
                 <!-- Tabela de comparação -->
-                <CompareTable :products="products" />
+                <CompareTableComponent :products="products" />
             </div>
         </div>
     </div>
@@ -31,7 +31,7 @@
 <script setup>
 import { ref, watch } from 'vue'
 import { useCompareStore } from '../stores/useCompareStore'
-import CompareTable from './CompareTable.vue'
+import CompareTableComponent from './CompareTableComponent.vue'
 
 const store = useCompareStore()
 const open = ref(false)
