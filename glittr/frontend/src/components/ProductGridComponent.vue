@@ -11,12 +11,12 @@
 </template>
 
 <script>
-import ProductCard from "./ProductCard.vue";
+import ProductCardComponent from "./ProductCardComponent.vue";
 
 export default {
   name: "ProductGrid",
   components: {
-    ProductCard,
+    ProductCard: ProductCardComponent,
   },
   data() {
     return {

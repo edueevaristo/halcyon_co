@@ -29,23 +29,23 @@
 </template>
 
 <script>
-import HeaderSection from '../components/HeaderSection.vue';
-import CategoryFilters from '../components/CategoryFilters.vue';
-import ProductGrid from '../components/ProductGrid.vue';
-import HeroSection from '../components/HeroSection.vue';
-import SearchBar from '../components/SearchBar.vue';
-import CompareModal from './CompareModal.vue';
+import HeaderSectionComponent from '../components/HeaderSectionComponent.vue';
+import CategoryFiltersComponent from '../components/CategoryFiltersComponent.vue';
+import ProductGridComponent from '../components/ProductGridComponent.vue';
+import HeroSectionComponent from '../components/HeroSectionComponent.vue';
+import SearchBarComponent from '../components/SearchBarComponent.vue';
+import CompareModalComponent from '../components/CompareModalComponent.vue';
 
 
 export default {
    name: "GlittrLandingPage",
    components: {
-      HeaderSection,
-      CategoryFilters,
-      ProductGrid,
-      HeroSection,
-      SearchBar,
-      CompareModal
+      HeaderSection: HeaderSectionComponent,
+      CategoryFilters: CategoryFiltersComponent,
+      ProductGrid: ProductGridComponent,
+      HeroSection: HeroSectionComponent,
+      SearchBar: SearchBarComponent,
+      CompareModal: CompareModalComponent
 
    },
    data() {
