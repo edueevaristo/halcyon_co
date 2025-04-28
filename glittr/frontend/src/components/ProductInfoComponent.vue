@@ -99,8 +99,8 @@
 
     <section class="product-details-feedbacks">
 
-        <FeedbackComponent />
-        <FeedbackComponent />
+      <FeedbackComponent/>
+      <FeedbackComponent/>
 
     </section>
   </main>

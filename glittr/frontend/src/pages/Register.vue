@@ -11,7 +11,7 @@
     <section class="card">
       <header class="header">
         <div class="logo-container">
-          <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/78563c8e860c2b1a58a2243db04bcb9e38932f14"
+          <img src="@/assets/icons/LogoGlittr.svg"
                alt="Glittr Logo" class="logo">
           <h1 class="brand">Gittr</h1>
         </div>
@@ -74,7 +74,7 @@
 
       <footer class="footer">
         <span>Já é Gittr?</span>
-        <a href="#" class="login-link">Entrar</a>
+        <RouterLink to="/login" class="login-link">Entrar</RouterLink>
       </footer>
     </section>
   </main>
@@ -83,6 +83,8 @@
 <script>
 
 import PostUserDataService from "@/services/PostUserDataService.js";
+import { showGlittrModal } from '@/stores/useSweetAlertGlittr.js';
+
 
 
 const UserIcon = {
@@ -154,12 +156,26 @@ export default {
   methods: {
     async submitForm() {
       try {
-        const response = await PostUserDataService.create(this.form)
-        console.log("Usuário cadastrado com sucesso:", response.data)
-        // TODO: Redirecionar para a tela de login, validar com a Amanda se terá algo "animado" após ações, ex: sweetalert.
+        const response = await PostUserDataService.create(this.form);
 
+        console.log(response);
+
+        showGlittrModal(  {
+          icon: 'success',
+          title: 'Cadastro realizado!',
+          text: 'Sua conta foi criada com sucesso. Agora é só fazer login e aproveitar!',
+          confirmButtonText: 'Ir para o login',
+          routeAfterConfirm: '/login'
+        })
       } catch (error) {
-        console.error("Erro ao cadastrar usuário:", error.response?.data || error.message)
+
+        console.log(error);
+
+        showGlittrModal({
+          icon: 'error',
+          title: 'Erro no cadastro',
+          text: error.response?.data?.message || 'Algo deu errado. Tente novamente mais tarde.',
+        })
       }
     }
   }

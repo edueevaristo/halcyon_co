@@ -13,7 +13,7 @@ http.interceptors.request.use(config => {
 
     if (token) {
 
-        config.headers['Authorization'] =  `Bearer ${token}`//Configurada padrão.
+        config.headers['Authorization'] = `Bearer ${token}`//Configurada padrão.
     }
 
     return config;
@@ -21,7 +21,7 @@ http.interceptors.request.use(config => {
 }, error => {
 
     return Promise.reject(error);
-    
+
 });
 
 export default http;
