@@ -2,10 +2,10 @@
   <nav class="navbar">
     <div class="navbar-content">
       <div class="logo">
-        <img src="@/assets/icons/LogoTexto.png" alt="Logo" />
+        <img src="@/assets/icons/LogoTexto.png" alt="Logo"/>
       </div>
       <button class="login-button">
-        <img src="@/assets/icons/arrow.svg" alt="Ícone de seta" class="icon" />
+        <img src="@/assets/icons/arrow.svg" alt="Ícone de seta" class="icon"/>
         Entrar
       </button>
     </div>
@@ -27,7 +27,7 @@ export default {
   align-items: center;
   border-bottom: 1px solid #F3F4F6;
   background: #141414;
-  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
 .navbar-content {

@@ -1,11 +1,11 @@
 <template>
   <section class="product-grid">
     <ProductCard
-      v-for="product in products"
-      :key="product.id"
-      :id="product.id"
-      :imageUrl="product.imageUrl"
-      :title="product.title"
+        v-for="product in products"
+        :key="product.id"
+        :id="product.id"
+        :imageUrl="product.imageUrl"
+        :title="product.title"
     />
   </section>
 </template>
@@ -24,7 +24,7 @@ export default {
         {
           id: 1,
           imageUrl:
-            "https://cdn.builder.io/api/v1/image/assets/TEMP/1c87f2d0143f3f38e2659cb04530d8648daecaef",
+              "https://cdn.builder.io/api/v1/image/assets/TEMP/1c87f2d0143f3f38e2659cb04530d8648daecaef",
           title: "Hidratante Facial Glow Up",
         },
       ],

@@ -8,14 +8,16 @@
 
     <section class="login-container">
       <div class="login-content">
-        <Logo />
+        <Logo/>
 
-        <LoginForm />
+        <LoginForm/>
 
         <footer class="signup-footer">
           <div class="signup-text">
             <span class="signup-question">Ainda não tem uma conta?</span>
-            <span class="signup-link">Registre-se</span>
+            <RouterLink to="/register" class="signup-link">
+              Registre-se
+            </RouterLink>
           </div>
         </footer>
       </div>
@@ -41,14 +43,13 @@ export default {
   display: flex;
   height: 100vh;
   width: 100vw;
-  display: flex;
   justify-content: center;
   align-items: center;
   background: linear-gradient(
-    135deg,
-    #141414 0%,
-    #141414 50%,
-    rgba(148, 0, 239) 100%
+      135deg,
+      #141414 0%,
+      #141414 50%,
+      rgba(148, 0, 239) 100%
   );
   position: relative;
 }
@@ -96,9 +97,8 @@ export default {
   border-width: 1px;
   border-color: rgba(255, 255, 255, 0.1);
   background-color: rgba(0, 0, 0, 0.3);
-  box-shadow:
-    0px 10px 15px -3px rgba(225, 12, 255, 0.1),
-    0px 4px 6px -4px rgba(225, 12, 255, 0.1);
+  box-shadow: 0 10px 15px -3px rgba(225, 12, 255, 0.1),
+  0 4px 6px -4px rgba(225, 12, 255, 0.1);
   backdrop-filter: blur(6px);
 }
 

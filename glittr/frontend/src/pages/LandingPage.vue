@@ -1,21 +1,22 @@
 <template>
   <div class="landing-page">
     <header class="header">
-      <HeaderSectionComponent />
+      <HeaderSectionComponent/>
     </header>
 
     <!-- Hero Section -->
     <section class="hero">
       <div class="hero-content">
         <div class="badge">
-          <img src="/src/assets/icons/LogoGlittr.svg" alt="Logo da Glittr. Uma estrela rosa." id="logo">
+          <img src="@/assets/icons/LogoGlittr.svg" alt="Logo da Glittr. Uma estrela rosa." id="logo">
           <p>Faça parte da nossa comunidade brilhante ✨</p>
         </div>
-        <h1>Compare. Descubra. <shine>Brilhe.</shine>
+        <h1>Compare. Descubra.
+          <shine>Brilhe.</shine>
         </h1>
         <p>O Glittr te ajuda a encontrar os melhores produtos de beleza com comparações reais e avaliações honestas.</p>
         <div class="cta-buttons">
-          <button class="primary-button">Começar agora <img src="/src/assets/icons/chevron-right.svg" alt=""></button>
+          <button class="primary-button">Começar agora<img src="@/assets/icons/chevron-right.svg" alt=""></button>
           <button class="secondary-button">Como funciona</button>
         </div>
       </div>
@@ -24,22 +25,22 @@
       </div>
     </section>
 
-    <MarqueeSlider />
+    <MarqueeSlider/>
 
     <!-- Features Section -->
     <section class="features">
-      <h2>Compare o que <span class="highlight-pink"> realmente importa </span> </h2>
+      <h2>Compare o que <span class="highlight-pink"> realmente importa </span></h2>
       <div class="feature-cards">
         <div class="feature-card">
-          <span class="emoji"><img src="/src/assets/icons/solar_heart-bold-duotone.svg" alt=""></span>
+          <span class="emoji"><img src="@/assets/icons/solar_heart-bold-duotone.svg" alt=""></span>
           <p>Veja feedbacks reais de outras entusiastas de beauty & glam ✨</p>
         </div>
         <div class="feature-card">
-          <span class="emoji"><img src="/src/assets/icons/mingcute_love-fill.svg" alt=""></span>
+          <span class="emoji"><img src="@/assets/icons/mingcute_love-fill.svg" alt=""></span>
           <p>Compare as características dos produtos para encontrar sua combinação perfeita 💘 </p>
         </div>
         <div class="feature-card">
-          <span class="emoji"><img src="/src/assets/icons/solar_card-bold.svg" alt=""></span>
+          <span class="emoji"><img src="@/assets/icons/solar_card-bold.svg" alt=""></span>
           <p>Encontre os produtos com o melhor custo-benefício que se encaixam no seu orçamento 💰</p>
         </div>
       </div>
@@ -53,24 +54,24 @@
       <div class="steps">
 
         <div class="step">
-          <div class="step-icon search"> <img src="/src/assets/icons/search.svg" alt=""></div>
+          <div class="step-icon search"><img src="@/assets/icons/search.svg" alt=""></div>
           <h3>Busque cosméticos</h3>
           <p>Procure seus produtos de beleza favoritos</p>
         </div>
 
 
         <div class="step">
-          <div class="step-icon compare"><img src="/src/assets/icons/compare.svg" alt=""></div>
+          <div class="step-icon compare"><img src="@/assets/icons/compare.svg" alt=""></div>
           <h3>Compare até 2 produtos</h3>
           <p>Veja comparações lado a lado para tomar a melhor decisão</p>
         </div>
         <div class="step">
-          <div class="step-icon choose"><img src="/src/assets/icons/buy.svg" alt=""></div>
+          <div class="step-icon choose"><img src="@/assets/icons/buy.svg" alt=""></div>
           <h3>Faça escolhas melhores</h3>
           <p>Escolha produtos que realmente combinam com você</p>
         </div>
         <div class="step">
-          <div class="step-icon share"><img src="/src/assets/icons/like.svg" alt=""></div>
+          <div class="step-icon share"><img src="@/assets/icons/like.svg" alt=""></div>
           <h3>Influencie & receba conselhos</h3>
           <p>Faça parte da comunidade Glittr para descobrir e compartilhar</p>
         </div>
@@ -82,7 +83,7 @@
       <div class="cta-card">
         <div class="text-section">
           <div class="badge">
-            <img src="/src/assets/icons/LogoGlittr.svg" alt="" id="logo">
+            <img src="@/assets/icons/LogoGlittr.svg" alt="" id="logo">
             Faça parte da nossa comunidade brilhante ✨
           </div>
           <p class="CTA-Text">pront@ pra dar seu <span class="highlight-cta">beauty match?</span></p>
@@ -90,12 +91,12 @@
           <router-link to="/presentation" class="primary-button">
             <div v-html="loginIcon"></div>
             <span class="login-text">Começar agora </span>
-            <img src="/src/assets/icons/chevron-right.svg" alt="Seta pra direita.">
+            <img src="@/assets/icons/chevron-right.svg" alt="Seta pra direita.">
           </router-link>
         </div>
 
         <div class="img-section">
-          <img src="/src/assets/images/imgCTA.svg" alt="">
+          <img src="@/assets/images/imgCTA.svg" alt="">
         </div>
 
       </div>
@@ -107,7 +108,7 @@
         <h2>Brilhe mais com o Glittr ✨</h2>
         <p>Mantenha-se por dentro das novidades exclusivas de beauty & tech do universo do Glittr!</p>
         <div class="newsletter-form">
-          <input type="email" placeholder="Digite seu e-mail" />
+          <input type="email" placeholder="Digite seu e-mail"/>
           <button class="primary-button">Enviar</button>
         </div>
         <small>Não enviamos spam, prometemos! ✨</small>
@@ -118,7 +119,7 @@
     <footer class="footer">
       <div class="footer-content">
         <div class="footer-logo">
-          <img src="/src/assets/icons/LogoGlittr.svg" alt="Glittr" />
+          <img src="@/assets/icons/LogoGlittr.svg" alt="Glittr"/>
         </div>
         <div class="footer-links">
           <div class="footer-section">
@@ -164,10 +165,7 @@ import MarqueeSlider from '../components/MarqueeSliderComponent.vue';
 
 
 .hero {
-  padding: 8rem 2rem 4rem;
-  display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 4rem;
   align-items: center;
   background: radial-gradient(227.2% 227.14% at 50% -195.88%, #ED008C 0%, #141414 100%);
   display: flex;
@@ -183,9 +181,9 @@ import MarqueeSlider from '../components/MarqueeSliderComponent.vue';
   align-items: center;
   gap: 15px;
   border-radius: 20px;
-  border: 1px solid var(--Roxo-Shockkk, #9400EF);
+  border: 1px solid #9400EF;
   background: rgba(225, 12, 255, 0.50);
-  font-family: Poppins;
+  font-family: 'Poppins', sans-serif;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
@@ -219,13 +217,12 @@ h1 {
 }
 
 p {
-  color: var(--Brancoh, #FFF);
-  font-family: Poppins;
+  color: #FFF;
+  font-family: 'Poppins', sans-serif;
   font-size: 18px;
   font-style: normal;
   font-weight: 400;
   line-height: 150%;
-  /* 27px */
 }
 
 
@@ -236,7 +233,6 @@ p {
   justify-content: center;
   align-items: center;
   gap: 10px;
-  border-radius: 10px;
   background: linear-gradient(90deg, #ED008C 0%, #9400EF 100%);
   border: none;
   font-weight: 600;
@@ -255,18 +251,18 @@ p {
   align-items: center;
   gap: 10px;
   border-radius: 10px;
-  background: var(--Brancoh, #FFF);
-  color: var(--Roxo-Shockkk, #9400EF);
+  background: #FFF;
+  color: #9400EF;
   text-align: center;
-  font-family: Poppins;
+  font-family: 'Poppins', sans-serif;
   font-size: 16px;
   font-style: normal;
   font-weight: 500;
 }
 
 .subtitle {
-  color: var(--Cinza-Escuro, #757575);
-  font-family: Poppins;
+  color: #757575;
+  font-family: 'Poppins', sans-serif;
   font-size: 24px;
   font-style: normal;
   font-weight: 400;
@@ -295,8 +291,6 @@ p {
   display: flex;
   width: 405px;
   height: 200px;
-  padding: 20px;
-  display: flex;
   gap: 30px;
   flex-direction: column;
   background: white;
@@ -312,7 +306,6 @@ p {
 
 .how-it-works {
   display: flex;
-  padding: 100px 0px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -332,11 +325,11 @@ p {
 
 .highlight {
   color: #ff00ff;
-  background: var(--Preto, linear-gradient(90deg, #9400EF 0%, #FF648C 100%));
+  background: linear-gradient(90deg, #9400EF 0%, #FF648C 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  font-family: Poppins;
+  font-family: 'Poppins', sans-serif;
   font-size: 42px;
   font-style: normal;
   font-weight: 700;
@@ -396,9 +389,9 @@ p {
 }
 
 h2 {
-  color: var(--Preto, #141414);
+  color: #141414;
   text-align: center;
-  font-family: Poppins;
+  font-family: 'Poppins', sans-serif;
   font-size: 42px;
   font-style: normal;
   font-weight: 600;
@@ -407,7 +400,7 @@ h2 {
 
 .highlight-pink {
   color: #ED008C;
-  font-family: Poppins;
+  font-family: 'Poppins', sans-serif;
   font-size: 42px;
   font-style: normal;
   font-weight: 600;
@@ -436,14 +429,14 @@ h2 {
 
 .step-icon:hover {
   border-radius: 100px;
-  background: var(--Rosa-Shockkk, #ED008C);
+  background: #ED008C;
 
-  box-shadow: 0px 4px 10px 0px #ED008C;
+  box-shadow: 0 4px 10px 0 #ED008C;
 
 }
 
 .cta-section {
-  background: var(--Rosa-Dark, #B33974);
+  background: #B33974;
   display: flex;
   height: 746px;
   padding: 10px;
@@ -463,8 +456,8 @@ h2 {
   align-items: center;
   flex-shrink: 0;
   border-radius: 20px;
-  background: var(--Brancoh, #FFF);
-  box-shadow: 0px 3px 40px 0px rgba(225, 12, 255, 0.75);
+  background: #FFF;
+  box-shadow: 0 3px 40px 0 rgba(225, 12, 255, 0.75);
   overflow: hidden;
 }
 
@@ -477,8 +470,8 @@ h2 {
 
 
 .CTA-Text {
-  color: var(--Preto, #141414);
-  font-family: Poppins;
+  color: #141414;
+  font-family: 'Poppins', sans-serif;
   font-size: 64px;
   font-style: normal;
   font-weight: 700;
@@ -491,7 +484,7 @@ h2 {
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  font-family: Poppins;
+  font-family: 'Poppins', sans-serif;
   font-size: 64px;
   font-style: normal;
   font-weight: 700;

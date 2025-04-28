@@ -30,6 +30,9 @@
 <script>
 import FormInput from "./FormInputComponent.vue";
 import PostUserDataService from "@/services/PostUserDataService.js";
+import {showGlittrModal} from '@/stores/useSweetAlertGlittr.js';
+import router from "@/router/index.js";
+
 
 export default {
   name: "LoginForm",
@@ -58,16 +61,22 @@ export default {
   },
   methods: {
     async login() {
-      try {
-        const response = await PostUserDataService.login(this.form);
-        console.log("Login bem-sucedido:", response.data);
 
+      try {
+
+        const response = await PostUserDataService.login(this.form);
         localStorage.setItem("token", response.data.token);
 
-        // TODO: Validar com a Amanda para qual local será o redirecionamento após o login.
+        await router.push("/");
+
       } catch (error) {
-        console.error("Erro ao fazer login:", error);
-        // TODO: Validar com a Amanda como exibir mensagem de erro.
+
+        showGlittrModal({
+          icon: "error",
+          title: "Erro no login",
+          text: error.response?.data?.message || "Algo deu errado. Tente novamente mais tarde.",
+          confirmButtonText: "Fechar",
+        });
       }
     },
   },
@@ -80,7 +89,7 @@ export default {
   flex-direction: column;
   gap: 16px;
   width: 90%;
-  padding: 0px 9px;
+  padding: 0 9px;
 }
 
 .login-button {

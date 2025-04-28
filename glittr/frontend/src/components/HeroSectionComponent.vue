@@ -69,7 +69,7 @@ export default {
 .badge-text {
   color: #fff;
   text-align: center;
-  font-family: Poppins;
+  font-family: 'Poppins', sans-serif;
   font-size: 14px;
   font-weight: 500;
   line-height: 20px;
@@ -92,7 +92,7 @@ export default {
 
 .headline-text {
   color: #141414;
-  font-family: Poppins;
+  font-family: 'Poppins', sans-serif;
   font-size: 36px;
   font-weight: 700;
   line-height: 40px;
@@ -109,7 +109,7 @@ export default {
 .description {
   color: #4b5563;
   text-align: center;
-  font-family: Poppins;
+  font-family: 'Poppins', sans-serif;
   font-size: 16px;
   line-height: 24px;
   max-width: 800px;
@@ -127,10 +127,7 @@ export default {
 .divider-line {
   width: 528.8px;
   height: 1px;
-  background-color: linear-gradient(90deg,
-      rgba(0, 0, 0, 0) 0%,
-      rgba(148, 0, 239, 0.3) 50%,
-      rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(148, 0, 239, 0.3) 50%, rgba(0, 0, 0, 0) 100%);
 }
 
 .feature-badge {
@@ -145,7 +142,7 @@ export default {
 
 .feature-text {
   color: #fff;
-  font-family: Poppins;
+  font-family: 'Poppins', sans-serif;
   font-size: 14px;
   font-weight: 500;
   line-height: 20px;

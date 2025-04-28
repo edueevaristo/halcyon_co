@@ -28,7 +28,7 @@ export default {
 }
 
 .category-button {
-  font-family: Poppins;
+  font-family: 'Poppins', sans-serif;
   font-size: 14px;
   font-weight: 500;
   padding: 5px 10px;

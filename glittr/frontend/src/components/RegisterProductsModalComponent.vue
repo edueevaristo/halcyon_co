@@ -21,12 +21,12 @@
           Informações gerais
         </h4>
 
-        <FormInputRegisterProductComponent />
+        <FormInputRegisterProductComponent/>
 
         <!-- Mensagem de erro -->
-<!--        <div v-if="store.error" class="error-message">-->
-<!--          {{ store.error }}-->
-<!--        </div>-->
+        <!--        <div v-if="store.error" class="error-message">-->
+        <!--          {{ store.error }}-->
+        <!--        </div>-->
 
       </div>
     </div>
@@ -36,10 +36,10 @@
 
 <script setup>
 
-import {ref, watch} from 'vue'
+import {ref} from 'vue'
 import FormInputRegisterProductComponent from "@/components/FormInputRegisterProductComponent.vue";
-const open = ref(false)
 
+const open = ref(false)
 
 
 </script>
@@ -66,7 +66,7 @@ const open = ref(false)
   border-radius: 9999px;
   border: 1px solid #9400EF;
   background: #ED008C;
-  box-shadow: 0px -2px 15px -3px rgba(237, 0, 140, 0.25), 0px 4px 6px -4px #E10CFF;
+  box-shadow: 0 -2px 15px -3px rgba(237, 0, 140, 0.25), 0 4px 6px -4px #E10CFF;
 }
 
 .modal-overlay {

@@ -1,6 +1,6 @@
 <template>
   <div class="main-product-info">
-    <NavbarProductComponent />
+    <NavbarProductComponent/>
 
     <article class="content">
 
@@ -8,7 +8,7 @@
         <div class="content-wrapper">
           <h4 class="return-products-list">
         <span>
-          <img src="../assets/icons/arrow-outline-left.svg" alt="Voltar" />
+          <img src="@/assets/icons/arrow-outline-left.svg" alt="Voltar"/>
         </span>
             Voltar para produtos
           </h4>
@@ -16,10 +16,10 @@
       </RouterLink>
 
 
-<!--      <div v-if="loading">Carregando...</div>-->
-<!--      <div v-else-if="error">{{ error }}</div>-->
-<!--      <ProductInfoComponent v-else :product="product" />-->
-      <ProductInfoComponent />
+      <!--      <div v-if="loading">Carregando...</div>-->
+      <!--      <div v-else-if="error">{{ error }}</div>-->
+      <!--      <ProductInfoComponent v-else :product="product" />-->
+      <ProductInfoComponent/>
     </article>
 
   </div>
@@ -28,7 +28,7 @@
 <script>
 import NavbarProductComponent from "@/components/NavbarProductComponent.vue";
 import ProductInfoComponent from "@/components/ProductInfoComponent.vue";
-import PostProductDataService from "@/services/PostProductDataService.js";
+// import PostProductDataService from "@/services/PostProductDataService.js";
 
 export default {
   name: 'ProductInfo',
@@ -63,6 +63,7 @@ export default {
 .content {
   margin-top: 2%;
 }
+
 .main-product-info {
   width: 100%;
   min-height: 100vh;
