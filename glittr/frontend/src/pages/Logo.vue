@@ -2,7 +2,7 @@
   <header class="brand-header">
     <div class="logo-container">
       <div class="logo-wrapper">
-        <img src="/src/assets/icons/LogoTexto.png" alt="">
+        <img src="@/assets/icons/LogoTexto.png" alt="">
       </div>
       <div class="brand-name-wrapper">
       </div>
@@ -23,7 +23,7 @@ export default {
 <style scoped>
 .brand-header {
   display: flex;
-  padding: 10px 0px;
+  padding: 10px 0;
   flex-direction: column;
   justify-content: center;
   align-items: center;

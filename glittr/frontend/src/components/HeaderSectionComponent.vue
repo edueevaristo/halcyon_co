@@ -6,11 +6,11 @@
 
         <!-- Botão de menu hambúrguer para mobile -->
         <button class="mobile-menu-button" @click="toggleMobileMenu">
-          <img src="/src/assets/icons/menu.svg" alt="Abrir menu" />
+          <img src="@/assets/icons/menu.svg" alt="Abrir menu"/>
         </button>
 
         <div class="logo-image">
-          <img src="/src/assets/icons/LogoGlittr.svg" alt="Logo da Glittr. Uma Estrela rosa.">
+          <img src="@/assets/icons/LogoGlittr.svg" alt="Logo da Glittr. Uma Estrela rosa.">
         </div>
       </div>
 
@@ -22,15 +22,15 @@
           <li>Produtos</li>
           <button class="CTA-AddProdutos" @click="addProdutos">
             <span class="login-text">Adicionar produtos </span>
-            <img src="/src/assets/icons/add.svg" alt="Ícone de adicionar.">
+            <img src="@/assets/icons/add.svg" alt="Ícone de adicionar.">
           </button>
         </ul>
 
         <div class="profile-dropdown">
           <span class="user-profile" @click="toggleDropdown">
-            <img src="/src/assets/icons/bebe.png" alt="Ícone de usuário.">
+            <img src="@/assets/icons/bebe.png" alt="Ícone de usuário.">
             Meu perfil
-            <img src="/src/assets/icons/chevron-down.svg" alt="Abrir menu" />
+            <img src="@/assets/icons/chevron-down.svg" alt="Abrir menu"/>
           </span>
           <ul v-if="showDropdown" class="dropdown-menu">
             <li @click="goToProfile"> 👤 Ver perfil</li>
@@ -46,11 +46,11 @@
           <li>Produtos</li>
         </ul>
 
-        <router-link to="/presentation"  class="CTA-Login">
+        <RouterLink to="/presentation" class="CTA-Login">
           <div v-html="loginIcon"></div>
-          <span class="login-text">Começar agora </span>
-          <img src="/src/assets/icons/chevron-right.svg" alt="Seta pra direita.">
-        </router-link>
+          <span class="login-text">Começar agora</span>
+          <img src="@/assets/icons/chevron-right.svg" alt="Seta pra direita.">
+        </RouterLink>
       </div>
     </div>
 
@@ -66,14 +66,14 @@
         <div v-if="isLoggedIn">
           <button class="CTA-AddProdutos" @click="addProdutos">
             <span class="login-text">Adicionar produtos</span>
-            <img src="/src/assets/icons/add.svg" alt="Ícone de adicionar.">
+            <img src="@/assets/icons/add.svg" alt="Ícone de adicionar.">
           </button>
 
           <div class="profile-dropdown">
             <span class="user-profile" @click="toggleDropdown">
-              <img src="/src/assets/icons/bebe.png" alt="Ícone de usuário.">
+              <img src="@/assets/icons/bebe.png" alt="Ícone de usuário.">
               Meu perfil
-              <img src="/src/assets/icons/chevron-down.svg" alt="Abrir menu" />
+              <img src="@/assets/icons/chevron-down.svg" alt="Abrir menu"/>
             </span>
             <ul v-if="showDropdown" class="dropdown-menu">
               <li @click="goToProfile"> 👤 Ver perfil</li>
@@ -86,7 +86,7 @@
           <button class="CTA-Login" @click="login">
             <div v-html="loginIcon"></div>
             <span class="login-text">Começar agora</span>
-            <img src="/src/assets/icons/chevron-right.svg" alt="Seta pra direita.">
+            <img src="@/assets/icons/chevron-right.svg" alt="Seta pra direita.">
           </button>
         </div>
       </div>
@@ -118,7 +118,8 @@ export default {
       this.showMobileMenu = !this.showMobileMenu;
       this.showDropdown = false;
     },
-    goToProfile() {},
+    goToProfile() {
+    },
   },
 };
 </script>
@@ -133,7 +134,7 @@ export default {
   border-width: 1px;
   border-color: #f3f4f6;
   background-color: #141414;
-  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
 .header-container {
@@ -160,7 +161,7 @@ export default {
 
 .logo-text {
   color: #ed008c;
-  font-family: Montserrat;
+  font-family: 'Montserrat', sans-serif;
   font-size: 24px;
   font-weight: 700;
   line-height: 32px;
@@ -184,7 +185,7 @@ export default {
 .login-text {
   color: #fff;
   text-align: center;
-  font-family: Poppins;
+  font-family: 'Poppins', sans-serif;
   font-size: 16px;
   font-weight: 500;
   line-height: 20px;
@@ -255,7 +256,7 @@ li:hover {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-family: Poppins;
+  font-family: 'Poppins', sans-serif;
   font-size: 14px;
   font-weight: 500;
   color: #fff;
@@ -274,7 +275,7 @@ li:hover {
   padding: 8px 0;
   z-index: 1000;
   min-width: 160px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .dropdown-menu li {
@@ -316,6 +317,7 @@ li:hover {
 .slide-fade-leave-active {
   transition: all 0.3s ease;
 }
+
 .slide-fade-enter-from,
 .slide-fade-leave-to {
   opacity: 0;
@@ -330,10 +332,11 @@ li:hover {
     align-items: flex-start;
     gap: 16px;
   }
-  
+
   .desktop-only {
     display: none;
   }
+
   .mobile-menu-button {
     display: block;
   }

@@ -1,7 +1,7 @@
 <template>
   <RouterLink :to="`/product/${id}`">
     <article class="product-card">
-      <img :src="imageUrl" :alt="title" class="product-image" />
+      <img :src="imageUrl" :alt="title" class="product-image"/>
       <div class="product-content">
         <h3 class="product-title">{{ title }}</h3>
         <button class="compare-button">
@@ -18,7 +18,7 @@
 export default {
   name: "ProductCard",
   props: {
-    id : {
+    id: {
       type: Number,
       required: true
     },
@@ -53,9 +53,8 @@ export default {
   border-width: 1px;
   border-color: rgba(250, 144, 171, 0.2);
   background-color: #fff;
-  box-shadow:
-    0px 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0px 2px 4px -2px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+  0 2px 4px -2px rgba(0, 0, 0, 0.1);
 }
 
 .product-image {
@@ -75,7 +74,7 @@ export default {
 
 .product-title {
   color: #141414;
-  font-family: Poppins;
+  font-family: 'Poppins', sans-serif;
   font-size: 18px;
   font-weight: 500;
   line-height: 28px;
@@ -90,9 +89,8 @@ export default {
   width: 100%;
   padding: 8px 16px;
   border-radius: 14px;
-  border-radius: 14px;
   background: linear-gradient(90deg, #9400EF 0%, #E10CFF 100%);
-  box-shadow: 0px 4px 6px -1px rgba(0, 0, 0, 0.10), 0px 2px 4px -2px rgba(0, 0, 0, 0.10);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.10), 0 2px 4px -2px rgba(0, 0, 0, 0.10);
   border: none;
   cursor: pointer;
 }
@@ -100,7 +98,7 @@ export default {
 .button-text {
   color: #fff;
   text-align: center;
-  font-family: Poppins;
+  font-family: 'Poppins', sans-serif;
   font-size: 14px;
   font-weight: 600;
   line-height: 20px;
@@ -108,7 +106,7 @@ export default {
 
 
 .product-card:hover {
-  box-shadow: 0px 4px 35px 0px rgba(250, 144, 171, 0.5);
+  box-shadow: 0 4px 35px 0 rgba(250, 144, 171, 0.5);
   cursor: pointer;
 }
 
