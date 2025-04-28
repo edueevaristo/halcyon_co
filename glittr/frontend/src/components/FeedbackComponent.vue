@@ -1,28 +1,29 @@
 <template>
   <main class="main-feedbacks">
-      <section class="section-feedback-user-and-photo-and-date">
-          <div class="feedback-user-and-photo">
-              <img src="@/assets/images/user-feedback-1.svg" alt="Foto de perfil do usuário do feedback">
-          </div>
+    <section class="section-feedback-user-and-photo-and-date">
+      <div class="feedback-user-and-photo">
+        <img src="@/assets/images/user-feedback-1.svg" alt="Foto de perfil do usuário do feedback">
+      </div>
 
-          <div class="feedback-user-and-date">
-              <h1 class="feedback-user-name">Amanda Vieira</h1>
-              <p class="feedback-user-date">26/03/2025 22:04</p>
-          </div>
+      <div class="feedback-user-and-date">
+        <h1 class="feedback-user-name">Amanda Vieira</h1>
+        <p class="feedback-user-date">26/03/2025 22:04</p>
+      </div>
 
-      </section>
+    </section>
 
-      <section class="feedback-stars">
-          <img src="@/assets/icons/star.svg" alt="Estrelas de avaliação">
-          <img src="@/assets/icons/star.svg" alt="Estrelas de avaliação">
-          <img src="@/assets/icons/star.svg" alt="Estrelas de avaliação">
-          <img src="@/assets/icons/star.svg" alt="Estrelas de avaliação">
-          <img src="@/assets/icons/star.svg" alt="Estrelas de avaliação">
-      </section>
+    <section class="feedback-stars">
+      <img src="@/assets/icons/star.svg" alt="Estrelas de avaliação">
+      <img src="@/assets/icons/star.svg" alt="Estrelas de avaliação">
+      <img src="@/assets/icons/star.svg" alt="Estrelas de avaliação">
+      <img src="@/assets/icons/star.svg" alt="Estrelas de avaliação">
+      <img src="@/assets/icons/star.svg" alt="Estrelas de avaliação">
+    </section>
 
-      <section class="feedback-description">
-        <p>Eu amo a base da WePink, ela durou umas 8 horas tranquilo na minha pele. A Vírginia sabe o que faz mesmooo rs eu peço respeito com as minha maria com a minha familia com a minha virgiia</p>
-      </section>
+    <section class="feedback-description">
+      <p>Eu amo a base da WePink, ela durou umas 8 horas tranquilo na minha pele. A Vírginia sabe o que faz mesmooo rs
+        eu peço respeito com as minha maria com a minha familia com a minha virgiia</p>
+    </section>
   </main>
 </template>
 

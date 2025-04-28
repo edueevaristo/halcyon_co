@@ -26,7 +26,8 @@
 
         <div class="form-group-subcategory">
           <label for="product_subcategory" class="label-name">Subcategoria*</label>
-          <select id="product_subcategory" name="product_subcategory" class="label-select" title="Subcategoria" required>
+          <select id="product_subcategory" name="product_subcategory" class="label-select" title="Subcategoria"
+                  required>
             <option value="">Teste 1</option>
             <option value="">Teste 1</option>
             <option value="">Teste 1</option>
@@ -41,7 +42,8 @@
         <div class="rows-2">
           <div class="form-group-2-rows-category-information">
             <label for="type_of_coverage" class="label-name-category-information">Tipo de cobertura*</label>
-            <select id="type_of_coverage" name="type_of_coverage" class="label-select" title="Tipo de cobertura" required>
+            <select id="type_of_coverage" name="type_of_coverage" class="label-select" title="Tipo de cobertura"
+                    required>
               <option value="">Alta</option>
               <option value="">Média</option>
               <option value="">Baixa</option>
@@ -81,47 +83,47 @@
           </div>
         </div>
 
-        </div>
+      </div>
 
-        <div class="form-group">
-          <label for="product_name" class="label-name">Imagens do produto*</label>
+      <div class="form-group">
+        <label for="product_name" class="label-name">Imagens do produto*</label>
 
-          <label class="upload-area">
-            <input type="file" accept="image/*" class="upload-input" />
-            <img src="@/assets/icons/upload.svg" alt="Icone de upload">
-            <span class="upload-text">Arraste um arquivo ou procure no seu dispositivo</span>
-          </label>
-        </div>
+        <label class="upload-area">
+          <input type="file" accept="image/*" class="upload-input"/>
+          <img src="@/assets/icons/upload.svg" alt="Icone de upload">
+          <span class="upload-text">Arraste um arquivo ou procure no seu dispositivo</span>
+        </label>
+      </div>
 
-        <h6 class="product-category-information-optional">Informações opcionais</h6>
+      <h6 class="product-category-information-optional">Informações opcionais</h6>
 
-        <div class="form-group">
-          <label for="product_price_average" class="label-name">Preço médio</label>
-          <input type="text" id="product_price_average" name="product_price_average" class="label-input" required>
-        </div>
+      <div class="form-group">
+        <label for="product_price_average" class="label-name">Preço médio</label>
+        <input type="text" id="product_price_average" name="product_price_average" class="label-input" required>
+      </div>
 
-        <div class="form-group">
-          <label for="ingredients" class="label-name">Ingredientes</label>
-          <input type="text" id="ingredients" name="ingredients" class="label-input" required>
-        </div>
+      <div class="form-group">
+        <label for="ingredients" class="label-name">Ingredientes</label>
+        <input type="text" id="ingredients" name="ingredients" class="label-input" required>
+      </div>
 
-        <div class="form-group">
-          <label for="link_product" class="label-name">Link para compra do produto</label>
-          <input type="text" id="link_product" name="link_product" class="label-input" required>
-        </div>
+      <div class="form-group">
+        <label for="link_product" class="label-name">Link para compra do produto</label>
+        <input type="text" id="link_product" name="link_product" class="label-input" required>
+      </div>
 
 
-        <div class="form-buttons">
+      <div class="form-buttons">
 
-          <button class="cancel-button-form">
-            Cancelar cadastro
-          </button>
+        <button class="cancel-button-form">
+          Cancelar cadastro
+        </button>
 
-          <button class="post-button-form">
-            <span class="post-button-icon"><img src="@/assets/icons/saved.svg"></span>Cadastrar produto
-          </button>
+        <button class="post-button-form">
+          <span class="post-button-icon"><img src="@/assets/icons/saved.svg" alt="Icone de salvar"></span>Cadastrar produto
+        </button>
 
-        </div>
+      </div>
 
 
     </form>
