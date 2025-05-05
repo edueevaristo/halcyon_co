@@ -5,12 +5,34 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
-use App\Models\Category;
-use App\Models\Subcategory;
-use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Storage;
 
 class ProductsController extends Controller
 {
+    protected function validateImageFiles(Request $request)
+    {
+        return $request->validate([
+            'image_files' => 'nullable|array',
+            'image_files.*' => 'image|max:2048',
+        ]);
+    }
+
+    protected function storeImages(Request $request)
+    {
+        $imagePaths = [];
+
+        if ($request->hasFile('image_files')) {
+
+            foreach ($request->file('image_files') as $image) {
+
+                $path = $image->store('products', 'public');
+                $imagePaths[] = $path;
+            }
+        }
+
+        return $imagePaths;
+    }
+
     public function insert(Request $request)
     {
         $validated = $request->validate([
@@ -26,13 +48,16 @@ class ProductsController extends Controller
             'price_average' => 'nullable|numeric',
             'ingredients' => 'nullable|string',
             'product_link' => 'nullable|url',
-            'image_path' => 'nullable|string',
         ]);
 
+        $this->validateImageFiles($request);
+        $imagePaths = $this->storeImages($request);
+
+        $validated['image_path'] = $imagePaths;
         $product = Product::create($validated);
 
         return response()->json([
-            'message' => 'Product criado com sucesso!',
+            'message' => 'Produto criado com sucesso!',
             'product' => $product
         ], 201);
     }
@@ -43,8 +68,9 @@ class ProductsController extends Controller
             'id' => 'required|exists:products,id',
         ]);
 
-        $product = Product::find($request->id);
+        $product = Product::findOrFail($request->id);
 
+        // Valida os dados do produto
         $validated = $request->validate([
             'product_name' => 'sometimes|string|max:255',
             'brand' => 'sometimes|string|max:255',
@@ -58,9 +84,19 @@ class ProductsController extends Controller
             'price_average' => 'nullable|numeric',
             'ingredients' => 'nullable|string',
             'product_link' => 'nullable|url',
-            'image_path' => 'nullable|string',
         ]);
 
+        // Se houver novas imagens, armazena as imagens
+        $imagePaths = json_decode($product->image_path ?? '[]', true);
+
+        if ($request->hasFile('image_files')) {
+
+            $this->validateImageFiles($request); // Valida as novas imagens
+            $newImagePaths = $this->storeImages($request); // Armazena as novas imagens
+            $imagePaths = array_merge($imagePaths, $newImagePaths); // Junta as imagens antigas com as novas
+        }
+
+        $validated['image_path'] = $imagePaths;
         $product->update($validated);
 
         return response()->json([
