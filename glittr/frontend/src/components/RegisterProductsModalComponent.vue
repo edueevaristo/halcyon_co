@@ -75,22 +75,37 @@ const open = ref(false)
   background: rgba(0, 0, 0, 0.4);
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  padding-top: 60px;
+  align-items: center;
+  padding: 16px;
   z-index: 1001;
+  overflow-y: auto;
 }
 
-/* modal */
 .modal-content {
   background: #fff;
   border-radius: 16px;
-  max-width: 1200px;
   width: 100%;
+  max-width: 900px;
+  max-height: 90vh;
   padding: 32px;
   position: relative;
-  overflow: auto;
-  max-height: 90vh;
+  overflow-y: auto;
+  box-sizing: border-box;
 }
+
+.modal-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+  background-color: #ED008C;
+  border-radius: 8px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+  background-color: #ffe6f1;
+}
+
 
 .close-button {
   position: absolute;
