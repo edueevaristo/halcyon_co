@@ -11,8 +11,7 @@
     <section class="card">
       <header class="header">
         <div class="logo-container">
-          <img src="@/assets/icons/LogoGlittr.svg"
-               alt="Glittr Logo" class="logo">
+          <img src="@/assets/icons/LogoGlittr.svg" alt="Glittr Logo" class="logo">
           <h1 class="brand">Gittr</h1>
         </div>
         <h2 class="title">Crie sua conta</h2>
@@ -24,32 +23,38 @@
       <form class="form" @submit.prevent="submitForm">
         <div class="input-group">
           <label class="label">
-            <UserIcon/>
-            <span>Nome completo</span>
+            <span class="label-content">
+              <img src="@/assets/icons/user_register.svg" class="label-icon">
+              Nome completo
+            </span>
           </label>
           <input type="text"
                  class="input"
                  name="name"
-                 placeholder="Seu nome completo"
+                 placeholder="Seu nome completo ✍️"
                  v-model="form.name">
         </div>
 
         <div class="input-group">
           <label class="label">
-            <EmailIcon/>
-            <span>Email</span>
+            <span class="label-content">
+              <img src="@/assets/icons/email_register.svg" class="label-icon">
+              Email
+            </span>
           </label>
           <input type="email"
                  class="input"
                  name="email"
-                 placeholder="Nos diga seu melhor e-mail"
+                 placeholder="Nos diga seu melhor e-mail 💌"
                  v-model="form.email">
         </div>
 
         <div class="input-group">
           <label class="label">
-            <PasswordIcon/>
-            <span>Senha</span>
+            <span class="label-content">
+              <img src="@/assets/icons/senha_register.svg" class="label-icon">
+              Senha
+            </span>
           </label>
           <input type="password"
                  class="input"
@@ -60,14 +65,15 @@
 
         <div class="input-group">
           <label class="label">
-            <ConfirmIcon/>
-            <span>Confirmar senha</span>
+            <span class="label-content">
+              <img src="@/assets/icons/confirm_register.svg" class="label-icon">
+              Confirmar senha
+            </span>
           </label>
           <input type="password" class="input" placeholder="••••••••">
         </div>
 
         <button class="submit-button">
-          <UserAddIcon/>
           <span>Criar minha conta</span>
         </button>
       </form>
@@ -320,6 +326,17 @@ html, body {
   gap: 4px;
   color: #d4d4d8;
   font: 14px "Poppins", sans-serif;
+}
+
+.label-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.label-icon {
+  width: 16px;
+  height: 16px;
 }
 
 .input {
