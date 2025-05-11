@@ -178,6 +178,7 @@ import {ref, onMounted, watch} from "vue";
 import PostProductDataService from "@/services/PostProductDataService.js";
 import PostSubcategoryDataService from "@/services/PostSubcategoryDataService.js";
 import PostCategoryDataService from "@/services/PostCategoryDataService.js";
+import Swal from 'sweetalert2';
 import { showGlittrModal } from '@/stores/useSweetAlertGlittr.js';
 
 
@@ -188,6 +189,7 @@ const editing = ref(false);
 const productId = ref(null);
 
 const imagePreviews = ref([]);
+const emit = defineEmits();
 
 const form = ref({
   product_name: "",
@@ -247,9 +249,7 @@ watch(() => form.value.category_id, async (categoryId) => {
 });
 
 const handleSubmit = async () => {
-
   try {
-
     form.value.oil_free = (form.value.oil_free === true || form.value.oil_free === "true") ? 1 : 0;
 
     const formData = new FormData();
@@ -265,46 +265,59 @@ const handleSubmit = async () => {
     });
 
     if (editing.value) {
-
       await PostProductDataService.update(productId.value, formData);
 
-      alert("Produto atualizado com sucesso!");
-
-      showGlittrModal(  {
+      showGlittrModal({
         icon: 'success',
         title: 'Atualização',
         text: 'Produto atualizado com sucesso!',
         confirmButtonText: 'OK',
+      }).then(() => {
+        Swal.close();
+        emit('product-updated');
       });
 
     } else {
-
       await PostProductDataService.insert(formData);
 
-      showGlittrModal(  {
+      showGlittrModal({
         icon: 'success',
         title: 'Cadastro',
         text: 'Produto cadastrado com sucesso!',
         confirmButtonText: 'OK',
+      }).then(() => {
+        Swal.close();
+        emit('product-updated');
       });
-
     }
 
     resetForm();
 
   } catch (error) {
-
     console.error("Erro ao salvar o produto:", error);
-
-    showGlittrModal(  {
+    showGlittrModal({
       icon: 'error',
       title: 'Cadastro',
-      text: `Erro ao cadastrar/atualizar o produto: error ${error}`,
+      text: `Erro ao cadastrar/atualizar o produto: ${error.message}`,
       confirmButtonText: 'OK',
     });
-
   }
 };
+
+
+
+const updateProductList = async () => {
+  try {
+
+    const response = await PostProductDataService.getAll();
+    products.value = response.data.products;
+
+  } catch (error) {
+    console.error("Erro ao buscar a lista de produtos:", error);
+  }
+};
+
+
 
 const handleImageUpload = (event) => {
 
