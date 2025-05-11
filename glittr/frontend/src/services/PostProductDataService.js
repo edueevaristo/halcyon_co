@@ -6,11 +6,24 @@ class PostProductDataService {
 
         try {
 
-            return await http.get(`/products/${id}`);
+            return await http.get(`/products/show/${id}`);
 
         } catch (error) {
 
             console.error(`Erro ao buscar produto com id ${id}:`, error);
+            throw error;
+        }
+    }
+
+    async getAll() {
+
+        try {
+
+            return await http.get("/products");
+
+        } catch (error) {
+
+            console.error("Erro ao buscar produtos:", error);
             throw error;
         }
     }

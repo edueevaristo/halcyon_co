@@ -4,14 +4,16 @@
         v-for="product in products"
         :key="product.id"
         :id="product.id"
-        :imageUrl="product.imageUrl"
-        :title="product.title"
+        :imageUrl="product.image_path[0].replace(/^\/storage\//, '')"
+        :title="product.product_name"
     />
   </section>
+  <!--        imageUrl="product.image_path?.[0] || '/default-image.jpg'"-->
 </template>
 
 <script>
 import ProductCardComponent from "./ProductCardComponent.vue";
+import PostProductDataService from "@/services/PostProductDataService.js";
 
 export default {
   name: "ProductGrid",
@@ -20,15 +22,24 @@ export default {
   },
   data() {
     return {
-      products: [
-        {
-          id: 1,
-          imageUrl:
-              "https://cdn.builder.io/api/v1/image/assets/TEMP/1c87f2d0143f3f38e2659cb04530d8648daecaef",
-          title: "Hidratante Facial Glow Up",
-        },
-      ],
+      products: [],
     };
+  },
+  mounted() {
+    this.fetchProducts();
+  },
+  methods: {
+    async fetchProducts() {
+      try {
+
+        const response = await PostProductDataService.getAll();
+        this.products = response.data.products;
+        console.log(this.products);
+
+      } catch (error) {
+        console.error("Erro ao buscar produtos:", error);
+      }
+    },
   },
 };
 </script>

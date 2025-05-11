@@ -1,7 +1,7 @@
 <template>
   <RouterLink :to="`/product/${id}`">
     <article class="product-card">
-      <img :src="imageUrl" :alt="title" class="product-image"/>
+      <img :src="imageUrl" alt="Imagem do produto" class="product-image"/>
       <div class="product-content">
         <h3 class="product-title">{{ title }}</h3>
         <button class="compare-button">
@@ -24,7 +24,6 @@ export default {
     },
     imageUrl: {
       type: String,
-      required: true,
     },
     title: {
       type: String,

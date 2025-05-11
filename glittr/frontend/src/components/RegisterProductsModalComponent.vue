@@ -1,16 +1,14 @@
 <template>
   <div>
-    <!-- Botão flutuante -->
+
     <button class="floating-button" @click="open = true">
       Cadastrar Produto
     </button>
 
-    <!-- Modal -->
-    <div v-if="open" class="modal-overlay" @click.self="open = false">
+    <div v-if="open" class="modal-overlay" @click.self="closeModal">
       <div class="modal-content">
-        <button class="close-button" @click="open = false">✕</button>
+        <button class="close-button" @click="closeModal">✕</button>
 
-        <!-- Título -->
         <h2 class="modal-title">Cadastrar Produtos</h2>
         <p class="modal-subtitle">
           Preencha os campos abaixo com as informações que você tem. Quanto mais completo, melhor para ajudar outras
@@ -21,12 +19,7 @@
           Informações gerais
         </h4>
 
-        <FormInputRegisterProductComponent/>
-
-        <!-- Mensagem de erro -->
-        <!--        <div v-if="store.error" class="error-message">-->
-        <!--          {{ store.error }}-->
-        <!--        </div>-->
+        <FormInputRegisterProductComponent @product-registered="handleProductRegistered"/>
 
       </div>
     </div>
@@ -35,13 +28,22 @@
 </template>
 
 <script setup>
-
-import {ref} from 'vue'
+import { ref } from 'vue';
 import FormInputRegisterProductComponent from "@/components/FormInputRegisterProductComponent.vue";
 
-const open = ref(false)
+const open = ref(false);
 
+const openModal = () => {
+  open.value = true;
+};
 
+const closeModal = () => {
+  open.value = false;
+};
+
+const handleProductRegistered = () => {
+  closeModal();
+};
 </script>
 
 <style scoped>
