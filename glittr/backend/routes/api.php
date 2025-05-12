@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\SubcategoryController;
 use App\Http\Controllers\Api\ProductsController;
+use App\Http\Controllers\Api\AttributeController;
 
 
 Route::post('/register', [AuthController::class, 'register']);
@@ -41,5 +42,13 @@ Route::prefix('subcategories')->group(function () {
 
     Route::get('/', [SubcategoryController::class, 'index']);
     Route::get('show/{id}', [SubcategoryController::class, 'show']);
+
+});
+
+Route::prefix('attributes')->group(function () {
+
+    Route::get('/', [AttributeController::class, 'index']);
+    Route::get('show/{id}', [AttributeController::class, 'show']);
+    Route::get('showValues/{id}', [AttributeController::class, 'showValues']);
 
 });
