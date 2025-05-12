@@ -17,18 +17,12 @@ class CreateProductsTable extends Migration
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->foreignId('subcategory_id')->constrained()->onDelete('cascade');
 
-            $table->enum('type_of_coverage', ['Alta', 'Média', 'Baixa'])->nullable();
-            $table->enum('type_of_finish', ['Alta', 'Média', 'Baixa'])->nullable();
-            $table->string('fps')->nullable();
-            $table->integer('available_tones')->nullable();
-            $table->boolean('oil_free')->default(false);
-
             $table->decimal('price_average', 8, 2)->nullable();
             $table->text('ingredients')->nullable();
             $table->string('product_link')->nullable();
 
             $table->jsonb('image_path')->nullable();
-
+            $table->json('attributes')->nullable(); // Atributos específicos da subcategoria
             $table->timestamps();
         });
     }

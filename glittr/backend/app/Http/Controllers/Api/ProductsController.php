@@ -25,9 +25,14 @@ class ProductsController extends Controller
 
             foreach ($request->file('image_files') as $image) {
 
-                $path = $image->store('products', 'public');
-                $imagePaths[] = $path;
+                $storedPath = $image->store('products', 'public');
+                $fullUrl = asset('storage/' . $storedPath);
+                $imagePaths[] = $fullUrl;
             }
+        }
+
+        foreach($imagePaths as &$image) {
+            $image = str_replace('/storage/h', 'h', $image);
         }
 
         return $imagePaths;
@@ -91,9 +96,9 @@ class ProductsController extends Controller
 
         if ($request->hasFile('image_files')) {
 
-            $this->validateImageFiles($request); // Valida as novas imagens
-            $newImagePaths = $this->storeImages($request); // Armazena as novas imagens
-            $imagePaths = array_merge($imagePaths, $newImagePaths); // Junta as imagens antigas com as novas
+            $this->validateImageFiles($request);
+            $newImagePaths = $this->storeImages($request);
+            $imagePaths = array_merge($imagePaths, $newImagePaths);
         }
 
         $validated['image_path'] = $imagePaths;
@@ -104,4 +109,24 @@ class ProductsController extends Controller
             'product' => $product
         ], 200);
     }
+
+    public function index()
+    {
+        $products = Product::all();
+        return response()->json(['products' => $products], 200);
+    }
+
+    public function show($id)
+    {
+        $product = Product::find($id);
+
+        if (!$product) {
+            return response()->json([
+                'message' => 'Produto não encontrado.'
+            ], 404);
+        }
+
+        return response()->json(['product' => $product], 200);
+    }
+
 }

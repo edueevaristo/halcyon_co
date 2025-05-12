@@ -22,6 +22,14 @@ Route::middleware('auth:sanctum')->group(function () {
 
 });
 
+/* Rotas de produto sem necessidade de login */
+Route::prefix('categories')->group(function () {
+
+    Route::get('/', [ProductsController::class, 'index']);
+    Route::get('show/{id}', [ProductsController::class, 'show']);
+});
+
+
 Route::prefix('categories')->group(function () {
 
     Route::get('/', [CategoryController::class, 'index']);
