@@ -10,13 +10,23 @@ class SubcategorySeeder extends Seeder
 {
     public function run(): void
     {
-        $peleSkincareCategory = Category::where('name', 'Pele / Skincare')->first()->id;
-        $maquiagemCategory   = Category::where('name', 'Maquiagem')->first()->id;
-        $cabelosCategory  = Category::where('name', 'Cabelos')->first()->id;
-        $corpoBanhoCategory  = Category::where('name', 'Corpo e Banho')->first()->id;
-        $unhasCategory  = Category::where('name', 'Unhas')->first()->id;
-        $fragranciasCategory  = Category::where('name', 'Fragrâncias')->first()->id;
-        $cuidadosMasculinosCategory = Category::where('name', 'Cuidados Masculinos')->first()->id;
+//        $categories = [
+//            '🧴 Pele / Skincare',
+//            '💄 Maquiagem',
+//            '🧖‍♀️ Cabelos',
+//            '🚿 Corpo e Banho',
+//            '💅 Unhas',
+//            '🌸 Fragrâncias',
+//            '🧔 Cuidados Masculinos',
+//        ];
+
+        $peleSkincareCategory = Category::where('name', '🧴 Pele / Skincare')->first()->id;
+        $maquiagemCategory   = Category::where('name', '💄 Maquiagem')->first()->id;
+        $cabelosCategory  = Category::where('name', '🧖‍♀️ Cabelos')->first()->id;
+        $corpoBanhoCategory  = Category::where('name', '🚿 Corpo e Banho')->first()->id;
+        $unhasCategory  = Category::where('name', '💅 Unhas')->first()->id;
+        $fragranciasCategory  = Category::where('name', '🌸 Fragrâncias')->first()->id;
+        $cuidadosMasculinosCategory = Category::where('name', '🧔 Cuidados Masculinos')->first()->id;
 
         $subcategories = [
 

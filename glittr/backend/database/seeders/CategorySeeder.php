@@ -10,13 +10,13 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         $categories = [
-            'Pele / Skincare',
-            'Maquiagem',
-            'Cabelos',
-            'Corpo e Banho',
-            'Unhas',
-            'Fragrâncias',
-            'Cuidados Masculinos',
+            '🧴 Pele / Skincare',
+            '💄 Maquiagem',
+            '🧖‍♀️ Cabelos',
+            '🚿 Corpo e Banho',
+            '💅 Unhas',
+            '🌸 Fragrâncias',
+            '🧔 Cuidados Masculinos',
         ];
 
         foreach ($categories as $name) {
