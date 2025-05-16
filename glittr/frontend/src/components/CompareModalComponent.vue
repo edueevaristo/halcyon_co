@@ -49,6 +49,7 @@ const products = ref([
     name: 'Base da Virgínia',
     image: 'https://via.placeholder.com/100x100?text=Produto+1',
     attributes: {
+      Média: '2',
       brand: 'WePink',
       category: 'Base',
       price: 'R$200',
@@ -60,13 +61,14 @@ const products = ref([
       shades: '12 tons',
       oilFree: '-',
       ingredients: 'CYCLOPENTASILOXANE, AQUA, TRIMETHYLSILOXYSILICATE',
-      description: 'Alta fixação para sua make'
+      description: 'Alta fixação para sua make',
     }
   },
   {
     name: 'Base BTSkin',
     image: 'https://via.placeholder.com/100x100?text=Produto+2',
     attributes: {
+      Média: '5',
       brand: 'BtSkin',
       category: 'Base',
       price: 'R$79,90',
@@ -121,15 +123,30 @@ const products = ref([
 
 /* modal */
 .modal-content {
-  background: #fff;
-  border-radius: 16px;
-  max-width: 900px;
-  width: 100%;
-  padding: 32px;
-  position: relative;
-  overflow: auto;
-  max-height: 90vh;
+background: #fff;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 900px;
+    max-height: 90vh;
+    padding: 32px;
+    position: relative;
+    overflow-y: auto;
+    box-sizing: border-box;
 }
+
+.modal-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+  background-color: #ED008C;
+  border-radius: 8px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+  background-color: #ffe6f1;
+}
+
 
 .close-button {
   position: absolute;
