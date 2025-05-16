@@ -128,4 +128,18 @@ thead th {
   font-size: 12px;
   overflow-wrap: break-word;
 }
+
+.remove-btn{
+  background-color: #e91e63;
+  height: 30px;
+  align-items: center;
+  text-align: center;
+  padding: auto;
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+
+}
+
+
 </style>
