@@ -6,36 +6,65 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class ProductsController extends Controller
 {
     protected function validateImageFiles(Request $request)
     {
-        return $request->validate([
+        $validator = Validator::make($request->all(), [
             'image_files' => 'nullable|array',
-            'image_files.*' => 'image|max:2048',
+            'image_files.*' => 'image|mimes:jpeg,png,jpg,gif|max:5120',
         ]);
+
+        if ($validator->fails()) {
+
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        return $validator->validated();
     }
 
-    protected function storeImages(Request $request)
+    protected function storeImages(Request $request, $product = null)
     {
         $imagePaths = [];
+
+        if ($product && $product->image_path) {
+
+            $imagePaths = json_decode($product->image_path, true) ?? [];
+        }
 
         if ($request->hasFile('image_files')) {
 
             foreach ($request->file('image_files') as $image) {
 
-                $storedPath = $image->store('products', 'public');
-                $fullUrl = asset('storage/' . $storedPath);
-                $imagePaths[] = $fullUrl;
+                $path = $image->store('products', 'public');
+                $imagePaths[] = Storage::url($path);
             }
         }
 
-        foreach($imagePaths as &$image) {
-            $image = str_replace('/storage/h', 'h', $image);
+        return $imagePaths;
+    }
+
+    protected function deleteRemovedImages(Request $request, $currentImages)
+    {
+        if ($request->has('removed_images')) {
+
+            $removedImages = json_decode($request->removed_images, true) ?? [];
+
+            foreach ($removedImages as $imageUrl) {
+
+                $path = str_replace('/storage/', '', parse_url($imageUrl, PHP_URL_PATH));
+                Storage::disk('public')->delete($path);
+
+
+                $currentImages = array_filter($currentImages, function ($img) use ($imageUrl) {
+                    return $img !== $imageUrl;
+                });
+            }
         }
 
-        return $imagePaths;
+        return array_values($currentImages);
     }
 
     public function insert(Request $request)
@@ -45,25 +74,51 @@ class ProductsController extends Controller
             'brand' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
             'subcategory_id' => 'required|exists:subcategories,id',
-            'type_of_coverage' => 'nullable|string|max:255',
-            'type_of_finish' => 'nullable|string|max:255',
-            'fps' => 'nullable|integer|min:0',
-            'available_tones' => 'nullable|string',
-            'oil_free' => 'boolean',
-            'price_average' => 'nullable|numeric',
+            'price_average' => 'nullable|numeric|min:0',
             'ingredients' => 'nullable|string',
             'product_link' => 'nullable|url',
         ]);
 
-        $this->validateImageFiles($request);
-        $imagePaths = $this->storeImages($request);
+        // Valida imagens
+        $imageValidation = $this->validateImageFiles($request);
 
-        $validated['image_path'] = $imagePaths;
-        $product = Product::create($validated);
+        if ($imageValidation instanceof \Illuminate\Http\JsonResponse) {
+
+            return $imageValidation;
+        }
+
+        $imagePaths = $this->storeImages($request);
+        $attributes = [];
+
+        if ($request->input('attributes')) {
+
+            $attributes = $request->input('attributes');
+
+            if (is_string($attributes)) {
+
+                $attributes = json_decode($attributes, true) ?? [];
+            }
+
+            $attributes = array_filter($attributes, function ($value) {
+                return $value !== '' || is_bool($value);
+            });
+        }
+
+        \Log::info('Atributos recebidos:', ['raw' => $request->input('attributes'), 'processed' => $attributes]);
+
+        $productData = array_merge($validated, [
+            'image_path' => json_encode($imagePaths),
+            'attributes' => !empty($attributes) ? $attributes : null,
+        ]);
+
+        \Log::info('Dados completos do produto:', $productData);
+
+        $product = Product::create($productData);
 
         return response()->json([
             'message' => 'Produto criado com sucesso!',
-            'product' => $product
+            'product' => $product,
+            'received_attributes' => $attributes
         ], 201);
     }
 
@@ -75,34 +130,33 @@ class ProductsController extends Controller
 
         $product = Product::findOrFail($request->id);
 
-        // Valida os dados do produto
         $validated = $request->validate([
             'product_name' => 'sometimes|string|max:255',
             'brand' => 'sometimes|string|max:255',
             'category_id' => 'sometimes|exists:categories,id',
             'subcategory_id' => 'sometimes|exists:subcategories,id',
-            'type_of_coverage' => 'nullable|string|max:255',
-            'type_of_finish' => 'nullable|string|max:255',
-            'fps' => 'nullable|integer|min:0',
-            'available_tones' => 'nullable|string',
-            'oil_free' => 'boolean',
-            'price_average' => 'nullable|numeric',
+            'attributes' => 'nullable|json',
+            'price_average' => 'nullable|numeric|min:0',
             'ingredients' => 'nullable|string',
             'product_link' => 'nullable|url',
         ]);
 
-        // Se houver novas imagens, armazena as imagens
-        $imagePaths = json_decode($product->image_path ?? '[]', true);
+        // Valida imagens
+        $this->validateImageFiles($request);
 
-        if ($request->hasFile('image_files')) {
+        // Processa imagens
+        $imagePaths = $this->storeImages($request, $product);
+        $imagePaths = $this->deleteRemovedImages($request, $imagePaths);
 
-            $this->validateImageFiles($request);
-            $newImagePaths = $this->storeImages($request);
-            $imagePaths = array_merge($imagePaths, $newImagePaths);
-        }
+        // Decodifica os atributos dinâmicos
+        $attributes = json_decode($request->attributes, true) ?? [];
 
-        $validated['image_path'] = $imagePaths;
-        $product->update($validated);
+        $updateData = array_merge($validated, [
+            'image_path' => json_encode($imagePaths),
+            'attributes' => json_encode($attributes),
+        ]);
+
+        $product->update($updateData);
 
         return response()->json([
             'message' => 'Produto atualizado com sucesso!',
@@ -112,13 +166,17 @@ class ProductsController extends Controller
 
     public function index()
     {
-        $products = Product::all();
-        return response()->json(['products' => $products], 200);
+        $products = Product::with(['category', 'subcategory'])->get();
+        return response()->json([
+            'products' => $products->map(function ($product) {
+                return $this->formatProductResponse($product);
+            })
+        ], 200);
     }
 
     public function show($id)
     {
-        $product = Product::find($id);
+        $product = Product::with(['category', 'subcategory'])->find($id);
 
         if (!$product) {
             return response()->json([
@@ -126,7 +184,26 @@ class ProductsController extends Controller
             ], 404);
         }
 
-        return response()->json(['product' => $product], 200);
+        return response()->json([
+            'product' => $this->formatProductResponse($product)
+        ], 200);
     }
 
+    protected function formatProductResponse($product)
+    {
+        return [
+            'id' => $product->id,
+            'product_name' => $product->product_name,
+            'brand' => $product->brand,
+            'category' => $product->category,
+            'subcategory' => $product->subcategory,
+            'attributes' => json_decode($product->attributes, true) ?? [],
+            'image_path' => json_decode($product->image_path, true) ?? [],
+            'price_average' => $product->price_average,
+            'ingredients' => $product->ingredients,
+            'product_link' => $product->product_link,
+            'created_at' => $product->created_at,
+            'updated_at' => $product->updated_at,
+        ];
+    }
 }
