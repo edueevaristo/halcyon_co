@@ -1,5 +1,4 @@
 <template>
-
   <div class="form-container">
     <form @submit.prevent="handleSubmit">
 
@@ -15,7 +14,6 @@
       </div>
 
       <div class="rows-2">
-
         <div class="form-group-category">
           <label for="product_category" class="label-name">Categoria*</label>
           <select
@@ -56,61 +54,14 @@
         </div>
       </div>
 
-      <div class="form-group-category-subcategory-4-rows">
+      <DynamicAttributes
+          :subcategory-id="form.subcategory_id"
+          :model-value="form.attributes"
+          @update:model-value="updateAttributes"
+      />
 
-        <h6 class="product-category-information">Informações da categoria do produto</h6>
-
-        <div class="rows-2">
-          <div class="form-group-2-rows-category-information">
-            <label for="type_of_coverage" class="label-name-category-information">Tipo de cobertura*</label>
-            <select id="type_of_coverage" name="type_of_coverage" class="label-select" title="Tipo de cobertura"
-                    v-model="form.type_of_coverage" required>
-              <option value="Alta">Alta</option>
-              <option value="Média">Média</option>
-              <option value="Baixa">Baixa</option>
-            </select>
-          </div>
-
-          <div class="form-group-2-rows-category-information">
-            <label for="type_of_finish" class="label-name-category-information">Acabamento*</label>
-            <select id="type_of_finish" name="type_of_finish" class="label-select" title="Tipo de acabamento"
-                    v-model="form.type_of_finish" required>
-              <option value="Alta">Alta</option>
-              <option value="Média">Média</option>
-              <option value="Baixa">Baixa</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="rows-2">
-          <div class="form-group-2-rows-category-information">
-            <label for="fps" class="label-name-category-information">FPS*</label>
-            <input type="text" id="fps" name="fps" class="label-input" v-model.number="form.fps" required>
-          </div>
-
-          <div class="form-group-2-rows-category-information">
-            <label for="available_tones" class="label-name-category-information">Tons disponíveis (quantidade)</label>
-            <input type="text" id="available_tones" name="available_tones" class="label-input"
-                   v-model="form.available_tones">
-          </div>
-        </div>
-
-        <div class="rows-2">
-          <div class="form-group-2-rows-category-information">
-            <label for="oil_free" class="label-name-category-information-oil-free">Oil-free?*</label>
-
-            <label class="label-input-checkbox" for="oil_free">
-              <input type="checkbox" id="oil_free" name="oil_free" class="hidden-checkbox" v-model="form.oil_free">
-              <span class="custom-checkbox"></span>
-            </label>
-          </div>
-        </div>
-
-      </div>
-
-      <div class="form-group">
+      <div class="form-group" style="margin-top: 50px">
         <label class="label-name">Imagens do produto*</label>
-
         <label class="upload-area">
           <input
               type="file"
@@ -122,7 +73,6 @@
           <img src="@/assets/icons/upload.svg" alt="Icone de upload">
           <span class="upload-text">Arraste ou selecione imagens</span>
         </label>
-
         <div class="image-preview-container">
           <div
               v-for="(image, index) in imagePreviews"
@@ -140,192 +90,239 @@
       <div class="form-group">
         <label for="product_price_average" class="label-name">Preço médio</label>
         <input type="text" id="product_price_average" name="product_price_average" class="label-input"
-               v-model.number="form.price_average" required>
+               v-model.number="form.price_average">
       </div>
 
       <div class="form-group">
         <label for="ingredients" class="label-name">Ingredientes</label>
-        <input type="text" id="ingredients" name="ingredients" class="label-input" v-model="form.ingredients" required>
+        <input type="text" id="ingredients" name="ingredients" class="label-input" v-model="form.ingredients">
       </div>
 
       <div class="form-group">
         <label for="link_product" class="label-name">Link para compra do produto</label>
-        <input type="text" id="link_product" name="link_product" class="label-input" v-model="form.product_link"
-               required>
+        <input type="text" id="link_product" name="link_product" class="label-input" v-model="form.product_link">
       </div>
 
-
       <div class="form-buttons">
-
         <button class="cancel-button-form" @click.prevent="resetForm()">
           Cancelar cadastro
         </button>
-
         <button class="post-button-form" type="submit">
           <span class="post-button-icon"><img src="@/assets/icons/saved.svg" alt="Icone de salvar"></span>Cadastrar
           produto
         </button>
-
       </div>
-
     </form>
   </div>
-
 </template>
 
 <script setup>
+
 import {ref, onMounted, watch} from "vue";
+import DynamicAttributes from "@/components/DynamicAttributesComponent.vue";
 import PostProductDataService from "@/services/PostProductDataService.js";
 import PostSubcategoryDataService from "@/services/PostSubcategoryDataService.js";
 import PostCategoryDataService from "@/services/PostCategoryDataService.js";
 import Swal from 'sweetalert2';
-import { showGlittrModal } from '@/stores/useSweetAlertGlittr.js';
-
+import {showGlittrModal} from '@/stores/useSweetAlertGlittr.js';
 
 const categories = ref([]);
 const subcategories = ref([]);
-
 const editing = ref(false);
 const productId = ref(null);
-
 const imagePreviews = ref([]);
-const emit = defineEmits();
+const emit = defineEmits(['product-updated']);
 
 const form = ref({
   product_name: "",
   brand: "",
   category_id: "",
   subcategory_id: "",
-  type_of_coverage: "",
-  type_of_finish: "",
-  fps: null,
-  available_tones: "",
-  oil_free: false,
+  attributes: {},
   price_average: null,
   ingredients: "",
   product_link: "",
   image_files: []
 });
 
-
+const updateAttributes = (attributes) => {
+  const formattedAttributes = {};
+  Object.keys(attributes).forEach(key => {
+    const cleanKey = key.trim().toLowerCase().replace(/[^a-z0-9_]/g, '_');
+    formattedAttributes[cleanKey] = attributes[key];
+  });
+  form.value.attributes = formattedAttributes;
+};
 onMounted(async () => {
-
   try {
     const response = await PostCategoryDataService.getAll();
     categories.value = response.data;
-
   } catch (error) {
-
     console.error("Erro ao buscar categorias:", error);
   }
-
 });
 
-
 watch(() => form.value.category_id, async (categoryId) => {
-
   form.value.subcategory_id = "";
-
   if (categoryId) {
-
     try {
-
       const response = await PostSubcategoryDataService.getAll();
-
       subcategories.value = response.data.filter(
           (sub) => sub.category_id === categoryId
       );
-
     } catch (error) {
-
       console.error("Erro ao buscar subcategorias:", error);
     }
-
   } else {
-
     subcategories.value = [];
   }
-
 });
 
 const handleSubmit = async () => {
+
   try {
-    form.value.oil_free = (form.value.oil_free === true || form.value.oil_free === "true") ? 1 : 0;
 
     const formData = new FormData();
 
-    for (const key in form.value) {
-      if (key !== "image_files") {
-        formData.append(key, form.value[key]);
-      }
-    }
+    const basicFields = [
+      'product_name',
+      'brand',
+      'category_id',
+      'subcategory_id',
+      'price_average',
+      'ingredients',
+      'product_link'
+    ];
 
-    form.value.image_files.forEach((file, index) => {
-      formData.append(`image_files[]`, file);
+    basicFields.forEach(field => {
+
+      const value = form.value[field] ?? '';
+      formData.append(field, value);
+
     });
 
-    if (editing.value) {
-      await PostProductDataService.update(productId.value, formData);
 
-      showGlittrModal({
-        icon: 'success',
-        title: 'Atualização',
-        text: 'Produto atualizado com sucesso!',
-        confirmButtonText: 'OK',
-      }).then(() => {
-        Swal.close();
-        emit('product-updated');
+    if (form.value.attributes && Object.keys(form.value.attributes).length > 0) {
+
+      const processedAttributes = {};
+
+      Object.entries(form.value.attributes).forEach(([key, value]) => {
+
+        const cleanKey = key
+            .trim()
+            .toLowerCase()
+            .replace(/[^a-z0-9_]/g, '_');
+
+        if (value !== '' || typeof value === 'boolean' || typeof value === 'number') {
+
+          processedAttributes[cleanKey] = value;
+        }
+
       });
 
-    } else {
-      await PostProductDataService.insert(formData);
 
-      showGlittrModal({
-        icon: 'success',
-        title: 'Cadastro',
-        text: 'Produto cadastrado com sucesso!',
-        confirmButtonText: 'OK',
-      }).then(() => {
-        Swal.close();
-        emit('product-updated');
-      });
+      if (Object.keys(processedAttributes).length > 0) {
+
+        formData.append('attributes', JSON.stringify(processedAttributes));
+      }
+
     }
+
+
+    if (form.value.image_files?.length > 0) {
+
+      form.value.image_files.forEach((file, index) => {
+
+        formData.append(`image_files[${index}]`, file);
+      });
+
+    }
+
+
+    console.log('Dados do formulário:');
+    for (let [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
+
+    const apiCall = editing.value
+        ? () => PostProductDataService.update(productId.value, formData)
+        : () => PostProductDataService.insert(formData);
+
+    const response = await apiCall();
+
+    await showGlittrModal({
+      icon: 'success',
+      title: editing.value ? 'Atualizado' : 'Cadastrado',
+      text: `Produto ${editing.value ? 'atualizado' : 'cadastrado'} com sucesso!`,
+      confirmButtonText: 'OK'
+    });
 
     resetForm();
+    emit('product-updated');
 
   } catch (error) {
-    console.error("Erro ao salvar o produto:", error);
-    showGlittrModal({
+
+    console.error('Erro ao salvar produto:', error);
+    let errorMessage = 'Erro ao processar o produto';
+
+    if (error.response) {
+
+      if (error.response.data?.message) {
+
+        errorMessage = error.response.data.message;
+
+      } else if (error.response.status === 500) {
+
+        errorMessage = 'Erro interno no servidor';
+      }
+
+    } else if (error.message) {
+
+      errorMessage = error.message;
+    }
+
+    await showGlittrModal({
       icon: 'error',
-      title: 'Cadastro',
-      text: `Erro ao cadastrar/atualizar o produto: ${error.message}`,
-      confirmButtonText: 'OK',
+      title: 'Erro',
+      text: errorMessage,
+      confirmButtonText: 'OK'
     });
   }
 };
-
-
-
-const updateProductList = async () => {
-  try {
-
-    const response = await PostProductDataService.getAll();
-    products.value = response.data.products;
-
-  } catch (error) {
-    console.error("Erro ao buscar a lista de produtos:", error);
-  }
-};
-
-
 
 const handleImageUpload = (event) => {
 
-  const files = event.target.files;
+  const files = Array.from(event.target.files);
+  event.target.value = '';
 
-  for (let i = 0; i < files.length; i++) {
+  files.forEach(file => {
 
-    const file = files[i];
+    if (!file.type.match('image.*')) {
+
+      showGlittrModal({
+        icon: 'error',
+        title: 'Arquivo inválido',
+        text: `O arquivo ${file.name} não é uma imagem válida.`,
+        confirmButtonText: 'OK'
+      });
+
+      return;
+
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+
+      showGlittrModal({
+        icon: 'error',
+        title: 'Arquivo muito grande',
+        text: `A imagem ${file.name} excede o tamanho máximo de 5MB.`,
+        confirmButtonText: 'OK'
+      });
+
+      return;
+
+    }
+
     form.value.image_files.push(file);
 
     const reader = new FileReader();
@@ -334,20 +331,28 @@ const handleImageUpload = (event) => {
 
       imagePreviews.value.push({
         file,
-        url: e.target.result,
+        url: e.target.result
       });
 
     };
 
     reader.readAsDataURL(file);
-  }
+
+  });
 
 };
 
 const removeImage = (index) => {
 
-  form.value.image_files.splice(index, 1);
-  imagePreviews.value.splice(index, 1);
+  if (index >= 0 && index < imagePreviews.value.length) {
+
+    imagePreviews.value.splice(index, 1);
+    form.value.image_files.splice(index, 1);
+
+  } else {
+
+    console.error(`Índice de imagem inválido: ${index}`);
+  }
 
 };
 
@@ -357,23 +362,21 @@ const resetForm = () => {
     brand: "",
     category_id: "",
     subcategory_id: "",
-    type_of_coverage: "",
-    type_of_finish: "",
-    fps: null,
-    available_tones: "",
-    oil_free: false,
+    attributes: {},
     price_average: null,
     ingredients: "",
     product_link: "",
     image_files: []
   };
+
+  imagePreviews.value = [];
   editing.value = false;
   productId.value = null;
-  imagePreviews.value = null;
-
+  emit('reset-attributes');
 };
-</script>
 
+
+</script>
 
 <style scoped>
 /**INPUTS **/

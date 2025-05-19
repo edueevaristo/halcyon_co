@@ -1,6 +1,6 @@
 <?php
 
-namespace app\Http\Controllers\Api;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Attribute;
@@ -17,24 +17,34 @@ class AttributeController extends Controller
 
     public function show($id)
     {
-        $attributes = Attribute::find($id);
+        $attribute = Attribute::find($id);
 
-        if (!$attributes) {
-
+        if (!$attribute) {
             return response()->json(['message' => 'Atributo não encontrado.'], 404);
         }
 
-        return response()->json($attributes, 200);
+        return response()->json($attribute, 200);
     }
 
     public function showValues($id)
     {
-        $values = AttributeValue::where('attribute_id', (int) $id)->get();
+        $values = AttributeValue::where('attribute_id', (int)$id)->get();
 
         if ($values->isEmpty()) {
             return response()->json(['message' => []], 404);
         }
 
         return response()->json($values, 200);
+    }
+
+    public function showValuesBySubcategory($id)
+    {
+        $attributes = Attribute::where('subcategory_id', (int)$id)->get();
+
+        if ($attributes->isEmpty()) {
+            return response()->json(['message' => []], 404);
+        }
+
+        return response()->json($attributes, 200);
     }
 }

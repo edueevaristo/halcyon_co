@@ -14,14 +14,12 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
 
-
     Route::get('/me', [AuthController::class, 'me']);
     Route::post('/logout', [AuthController::class, 'logout']);
-
-    Route::post('/products', [ProductsController::class, 'insert']);
-    Route::put('/products', [ProductsController::class, 'update']);
-
 });
+
+Route::post('/products', [ProductsController::class, 'insert']);
+Route::put('/products', [ProductsController::class, 'update']);
 
 /* Rotas de produto sem necessidade de login */
 Route::prefix('categories')->group(function () {
@@ -49,6 +47,7 @@ Route::prefix('attributes')->group(function () {
 
     Route::get('/', [AttributeController::class, 'index']);
     Route::get('show/{id}', [AttributeController::class, 'show']);
-    Route::get('showValues/{id}', [AttributeController::class, 'showValues']);
+    Route::get('values/{id}', [AttributeController::class, 'showValues']);
+    Route::get('show/subcategory/{id}', [AttributeController::class, 'showValuesBySubcategory']);
 
 });

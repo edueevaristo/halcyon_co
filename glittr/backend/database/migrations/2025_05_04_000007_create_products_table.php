@@ -22,7 +22,7 @@ class CreateProductsTable extends Migration
             $table->string('product_link')->nullable();
 
             $table->jsonb('image_path')->nullable();
-            $table->json('attributes')->nullable(); // Atributos específicos da subcategoria
+            $table->text('attributes')->nullable();
             $table->timestamps();
         });
     }
