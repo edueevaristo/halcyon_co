@@ -4,11 +4,10 @@
         v-for="product in products"
         :key="product.id"
         :id="product.id"
-        :imageUrl="product.image_path[0].replace(/^\/storage\//, '')"
+        :imageUrl="`http://127.0.0.1:8000${product.image_path[0].replace(/^\/storage\//, '')}`"
         :title="product.product_name"
     />
   </section>
-  <!--        imageUrl="product.image_path?.[0] || '/default-image.jpg'"-->
 </template>
 
 <script>
