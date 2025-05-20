@@ -1,7 +1,7 @@
 <template>
   <main class="main-product">
     <section class="product-title-and-compare-button">
-      <h1 class="title-product">Nome do produto</h1>
+      <h1 class="title-product">{{ product.product.product_name }}</h1>
       <button class="compare-button">
         <img src="@/assets/icons/balance-compare.svg" alt="Comparar produto">
         <span class="button-text-compare">Comparar produto</span>
@@ -14,24 +14,24 @@
 
     <section class="product-image-and-details">
       <div class="product-image-and-details-img">
-        <img src="@/assets/images/product-test.png" alt="Imagem do produto de teste">
+        <img :src="`http://127.0.0.1:8000${product.product.image_path[0].replace(/^\/storage\//, '')}`"  alt="Imagem do produto de teste">
       </div>
 
       <div class="product-image-and-details-details">
         <h2 class="title-details">Marca</h2>
-        <p class="details-product">Nome da marca</p>
+        <p class="details-product"> {{ product.product.brand }}</p>
 
         <h4 class="title-details">Categoria</h4>
-        <p class="details-product">Categoria</p>
+        <p class="details-product"> {{ product.product.category.name }}</p>
 
         <h4 class="title-details">Preço médio *</h4>
-        <p class="details-product">Preço médio</p>
+        <p class="details-product">R$ {{ product.product.price_average }}</p>
 
         <h4 class="title-details">Tom </h4>
         <p class="details-product">Quantidade de tons</p>
 
         <h4 class="title-details">Link para compra</h4>
-        <p class="details-product">Preço médio</p>
+        <h6 class="product-link"><a :href="product.product.product_link">{{ product.product.product_link }}</a></h6>
       </div>
     </section>
 
@@ -111,7 +111,9 @@ import FeedbackComponent from "@/components/FeedbackComponent.vue";
 
 export default {
   name: 'ProductInfoComponent',
-  components: {FeedbackComponent},
+  components: {
+     FeedbackComponent: FeedbackComponent,
+  },
   props: {
     product: {
       type: Object,
@@ -342,5 +344,15 @@ export default {
   width: 24px;
   height: 24px;
   aspect-ratio: 1/1;
+}
+
+.product-link {
+  color: #ED008C;
+  text-align: left;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
 }
 </style>

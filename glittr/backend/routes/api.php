@@ -18,6 +18,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
+Route::prefix('products')->group(function () {
+
+    Route::get('/', [ProductsController::class, 'index']);
+    Route::get('show/{id}', [ProductsController::class, 'show']);
+});
+
 Route::post('/products', [ProductsController::class, 'insert']);
 Route::put('/products', [ProductsController::class, 'update']);
 

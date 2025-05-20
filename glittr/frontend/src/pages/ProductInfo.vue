@@ -16,10 +16,9 @@
       </RouterLink>
 
 
-      <!--      <div v-if="loading">Carregando...</div>-->
-      <!--      <div v-else-if="error">{{ error }}</div>-->
-      <!--      <ProductInfoComponent v-else :product="product" />-->
-      <ProductInfoComponent/>
+      <div v-if="loading">Carregando...</div>
+      <div v-else-if="error">{{ error }}</div>
+      <ProductInfoComponent v-else :product="product" />
     </article>
 
   </div>
@@ -28,6 +27,7 @@
 <script>
 import NavbarProductComponent from "@/components/NavbarProductComponent.vue";
 import ProductInfoComponent from "@/components/ProductInfoComponent.vue";
+import PostProductDataService from "@/services/PostProductDataService.js";
 // import PostProductDataService from "@/services/PostProductDataService.js";
 
 export default {
@@ -43,18 +43,22 @@ export default {
       error: null,
     };
   },
-  // async created() {
-  //   const productId = this.$route.params.id;
-  //
-  //   try {
-  //     const response = await PostProductDataService.getById(productId);
-  //     this.product = response.data;
-  //   } catch (err) {
-  //     this.error = 'Erro ao carregar produto.';
-  //   } finally {
-  //     this.loading = false;
-  //   }
-  // },
+  async created() {
+
+    const productId = this.$route.params.id;
+
+    try {
+      const response = await PostProductDataService.getById(productId);
+      this.product = response.data;
+
+      console.log(this.product);
+
+    } catch (err) {
+      this.error = 'Erro ao carregar produto.';
+    } finally {
+      this.loading = false;
+    }
+  },
 };
 </script>
 

@@ -2,7 +2,7 @@
   <div>
 
     <button class="floating-button" @click="open = true">
-      Cadastrar Produto
+      <img src="@/assets/icons/icon_add_product.png" alt="Adicionar produto" class="add-product-icon">
     </button>
 
     <div v-if="open" class="modal-overlay" @click.self="closeModal">
@@ -48,6 +48,13 @@ const handleProductRegistered = () => {
 
 <style scoped>
 
+.add-product-icon {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  cursor: pointer;
+
+}
 /* botão flutuante */
 .floating-button {
   position: fixed;
