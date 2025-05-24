@@ -46,8 +46,11 @@ export default {
 
 <style scoped>
 .product-card {
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   border-radius: 16px;
   border-width: 1px;
   border-color: rgba(250, 144, 171, 0.2);
@@ -80,6 +83,10 @@ export default {
   margin: 0;
 }
 
+.compare-button-div {
+  margin-top: auto;
+}
+
 .compare-button {
   display: flex;
   justify-content: center;
@@ -89,7 +96,8 @@ export default {
   padding: 8px 16px;
   border-radius: 14px;
   background: linear-gradient(90deg, #9400EF 0%, #E10CFF 100%);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.10), 0 2px 4px -2px rgba(0, 0, 0, 0.10);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.10),
+  0 2px 4px -2px rgba(0, 0, 0, 0.10);
   border: none;
   cursor: pointer;
 }

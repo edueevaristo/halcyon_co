@@ -67,8 +67,8 @@ const props = defineProps({
     required: true
   },
   modelValue: {
-    type: Object,
-    default: () => ({})
+    type: Array,
+    default: () => ([])
   }
 });
 
@@ -81,7 +81,22 @@ const loading = ref(false);
 const error = ref(null);
 
 watch(form, () => {
-  emit('update:modelValue', form.value);
+
+  const formattedAttributes = [];
+
+  Object.keys(form.value).forEach(key => {
+
+    if (form.value[key] !== '' && form.value[key] !== null && form.value[key] !== undefined) {
+
+      formattedAttributes.push({
+        name: key,
+        value: form.value[key]
+      });
+
+    }
+
+  });
+  emit('update:modelValue', formattedAttributes);
 }, {deep: true});
 
 const loadAttributes = async () => {
@@ -109,6 +124,12 @@ const initializeFormAndOptions = async (attributesData) => {
   const newForm = {};
   const newSelectOptions = {};
 
+  // Converter modelValue (array) para objeto para facilitar o acesso
+  const modelValueObj = {};
+  props.modelValue.forEach(attr => {
+    modelValueObj[attr.name] = attr.value;
+  });
+
   const selectPromises = attributesData
       .filter(attr => attr.type === 'select')
       .map(async attr => {
@@ -122,10 +143,7 @@ const initializeFormAndOptions = async (attributesData) => {
       });
 
   attributesData.forEach(attr => {
-    const modelValueKey = Object.keys(props.modelValue || {}).find(key =>
-        key.toLowerCase() === attr.name.toLowerCase()
-    );
-    newForm[attr.name] = modelValueKey ? props.modelValue[modelValueKey] : getDefaultValue(attr);
+    newForm[attr.name] = modelValueObj[attr.name] ?? getDefaultValue(attr);
   });
 
   await Promise.all(selectPromises);

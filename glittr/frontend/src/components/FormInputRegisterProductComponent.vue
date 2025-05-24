@@ -9,6 +9,12 @@
       </div>
 
       <div class="form-group">
+        <label for="description" class="label-name">Descrição do produto*</label>
+        <input type="text" id="description" name="description" class="label-input" v-model="form.description"
+               required>
+      </div>
+
+      <div class="form-group">
         <label for="product_brand" class="label-name">Marca*</label>
         <input type="text" id="product_brand" name="product_brand" class="label-input" v-model="form.brand" required>
       </div>
@@ -135,10 +141,11 @@ const emit = defineEmits(['product-updated']);
 
 const form = ref({
   product_name: "",
+  description: "",
   brand: "",
   category_id: "",
   subcategory_id: "",
-  attributes: {},
+  attributes: [],
   price_average: null,
   ingredients: "",
   product_link: "",
@@ -146,13 +153,19 @@ const form = ref({
 });
 
 const updateAttributes = (attributes) => {
-  const formattedAttributes = {};
+  const formattedAttributes = [];
   Object.keys(attributes).forEach(key => {
-    const cleanKey = key.trim().toLowerCase().replace(/[^a-z0-9_]/g, '_');
-    formattedAttributes[cleanKey] = attributes[key];
+    if (attributes[key] !== '' && attributes[key] !== null && attributes[key] !== undefined) {
+      formattedAttributes.push({
+        name: key.trim(),
+        value: attributes[key]
+      });
+    }
   });
   form.value.attributes = formattedAttributes;
 };
+
+
 onMounted(async () => {
   try {
     const response = await PostCategoryDataService.getAll();
@@ -179,65 +192,27 @@ watch(() => form.value.category_id, async (categoryId) => {
 });
 
 const handleSubmit = async () => {
-
   try {
-
     const formData = new FormData();
 
     const basicFields = [
-      'product_name',
-      'brand',
-      'category_id',
-      'subcategory_id',
-      'price_average',
-      'ingredients',
-      'product_link'
+      'product_name', 'description', 'brand', 'category_id', 'subcategory_id',
+      'price_average', 'ingredients', 'product_link'
     ];
 
     basicFields.forEach(field => {
-
-      const value = form.value[field] ?? '';
-      formData.append(field, value);
-
+      formData.append(field, form.value[field] ?? '');
     });
 
-
-    if (form.value.attributes && Object.keys(form.value.attributes).length > 0) {
-
-      const processedAttributes = {};
-
-      Object.entries(form.value.attributes).forEach(([key, value]) => {
-
-        const cleanKey = key
-            .trim()
-            .toLowerCase()
-            .replace(/[^a-z0-9_]/g, '_');
-
-        if (value !== '' || typeof value === 'boolean' || typeof value === 'number') {
-
-          processedAttributes[cleanKey] = value;
-        }
-
-      });
-
-
-      if (Object.keys(processedAttributes).length > 0) {
-
-        formData.append('attributes', JSON.stringify(processedAttributes));
-      }
-
+    if (form.value.attributes && form.value.attributes.length > 0) {
+      formData.append('attributes', JSON.stringify(form.value.attributes));
     }
-
 
     if (form.value.image_files?.length > 0) {
-
       form.value.image_files.forEach((file, index) => {
-
         formData.append(`image_files[${index}]`, file);
       });
-
     }
-
 
     console.log('Dados do formulário:');
     for (let [key, value] of formData.entries()) {
@@ -261,23 +236,16 @@ const handleSubmit = async () => {
     emit('product-updated');
 
   } catch (error) {
-
     console.error('Erro ao salvar produto:', error);
     let errorMessage = 'Erro ao processar o produto';
 
     if (error.response) {
-
       if (error.response.data?.message) {
-
         errorMessage = error.response.data.message;
-
       } else if (error.response.status === 500) {
-
         errorMessage = 'Erro interno no servidor';
       }
-
     } else if (error.message) {
-
       errorMessage = error.message;
     }
 
@@ -359,6 +327,7 @@ const removeImage = (index) => {
 const resetForm = () => {
   form.value = {
     product_name: "",
+    description: "",
     brand: "",
     category_id: "",
     subcategory_id: "",

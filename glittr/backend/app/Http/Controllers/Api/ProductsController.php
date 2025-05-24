@@ -71,12 +71,14 @@ class ProductsController extends Controller
     {
         $validated = $request->validate([
             'product_name' => 'required|string|max:255',
+            'description' => 'nullable|string',
             'brand' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
             'subcategory_id' => 'required|exists:subcategories,id',
             'price_average' => 'nullable|numeric|min:0',
             'ingredients' => 'nullable|string',
             'product_link' => 'nullable|url',
+            'attributes' => 'nullable',
         ]);
 
         // Valida imagens
@@ -88,27 +90,56 @@ class ProductsController extends Controller
         }
 
         $imagePaths = $this->storeImages($request);
+
         $attributes = [];
 
-        if ($request->input('attributes')) {
+        if (!empty($validated['attributes'])) {
 
-            $attributes = $request->input('attributes');
+            if (is_string($validated['attributes'])) {
 
-            if (is_string($attributes)) {
-
-                $attributes = json_decode($attributes, true) ?? [];
+                try {
+                    $attributes = json_decode($validated['attributes'], true);
+                } catch (\Exception $e) {
+                    \Log::error('Falha ao decodificar JSON de atributos', [
+                        'error' => $e->getMessage(),
+                        'attributes' => $validated['attributes']
+                    ]);
+                }
+            } elseif (is_array($validated['attributes'])) {
+                $attributes = $validated['attributes'];
             }
-
-            $attributes = array_filter($attributes, function ($value) {
-                return $value !== '' || is_bool($value);
-            });
         }
+
+        $validatedAttributes = [];
+
+        if (!empty($attributes)) {
+
+            foreach ($attributes as $attr) {
+
+                if (isset($attr['value']) && is_array($attr['value']) && isset($attr['value']['name'])) {
+
+                    $validatedAttributes[] = [
+                        'name' => $attr['value']['name'],
+                        'value' => $attr['value']['value']
+                    ];
+
+                } else {
+
+                    $validatedAttributes[] = [
+                        'name' => $attr['name'],
+                        'value' => $attr['value']
+                    ];
+                }
+            }
+        }
+
+
 
         \Log::info('Atributos recebidos:', ['raw' => $request->input('attributes'), 'processed' => $attributes]);
 
         $productData = array_merge($validated, [
             'image_path' => json_encode($imagePaths),
-            'attributes' => !empty($attributes) ? $attributes : null,
+            'attributes' => !empty($validatedAttributes) ? json_encode($validatedAttributes) : null,
         ]);
 
         \Log::info('Dados completos do produto:', $productData);
@@ -132,28 +163,53 @@ class ProductsController extends Controller
 
         $validated = $request->validate([
             'product_name' => 'sometimes|string|max:255',
+            'description' => 'nullable|string',
             'brand' => 'sometimes|string|max:255',
             'category_id' => 'sometimes|exists:categories,id',
             'subcategory_id' => 'sometimes|exists:subcategories,id',
-            'attributes' => 'nullable|json',
+            'attributes' => 'nullable|array',
             'price_average' => 'nullable|numeric|min:0',
             'ingredients' => 'nullable|string',
             'product_link' => 'nullable|url',
         ]);
 
-        // Valida imagens
         $this->validateImageFiles($request);
-
-        // Processa imagens
         $imagePaths = $this->storeImages($request, $product);
         $imagePaths = $this->deleteRemovedImages($request, $imagePaths);
 
-        // Decodifica os atributos dinâmicos
-        $attributes = json_decode($request->attributes, true) ?? [];
+        $attributes = $request->input('attributes') ?? [];
+
+        if (is_string($attributes)) {
+
+            $attributes = json_decode($attributes, true) ?? [];
+        }
+
+        $validatedAttributes = [];
+
+        if (!empty($attributes)) {
+
+            foreach ($attributes as $attr) {
+
+                if (isset($attr['value']) && is_array($attr['value']) && isset($attr['value']['name'])) {
+
+                    $validatedAttributes[] = [
+                        'name' => $attr['value']['name'],
+                        'value' => $attr['value']['value']
+                    ];
+
+                } else {
+
+                    $validatedAttributes[] = [
+                        'name' => $attr['name'],
+                        'value' => $attr['value']
+                    ];
+                }
+            }
+        }
 
         $updateData = array_merge($validated, [
             'image_path' => json_encode($imagePaths),
-            'attributes' => json_encode($attributes),
+            'attributes' => !empty($formattedAttributes) ? json_encode($formattedAttributes) : null,
         ]);
 
         $product->update($updateData);
@@ -167,6 +223,7 @@ class ProductsController extends Controller
     public function index()
     {
         $products = Product::with(['category', 'subcategory'])->get();
+
         return response()->json([
             'products' => $products->map(function ($product) {
                 return $this->formatProductResponse($product);
@@ -179,6 +236,7 @@ class ProductsController extends Controller
         $product = Product::with(['category', 'subcategory'])->find($id);
 
         if (!$product) {
+
             return response()->json([
                 'message' => 'Produto não encontrado.'
             ], 404);
@@ -194,6 +252,7 @@ class ProductsController extends Controller
         return [
             'id' => $product->id,
             'product_name' => $product->product_name,
+            'description' => $product->description,
             'brand' => $product->brand,
             'category' => $product->category,
             'subcategory' => $product->subcategory,
