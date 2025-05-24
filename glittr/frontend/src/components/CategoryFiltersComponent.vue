@@ -1,22 +1,60 @@
 <template>
   <div class="category-filters">
-    <button class="category-button active">Todas as categorias</button>
-    <button class="category-button">🧴 Pele / Skincare</button>
-    <button class="category-button">🧖‍♀️ Cabelos</button>
-    <button class="category-button">💅 Unhas</button>
-    <button class="category-button">🌸 Fragrâncias</button>
-    <button class="category-button">💄 Maquiagem</button>
-    <button class="category-button">🚿 Corpo e Banho</button>
-    <button class="category-button">🧔 Cuidados Masculinos</button>
+    <button
+        class="category-button"
+        :class="{ active: selectedCategory === null }"
+        @click="selectCategory(null)"
+    >
+      Todas as categorias
+    </button>
+    <button
+        v-for="category in categories"
+        :key="category.id"
+        class="category-button"
+        :title="category.name"
+        :data-emoji="category.emoji"
+        :data-id="category.id"
+        :id="category.id"
+        :class="{ active: selectedCategory === category.id }"
+        @click="selectCategory(category.id)"
+    >
+      {{ category.emoji }} {{ category.name }}
+    </button>
   </div>
 </template>
 
 <script>
+import PostCategoryDataService from "@/services/PostCategoryDataService.js";
+
 export default {
   name: "CategoryFilters",
+  data() {
+    return {
+      categories: [],
+      selectedCategory: null
+    };
+  },
+  methods: {
+    retrieveCategories() {
+      PostCategoryDataService.getAll()
+          .then((response) => {
+            this.categories = response.data;
+          })
+          .catch((e) => {
+            console.error("Erro ao carregar categorias:", e);
+          });
+    },
+    selectCategory(categoryId) {
+      this.selectedCategory = categoryId;
+      this.$emit('category-selected', categoryId);
+    }
+  },
+  mounted() {
+    this.retrieveCategories();
+  }
 };
-</script>
 
+</script>
 <style scoped>
 .category-filters {
   display: flex;
