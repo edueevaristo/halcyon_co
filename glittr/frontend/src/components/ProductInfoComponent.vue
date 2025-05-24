@@ -14,7 +14,8 @@
 
     <section class="product-image-and-details">
       <div class="product-image-and-details-img">
-        <img :src="`http://127.0.0.1:8000${product.product.image_path[0].replace(/^\/storage\//, '')}`"  alt="Imagem do produto de teste">
+        <img :src="`http://127.0.0.1:8000${product.product.image_path[0].replace(/^\/storage\//, '')}`"
+             alt="Imagem do produto de teste">
       </div>
 
       <div class="product-image-and-details-details">
@@ -22,7 +23,7 @@
         <p class="details-product"> {{ product.product.brand }}</p>
 
         <h4 class="title-details">Categoria</h4>
-        <p class="details-product"> {{ product.product.category.name }}</p>
+        <p class="details-product"> {{ product.product.category.name }} > {{ product.product.subcategory.name }}</p>
 
         <h4 class="title-details">Preço médio *</h4>
         <p class="details-product">R$ {{ product.product.price_average }}</p>
@@ -31,51 +32,47 @@
         <p class="details-product">Quantidade de tons</p>
 
         <h4 class="title-details">Link para compra</h4>
-        <h6 class="product-link"><a :href="product.product.product_link">{{ product.product.product_link }}</a></h6>
+        <h6 class="product-link"><a target="_blank" :href="product.product.product_link">{{
+            product.product.product_link
+          }}</a></h6>
       </div>
     </section>
 
     <section class="product-description-details">
       <h4 class="title-details">Descrição</h4>
-      <p class="details-product-description">Eu peço respeito com a minha família. Com a minhas Maria, com a minha
-        Virgínia. Ela sempre no corre, trampando a mil. Sempre apanhando, mas nunca caiu.</p>
+      <p class="details-product-description">{{ product.product.description }}</p>
     </section>
 
     <section class="product-physical-characteristics">
 
-      <h1 class="product-info-title-section-text">Caracterísiticas físicas</h1>
+      <h1 class="product-info-title-section-text">Ingredientes</h1>
 
       <div class="product-physical-characteristics-content">
-        <div class="product-physical-characteristics-content-characteristics">
-          <h1 class="title-details">Tipo de pele</h1>
-          <p class="details-product">Tipo de pele</p>
-        </div>
 
         <div class="product-physical-characteristics-content-characteristics">
-          <h1 class="title-details">Acabamento</h1>
-          <p class="details-product">Acabamento</p>
+          <h1 class="title-details"> Ingredientes </h1>
+          <p class="details-product">{{ product.product.ingredients }}</p>
         </div>
 
-        <div class="product-physical-characteristics-content-characteristics">
-          <h1 class="title-details">Cobertura</h1>
-          <p class="details-product">Cobertura</p>
-        </div>
+      </div>
 
-        <div class="product-physical-characteristics-content-characteristics">
-          <h1 class="title-details">Textura</h1>
-          <p class="details-product">Textura</p>
-        </div>
+    </section>
 
-        <div class="product-physical-characteristics-content-characteristics">
-          <h1 class="title-details">FPS</h1>
-          <p class="details-product">120</p>
-        </div>
+    <section class="product-physical-characteristics">
 
-        <div class="product-physical-characteristics-content-characteristics">
-          <h1 class="title-details">Oil-free</h1>
-          <p class="details-product">Sim/Não</p>
+      <h1 class="product-info-title-section-text">Caracterísiticas do produto</h1>
+
+      <div v-if="product.product.attributes" class="product-physical-characteristics-content">
+        <div v-for="(attr, index) in product.product.attributes" :key="index"
+             class="product-physical-characteristics-content-characteristics">
+          <h1 class="title-details">{{ attr.name }}</h1>
+          <p class="details-product"
+             :class="typeof attr.value === 'boolean' ? (attr.value ? 'boolean-true' : 'boolean-false') : ''">
+            {{ formatAttributeValue(attr.value) }}
+          </p>
         </div>
       </div>
+
     </section>
 
     <section class="product-details-feedback">
@@ -112,13 +109,21 @@ import FeedbackComponent from "@/components/FeedbackComponent.vue";
 export default {
   name: 'ProductInfoComponent',
   components: {
-     FeedbackComponent: FeedbackComponent,
+    FeedbackComponent: FeedbackComponent,
   },
   props: {
     product: {
       type: Object,
       required: true,
     },
+  },
+  methods: {
+    formatAttributeValue(value) {
+      if (typeof value === 'boolean') {
+        return value ? 'Sim' : 'Não';
+      }
+      return value;
+    }
   },
 };
 </script>
@@ -127,11 +132,11 @@ export default {
 .main-product {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
   gap: 30px;
   width: 100%;
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 0 auto;
+  padding: 0 20px;
 }
 
 .title-product {
@@ -254,27 +259,36 @@ export default {
   align-self: stretch;
 }
 
-.product-physical-characteristics {
+product-physical-characteristics {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 15px;
   align-self: stretch;
+  margin-top: 30px;
+  width: 100%;
 }
 
 .product-physical-characteristics-content {
   display: flex;
-  width: 100%;
-  justify-content: space-between;
-  align-items: flex-start;
   flex-wrap: wrap;
+  gap: 20px;
+  width: 100%;
+  align-items: flex-start;
 }
 
 .product-physical-characteristics-content-characteristics {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 5px;
+  min-width: 120px;
+  padding: 12px 15px;
+  background: #FFF;
+  border-radius: 8px;
+  border: 1px solid #F0F0F0;
+  gap: 4px;
+  flex-grow: 1;
+  margin-top: 20px;
+  max-width: 100%;
 }
 
 .product-details-feedback {
@@ -354,5 +368,29 @@ export default {
   font-style: normal;
   font-weight: 400;
   line-height: 20px;
+}
+
+.boolean-true {
+  color: #10B981 !important;
+}
+
+.boolean-false {
+  color: #EF4444 !important;
+}
+
+.product-physical-characteristics-content-characteristics:hover, .compare-button:hover, .product-feedback-button-add:hover {
+  border: 1px solid #ED008C;
+  transition: border-color 0.5s ease;
+}
+
+@media (max-width: 768px) {
+  .product-physical-characteristics-content {
+    gap: 12px;
+  }
+
+  .product-physical-characteristics-content-characteristics {
+    min-width: calc(50% - 10px);
+    max-width: calc(50% - 10px);
+  }
 }
 </style>
