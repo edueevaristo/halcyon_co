@@ -1,6 +1,5 @@
 <template>
   <div class="landing-page">
-
     <header class="header">
       <HeaderSection/>
     </header>
@@ -11,20 +10,21 @@
       </section>
 
       <div class="search-container">
-        <SearchBar/>
+        <SearchBar @search="handleSearch"/>
       </div>
 
       <div class="category-filters">
-        <CategoryFilters/>
+        <CategoryFilters @category-selected="handleCategorySelected"/>
       </div>
 
       <section class="product-grid">
-        <ProductGrid/>
+        <ProductGrid :selectedCategory="currentCategory"
+                     :searchTerm="searchTerm"
+        />
       </section>
 
       <CompareModal/>
       <AddProduct/>
-
     </main>
   </div>
 </template>
@@ -38,7 +38,6 @@ import SearchBarComponent from '../components/SearchBarComponent.vue';
 import CompareModalComponent from '../components/CompareModalComponent.vue';
 import RegisterProductsModalComponent from '../components/RegisterProductsModalComponent.vue';
 
-
 export default {
   name: "GlittrLandingPage",
   components: {
@@ -49,11 +48,23 @@ export default {
     SearchBar: SearchBarComponent,
     CompareModal: CompareModalComponent,
     AddProduct: RegisterProductsModalComponent
-
   },
   data() {
-    return {};
+    return {
+      currentCategory: null,
+      searchTerm: '' // Adicione esta linha
+    };
   },
+  methods: {
+    handleCategorySelected(categoryId) {
+
+      this.currentCategory = categoryId;
+      this.searchTerm = '';
+    },
+    handleSearch(term) {
+      this.searchTerm = term.toLowerCase().trim();
+    }
+  }
 };
 </script>
 
@@ -73,8 +84,7 @@ export default {
 .landing-page {
   display: flex;
   flex-direction: column;
-  min-height: screen;
+  min-height: 100vh;
   width: 100%;
 }
-
 </style>

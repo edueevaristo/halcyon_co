@@ -94,7 +94,7 @@ const handleProductRegistered = () => {
   background: #fff;
   border-radius: 16px;
   width: 100%;
-  max-width: 900px;
+  max-width: 1100px;
   max-height: 90vh;
   padding: 32px;
   position: relative;
