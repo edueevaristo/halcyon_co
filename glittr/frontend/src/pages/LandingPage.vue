@@ -6,22 +6,30 @@
 
     <!-- Hero Section -->
     <section class="hero">
+      <div class="hero-video-bg">
+        <video autoplay muted loop playsinline>
+          <source src="@/assets/videos/wave-pink.mp4" type="video/mp4">
+        </video>
+        <div class="video-overlay"></div>
+      </div>
+
       <div class="hero-content">
         <div class="badge">
           <img src="@/assets/icons/LogoGlittr.svg" alt="Logo da Glittr. Uma estrela rosa." id="logo">
           <p>Faça parte da nossa comunidade brilhante ✨</p>
         </div>
-        <h1>Compare. Descubra.
-          <shine>Brilhe.</shine>
+        <h1 class="hero-title-initial">Compare. Descubra.
+          <span class="hero-title-initial-shine">Brilhe.</span>
         </h1>
-        <p>O Glittr te ajuda a encontrar os melhores produtos de beleza com comparações reais e avaliações honestas.</p>
+        <p>O Glittr te ajuda a encontrar os melhores produtos de beleza com comparações reais e<br> avaliações
+          autênticas.</p>
         <div class="cta-buttons">
           <button class="primary-button">Começar agora<img src="@/assets/icons/chevron-right.svg" alt=""></button>
           <button class="secondary-button">Como funciona</button>
         </div>
       </div>
       <div class="hero-image">
-        <!-- Placeholder para a imagem principal -->
+        <img src="@/assets/images/img_video.png" alt="Imagem de uma mulher usando o Glittr." class="img-hero">
       </div>
     </section>
 
@@ -56,24 +64,24 @@
         <div class="step">
           <div class="step-icon search"><img src="@/assets/icons/search.svg" alt=""></div>
           <h3>Busque cosméticos</h3>
-          <p>Procure seus produtos de beleza favoritos</p>
+          <p>Procure pelos produtos de beleza que você tem curiosidade</p>
         </div>
 
 
         <div class="step">
           <div class="step-icon compare"><img src="@/assets/icons/compare.svg" alt=""></div>
           <h3>Compare até 2 produtos</h3>
-          <p>Veja comparações lado a lado para tomar a melhor decisão</p>
+          <p>Veja comparações lado-a-lado das características do produtos</p>
         </div>
         <div class="step">
           <div class="step-icon choose"><img src="@/assets/icons/buy.svg" alt=""></div>
           <h3>Faça escolhas melhores</h3>
-          <p>Escolha produtos que realmente combinam com você</p>
+          <p>Escolha produtos que dão match com suas preferências e economize ao evitar erros</p>
         </div>
         <div class="step">
           <div class="step-icon share"><img src="@/assets/icons/like.svg" alt=""></div>
           <h3>Influencie & receba conselhos</h3>
-          <p>Faça parte da comunidade Glittr para descobrir e compartilhar</p>
+          <p>Faça parte da comunidade GLITTR para receber e distribuir feedbacks dos produtos escolhidos.</p>
         </div>
       </div>
     </section>
@@ -102,48 +110,67 @@
       </div>
     </section>
 
-    <!-- Newsletter Section -->
-    <section class="newsletter">
-      <div class="newsletter-content">
-        <h2>Brilhe mais com o Glittr ✨</h2>
-        <p>Mantenha-se por dentro das novidades exclusivas de beauty & tech do universo do Glittr!</p>
-        <div class="newsletter-form">
-          <input type="email" placeholder="Digite seu e-mail"/>
-          <button class="primary-button">Enviar</button>
-        </div>
-        <small>Não enviamos spam, prometemos! ✨</small>
+    <!-- Newsletter Section Modificada -->
+    <div class="newsletter-container">
+      <div class="newsletter-video-bg">
+        <video autoplay muted loop playsinline>
+          <source src="@/assets/videos/newsletter.mp4" type="video/mp4">
+        </video>
+        <div class="video-overlay-newsletter"></div>
       </div>
-    </section>
+
+      <section class="newsletter">
+        <div class="newsletter-content">
+          <h2 class="newsletter-title">Brilhe mais com a Glittr <span class="emoji-newsletter">💖</span></h2>
+          <p class="newsletter-text">Inscreva-se para receber novidades exclusivas de beauty & tech do universo da
+            Glittr!</p>
+          <div class="newsletter-form">
+            <input type="email" class="newsletter-input-email" placeholder="Seu melhor e-mail 💌"/>
+            <button class="newsletter-button">Inscrever-se</button>
+          </div>
+          <h6 class="newsletter-disclaimer">Não enviamos spam, prometemos! 💅</h6>
+        </div>
+      </section>
+    </div>
 
     <!-- Footer -->
     <footer class="footer">
       <div class="footer-content">
-        <div class="footer-logo">
-          <img src="@/assets/icons/LogoGlittr.svg" alt="Glittr"/>
+
+        <div class="logo-and-social">
+
+          <div class="footer-logo">
+            <img src="@/assets/icons/LogoGlittrLandingFooter.svg" alt="Glittr"/>
+          </div>
+
+          <div class="social-links">
+            <a href="#" class="social-icon youtube"><img src="@/assets/icons/youtube.svg" alt="Youtube"></a>
+            <a href="#" class="social-icon instagram"><img src="@/assets/icons/instagram.svg" alt="Instagram"></a>
+            <a href="#" class="social-icon twitter"><img src="@/assets/icons/twitter.svg" alt="Twitter"></a>
+            <a href="#" class="social-icon tiktok"><img src="@/assets/icons/tiktok.svg" alt="Tiktok"></a>
+          </div>
+
         </div>
+
         <div class="footer-links">
           <div class="footer-section">
-            <h4>Plataforma</h4>
-            <a href="#">Como funciona</a>
+            <h4 class="text-footer-link"><a href="#">Plataforma</a></h4>
+            <h4 class="text-footer-link"><a href="#">Como funciona</a></h4>
           </div>
           <div class="footer-section">
-            <h4>Comparador</h4>
-            <a href="#">Como funciona</a>
+            <h4 class="text-footer-link"><a href="#">Comparador</a></h4>
+            <h4 class="text-footer-link"><a href="#">Produtos</a></h4>
           </div>
           <div class="footer-section">
-            <h4>Plataforma</h4>
-            <a href="#">Como funciona</a>
+            <h4 class="text-footer-link"><a href="#">A Empresa</a></h4>
+            <h4 class="text-footer-link"><a href="#">Fale conosco</a></h4>
           </div>
         </div>
-        <div class="social-links">
-          <a href="#" class="social-icon youtube"></a>
-          <a href="#" class="social-icon instagram"></a>
-          <a href="#" class="social-icon twitter"></a>
-        </div>
+
       </div>
       <div class="footer-bottom">
-        <p>Glittr 2023. Todos os direitos reservados.</p>
-        <p>Feito com 💖 pela Halcyon & CO</p>
+        <p class="text-footer-bottom">Glittr 2025. Todos os direitos reservados.</p>
+        <p class="text-footer-bottom-2">Feito com 💖 pela Halcyon & Co</p>
       </div>
     </footer>
   </div>
@@ -165,14 +192,45 @@ import MarqueeSlider from '../components/MarqueeSliderComponent.vue';
 
 
 .hero {
+  position: relative;
   grid-template-columns: 1fr 1fr;
   align-items: center;
-  background: radial-gradient(227.2% 227.14% at 50% -195.88%, #ED008C 0%, #141414 100%);
   display: flex;
   width: 1980px;
   height: 947px;
   padding: 72px 120px;
   gap: 80px;
+  aspect-ratio: 36/19;
+  overflow: hidden;
+}
+
+.hero-video-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.hero-video-bg video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.video-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(179, 57, 116, 0.30);
+}
+
+.hero-content, .hero-image {
+  position: relative;
+  z-index: 1;
 }
 
 .badge {
@@ -336,26 +394,6 @@ p {
   line-height: normal;
 }
 
-.newsletter {
-  background: linear-gradient(45deg, #ff00ff22, #00ffff22);
-  padding: 4rem 2rem;
-  text-align: center;
-  border-radius: 1rem;
-  margin: 4rem 2rem;
-}
-
-.footer {
-  background: #1a1a1a;
-  color: white;
-  padding: 4rem 2rem 2rem;
-}
-
-.footer-content {
-  display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
-  gap: 4rem;
-  margin-bottom: 2rem;
-}
 
 @media (max-width: 768px) {
   .hero {
@@ -488,6 +526,283 @@ h2 {
   font-size: 64px;
   font-style: normal;
   font-weight: 700;
+  line-height: normal;
+}
+
+.hero-title-initial {
+  color: #FFF;
+  text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  font-family: 'Poppins', sans-serif;
+  font-size: 56px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 60px;
+  letter-spacing: -1px;
+}
+
+.hero-title-initial-shine {
+  color: #FA90AB;
+  font-family: 'Poppins', sans-serif;
+  font-size: 56px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 60px;
+  letter-spacing: -1px;
+}
+
+.hero-image {
+  width: 830px;
+  height: 640px;
+  flex-shrink: 0;
+  border-radius: 20px;
+}
+
+.img-hero {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background-position: center;
+  background-size: cover;
+}
+
+.newsletter-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  padding: 4rem 0;
+}
+
+.newsletter-video-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.newsletter-video-bg video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.video-overlay-newsletter {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.newsletter {
+  position: relative;
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 4rem 2rem;
+  text-align: center;
+  width: 1070px;
+  height: 337px;
+  margin: 4rem auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  background: linear-gradient(97deg, #FF648C 0%, #E10CFF 100%);
+}
+
+.newsletter-content {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+
+.newsletter-form {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.newsletter-input-email {
+  display: flex;
+  width: 244px;
+  padding: 10px;
+  align-items: center;
+  gap: 10px;
+  height: 28px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.50);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.newsletter-input-email::placeholder {
+  color: rgba(255, 255, 255, 0.50);
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.newsletter-title {
+  color: #FFF;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  margin-bottom: 20px;
+}
+
+.emoji-newsletter {
+  color: #FFF;
+  font-family: 'Poppins', sans-serif;
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.newsletter-text {
+  color: #FFF;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.newsletter-button {
+  display: flex;
+  width: 140px;
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 10px;
+  border: 1px solid #FFF;
+  background: #FFF;
+  color: #E10CFF;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.newsletter-button:hover {
+  background: #E10CFF;
+  color: #FFF;
+  transition: 0.4s ease-in-out;
+}
+
+.newsletter-disclaimer {
+  color: #FFF;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+@media (max-width: 768px) {
+  .newsletter {
+    width: 90%;
+    height: auto;
+    padding: 2rem 1rem;
+  }
+
+  .newsletter-form {
+    flex-direction: column;
+  }
+}
+
+.footer {
+  display: flex;
+  padding: 100px 250px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 60px;
+  align-self: stretch;
+  background: #141414;
+}
+
+.footer-content {
+  display: flex;
+  width: 1017px;
+  align-items: flex-start;
+  gap: 120px;
+}
+
+.footer-links {
+  display: flex;
+  align-items: flex-start;
+  gap: 120px;
+}
+
+.text-footer-link, .text-footer-link a {
+  color: #FFF;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  align-self: stretch;
+}
+
+.text-footer-link a:hover {
+  color: #ED008C;
+  transition: color 0.3s ease-in-out;
+}
+
+.logo-and-social {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 60px;
+}
+
+.social-links {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-bottom {
+  display: flex;
+  width: 1480px;
+  padding-top: 20px;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  border-top: 1px solid #757575;
+}
+
+.text-footer-bottom {
+  color: #FFF;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.text-footer-bottom-2 {
+  color: #FFF;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
   line-height: normal;
 }
 </style>
