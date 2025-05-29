@@ -29,7 +29,7 @@
         </div>
       </div>
       <div class="hero-image">
-        <img src="@/assets/images/img_video.png" alt="Imagem de uma mulher usando o Glittr." class="img-hero">
+        <img src="@/assets/images/img_video.png" alt="Imagem de uma mulher usando o Glittr." class="img-hero" style="display: none">
       </div>
     </section>
 
@@ -189,6 +189,7 @@ import MarqueeSlider from '../components/MarqueeSliderComponent.vue';
   margin: 0 auto;
   font-family: 'Inter', sans-serif;
 }
+
 
 
 .hero {
@@ -468,9 +469,7 @@ h2 {
 .step-icon:hover {
   border-radius: 100px;
   background: #ED008C;
-
   box-shadow: 0 4px 10px 0 #ED008C;
-
 }
 
 .cta-section {
@@ -599,7 +598,6 @@ h2 {
 .newsletter {
   position: relative;
   z-index: 1;
-  background: rgba(255, 255, 255, 0.9);
   padding: 4rem 2rem;
   text-align: center;
   width: 1070px;
@@ -610,7 +608,10 @@ h2 {
   align-items: center;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   border-radius: 20px;
-  background: linear-gradient(97deg, #FF648C 0%, #E10CFF 100%);
+  background: linear-gradient(97deg, #FF648C 0%, #E10CFF 100%),
+  url('../assets/images/stars_from_lp.svg') no-repeat center center;
+  background-size: auto 80%;
+  background-blend-mode: overlay;
 }
 
 .newsletter-content {
@@ -804,5 +805,367 @@ h2 {
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+}
+
+.landing-page {
+  width: 100vw;
+  margin: 0 auto;
+  font-family: 'Inter', sans-serif;
+}
+
+.hero {
+  position: relative;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  display: flex;
+  width: 1980px;
+  height: 947px;
+  padding: 72px 120px;
+  gap: 80px;
+  aspect-ratio: 36/19;
+  overflow: hidden;
+}
+
+@media (max-width: 1920px) {
+  .hero {
+    width: 100%;
+    height: auto;
+    padding: 60px 100px;
+  }
+
+  .cta-card {
+    width: 90%;
+    padding-left: 40px;
+  }
+
+  .footer {
+    padding: 80px 200px;
+  }
+
+  .footer-content {
+    width: 90%;
+    gap: 80px;
+  }
+
+  .footer-links {
+    gap: 80px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .hero {
+    padding: 50px 80px;
+    gap: 60px;
+  }
+
+  h1 {
+    font-size: 3rem;
+  }
+
+  .hero-title-initial,
+  .hero-title-initial-shine {
+    font-size: 48px;
+    line-height: 52px;
+  }
+
+  .hero-image {
+    width: 600px;
+    height: 500px;
+  }
+
+  .feature-card {
+    width: 350px;
+  }
+
+  .steps {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .CTA-Text,
+  .highlight-cta {
+    font-size: 48px;
+  }
+
+  .newsletter {
+    width: 900px;
+  }
+
+  .footer {
+    padding: 60px 150px;
+  }
+
+  .footer-links {
+    gap: 60px;
+  }
+}
+
+@media (max-width: 992px) {
+  .hero {
+    flex-direction: column;
+    padding: 40px 60px;
+    text-align: center;
+    height: auto;
+    gap: 40px;
+  }
+
+  .hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .cta-buttons {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .hero-image {
+    width: 100%;
+    height: 400px;
+  }
+
+  .feature-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .feature-card {
+    width: 100%;
+  }
+
+  .cta-card {
+    flex-direction: column;
+    height: auto;
+    padding: 40px;
+    text-align: center;
+  }
+
+  .text-section {
+    align-items: center;
+  }
+
+  .CTA-Text,
+  .highlight-cta {
+    font-size: 36px;
+    text-align: center;
+  }
+
+  .newsletter {
+    width: 700px;
+    height: auto;
+  }
+
+  .footer {
+    padding: 50px 100px;
+  }
+
+  .footer-content {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .footer-links {
+    gap: 40px;
+  }
+
+  .logo-and-social {
+    width: 100%;
+    align-items: center;
+    gap: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding: 30px 40px;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+  }
+
+  .hero-title-initial,
+  .hero-title-initial-shine {
+    font-size: 36px;
+    line-height: 40px;
+  }
+
+  p {
+    font-size: 16px;
+  }
+
+  .feature-cards,
+  .steps {
+    grid-template-columns: 1fr;
+  }
+
+  .steps {
+    gap: 30px;
+  }
+
+  .highlight,
+  .highlight-pink,
+  h2 {
+    font-size: 32px;
+  }
+
+  .newsletter {
+    width: 90%;
+    padding: 2rem 1rem;
+  }
+
+  .newsletter-form {
+    flex-direction: column;
+  }
+
+  .newsletter-input-email {
+    width: 100%;
+  }
+
+  .footer {
+    padding: 40px 60px;
+    gap: 40px;
+  }
+
+  .footer-links {
+    flex-direction: column;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 576px) {
+
+  .landing-page {
+    overflow-x: hidden;
+  }
+
+  .hero {
+    padding: 20px 30px;
+    gap: 30px;
+    width: 90%;
+    height: 400px;
+  }
+
+  .hero-image {
+    display: none;
+  }
+
+  .marquee-wrapper {
+    width: 100%;
+    height: 30px;
+  }
+
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .hero-title-initial,
+  .hero-title-initial-shine {
+    font-size: 28px;
+    line-height: 32px;
+  }
+
+  .badge {
+    font-size: 14px;
+  }
+
+  .primary-button,
+  .secondary-button {
+    width: 180px;
+  }
+
+  .highlight,
+  .highlight-pink,
+  h2 {
+    font-size: 24px;
+  }
+
+  .subtitle {
+    font-size: 18px;
+  }
+
+  .feature-card {
+    padding: 1.5rem;
+    height: auto;
+  }
+
+  .CTA-Text,
+  .highlight-cta {
+    font-size: 28px;
+  }
+
+  .newsletter-title {
+    font-size: 24px;
+  }
+
+  .newsletter-text {
+    font-size: 14px;
+  }
+
+  .footer {
+    padding: 30px 40px;
+  }
+
+  .footer-bottom {
+    width: 100%;
+  }
+
+  .text-footer-link,
+  .text-footer-link a {
+    font-size: 14px;
+  }
+
+  .text-footer-bottom,
+  .text-footer-bottom-2 {
+    font-size: 12px;
+  }
+
+  .img-section {
+    display: none;
+  }
+
+  .cta-card {
+    padding: 20px;
+  }
+
+  .feature-card {
+    width: 100%;
+    padding: 10px;
+  }
+}
+
+@media (max-width: 400px) {
+  .hero {
+    padding: 15px 20px;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  .hero-title-initial,
+  .hero-title-initial-shine {
+    font-size: 24px;
+    line-height: 28px;
+  }
+
+  .primary-button,
+  .secondary-button {
+    width: 160px;
+    height: 40px;
+    font-size: 14px;
+  }
+
+  .cta-buttons {
+    gap: 10px;
+  }
+
+  .newsletter-title {
+    font-size: 20px;
+  }
+
+  .newsletter-button {
+    width: 120px;
+  }
 }
 </style>
