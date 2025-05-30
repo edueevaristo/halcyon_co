@@ -86,10 +86,13 @@
 
       <div class="product-feedback-add">
 
-        <button class="product-feedback-button-add">
-          <img src="@/assets/icons/icon-conversation.svg" class="product-feedback-button-icon" alt="Icone de conversa">
-          <span class="product-feedback-button-text">Adicionar avaliação</span>
-        </button>
+        <RouterLink to="/avaliacao" class="product-link">
+          
+          <button class="product-feedback-button-add">
+            <img src="@/assets/icons/icon-conversation.svg" class="product-feedback-button-icon" alt="Icone de conversa">
+            <span class="product-feedback-button-text">Adicionar avaliação</span>
+          </button>
+        </RouterLink>
       </div>
 
     </section>
@@ -100,16 +103,20 @@
       <FeedbackComponent/>
 
     </section>
+
+    <AvaliationModalComponent />
   </main>
 </template>
 
 <script>
 import FeedbackComponent from "@/components/FeedbackComponent.vue";
+import AvaliationModalComponent from "./AvaliationModalComponent.vue";
 
 export default {
   name: 'ProductInfoComponent',
   components: {
     FeedbackComponent: FeedbackComponent,
+    AvaliationModalComponent: AvaliationModalComponent,
   },
   props: {
     product: {
