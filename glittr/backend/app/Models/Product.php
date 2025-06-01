@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use App\Models\ProductReview;
 
 class Product extends Model
 {
@@ -157,5 +158,10 @@ class Product extends Model
 
             $this->attributes['attributes'] = $value;
         }
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(ProductReview::class);
     }
 }
