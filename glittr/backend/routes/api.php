@@ -6,7 +6,7 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\SubcategoryController;
 use App\Http\Controllers\Api\ProductsController;
 use App\Http\Controllers\Api\AttributeController;
-use App\Http\Controllers\ProductReviewController;
+use App\Http\Controllers\Api\ProductReviewController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -18,6 +18,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
+
+/* Rotas de produto sem necessidade de login */
 Route::prefix('products')->group(function () {
 
     Route::get('/', [ProductsController::class, 'index']);
@@ -27,7 +29,6 @@ Route::prefix('products')->group(function () {
 Route::post('/products', [ProductsController::class, 'insert']);
 Route::put('/products', [ProductsController::class, 'update']);
 
-/* Rotas de produto sem necessidade de login */
 Route::prefix('categories')->group(function () {
 
     Route::get('/', [ProductsController::class, 'index']);
@@ -58,15 +59,6 @@ Route::prefix('attributes')->group(function () {
 
 });
 
-<?php
-
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\CategoryController;
-use App\Http\Controllers\Api\SubcategoryController;
-use App\Http\Controllers\Api\ProductsController;
-use App\Http\Controllers\Api\AttributeController;
-use App\Http\Controllers\ProductReviewController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -94,7 +86,6 @@ Route::prefix('categories')->group(function () {
     Route::get('show/{id}', [ProductsController::class, 'show']);
 });
 
-
 Route::prefix('categories')->group(function () {
 
     Route::get('/', [CategoryController::class, 'index']);
@@ -119,11 +110,11 @@ Route::prefix('attributes')->group(function () {
 });
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/reviews', [ProductReviewController::class, 'store']);
     Route::put('/reviews/{id}', [ProductReviewController::class, 'update']);
     Route::delete('/reviews/{id}', [ProductReviewController::class, 'destroy']);
 });
 
+Route::post('/reviews', [ProductReviewController::class, 'store']);
 Route::get('/products/{product}/reviews', [ProductReviewController::class, 'index']);
 Route::get('/reviews/{id}', [ProductReviewController::class, 'show']);
 

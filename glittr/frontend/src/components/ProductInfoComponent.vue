@@ -76,41 +76,57 @@
     </section>
 
     <section class="product-details-feedback">
-
-      <div class="toggle-and-title-feedback">
+      <div class="toggle-and-title-feedback" @click="toggleFeedbackSection">
         <h1 class="toggle-title-feedback">Opiniões</h1>
         <span class="toggle-icon-feedback">
-          <img src="@/assets/icons/arrow-up.svg" alt="Icone indicando seta pra cima">
+          <img
+              :src="feedbackSectionOpen ? arrowUpIcon : arrowDownIcon"
+              alt="Ícone de seta"
+              class="arrow-icon"
+          >
         </span>
       </div>
 
-      <div class="product-feedback-add">
+      <transition name="slide-fade">
+        <div v-if="feedbackSectionOpen" class="feedback-section-content">
+          <div class="product-feedback-add">
+            <button class="product-feedback-button-add" @click="openModalAvaliation">
+              <img src="@/assets/icons/icon-conversation.svg" class="product-feedback-button-icon"
+                   alt="Icone de conversa">
+              <span class="product-feedback-button-text">Adicionar avaliação</span>
+            </button>
+          </div>
 
-        <RouterLink to="/avaliacao" class="product-link">
-          
-          <button class="product-feedback-button-add">
-            <img src="@/assets/icons/icon-conversation.svg" class="product-feedback-button-icon" alt="Icone de conversa">
-            <span class="product-feedback-button-text">Adicionar avaliação</span>
-          </button>
-        </RouterLink>
-      </div>
-
+          <section class="product-details-feedbacks">
+            <template v-if="reviews.length > 0">
+              <FeedbackComponent
+                  v-for="(review, index) in reviews"
+                  :key="index"
+                  :review="review"
+              />
+            </template>
+            <div v-else class="no-reviews-message">
+              <img src="@/assets/icons/icon-conversation.svg" alt="Ícone de comentário" class="comment-icon">
+              <p>Nenhum comentário/review adicionado a este produto.</p>
+            </div>
+          </section>
+        </div>
+      </transition>
     </section>
 
-    <section class="product-details-feedbacks">
 
-      <FeedbackComponent/>
-      <FeedbackComponent/>
-
-    </section>
-
-    <AvaliationModalComponent />
+    <AvaliationModalComponent ref="avaliationModal" @submit-review="handleSubmitReview"/>
   </main>
 </template>
 
 <script>
+import {ref} from 'vue';
 import FeedbackComponent from "@/components/FeedbackComponent.vue";
 import AvaliationModalComponent from "./AvaliationModalComponent.vue";
+import PostReviewDataService from "@/services/PostReviewDataService.js";
+import {showGlittrModal} from "@/stores/useSweetAlertGlittr.js";
+import arrowUpIcon from "@/assets/icons/arrow-up.svg";
+import arrowDownIcon from "@/assets/icons/arrow-down.svg";
 
 export default {
   name: 'ProductInfoComponent',
@@ -124,13 +140,91 @@ export default {
       required: true,
     },
   },
+  data() {
+    return {
+      arrowUpIcon,
+      arrowDownIcon,
+      review: {
+        product_id: null,
+        comment: '',
+        stars: null,
+      },
+      reviews: [],
+      feedbackSectionOpen: true,
+      isRotating: false
+    };
+  },
+  mounted() {
+    this.review.product_id = this.product.product.id;
+    this.fetchReviews();
+  },
+  setup() {
+    const avaliationModal = ref(null);
+
+    const openModalAvaliation = () => {
+      if (avaliationModal.value) {
+        avaliationModal.value.openModalAvaliation();
+      }
+    };
+
+    return {
+      avaliationModal,
+      openModalAvaliation,
+    };
+  },
   methods: {
+    toggleFeedbackSection() {
+      this.isRotating = true;
+      this.feedbackSectionOpen = !this.feedbackSectionOpen;
+    },
     formatAttributeValue(value) {
       if (typeof value === 'boolean') {
         return value ? 'Sim' : 'Não';
       }
       return value;
-    }
+    },
+    submit() {
+      this.$emit('submit-review', {...this.localReview});
+    },
+    async handleSubmitReview(payload) {
+      try {
+        const dataToSend = {
+          ...payload,
+          product_id: this.product.product.id,
+        };
+        await PostReviewDataService.createReview(dataToSend);
+
+        if (this.$refs.avaliationModal && this.$refs.avaliationModal.closeModal) {
+          this.$refs.avaliationModal.closeModal();
+        }
+
+        showGlittrModal({
+          icon: 'success',
+          title: 'Avaliação enviada!',
+          text: 'Muito obrigado por avaliar nosso produto. Sua opinião é muito importante para nós!',
+          confirmButtonText: 'OK'
+        });
+
+        await this.fetchReviews();
+
+      } catch (error) {
+        console.error(error);
+        showGlittrModal({
+          icon: 'error',
+          title: 'Erro ao enviar avaliação',
+          text: error.response?.data?.message || 'Ocorreu um erro ao enviar sua avaliação. Por favor, tente novamente.',
+          confirmButtonText: 'Entendi'
+        });
+      }
+    },
+    async fetchReviews() {
+      try {
+        const response = await PostReviewDataService.getAllForProduct(this.product.product.id);
+        this.reviews = response.data;
+      } catch (error) {
+        console.error(error);
+      }
+    },
   },
 };
 </script>
@@ -208,7 +302,6 @@ export default {
   flex-shrink: 0;
   border: #CACACA 1px solid;
   border-radius: 5px;
-
   display: flex;
   justify-content: center;
   align-items: center;
@@ -266,7 +359,7 @@ export default {
   align-self: stretch;
 }
 
-product-physical-characteristics {
+.product-physical-characteristics {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -313,6 +406,46 @@ product-physical-characteristics {
   justify-content: space-between;
   align-items: center;
   align-self: stretch;
+  cursor: pointer;
+}
+
+.feedback-section-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.product-details-feedbacks {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-height: 500px;
+  overflow-y: auto;
+  padding-right: 10px;
+  width: 100%;
+}
+
+.product-details-feedbacks:empty {
+  display: none;
+}
+
+.product-details-feedbacks::-webkit-scrollbar {
+  width: 6px;
+}
+
+.product-details-feedbacks::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.product-details-feedbacks::-webkit-scrollbar-thumb {
+  background: #E10CFF;
+  border-radius: 10px;
+}
+
+.product-details-feedbacks::-webkit-scrollbar-thumb:hover {
+  background: #ED008C;
 }
 
 .toggle-title-feedback {
@@ -334,13 +467,11 @@ product-physical-characteristics {
   align-self: stretch;
 }
 
-
 .toggle-icon-feedback {
   width: 24px;
   height: 24px;
   aspect-ratio: 1/1;
 }
-
 
 .product-feedback-button-add {
   display: flex;
@@ -385,9 +516,75 @@ product-physical-characteristics {
   color: #EF4444 !important;
 }
 
-.product-physical-characteristics-content-characteristics:hover, .compare-button:hover, .product-feedback-button-add:hover {
+.product-physical-characteristics-content-characteristics:hover,
+.compare-button:hover,
+.product-feedback-button-add:hover {
   border: 1px solid #ED008C;
   transition: border-color 0.5s ease;
+}
+
+.product-link a {
+  word-break: break-all;
+}
+
+.arrow-icon {
+  transition: transform 0.3s ease, opacity 0.2s ease;
+  transform: rotate(0deg);
+}
+
+.toggle-and-title-feedback:hover .arrow-icon {
+  opacity: 0.8;
+}
+
+.feedback-section-open .arrow-icon {
+  transform: rotate(180deg);
+}
+
+.slide-fade-enter-active {
+  transition: all 0.4s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.2s ease-in;
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateY(-10px);
+  opacity: 0;
+}
+
+.no-reviews-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 40px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.no-reviews-message p {
+  color: #757575;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  margin: 0;
+}
+
+.comment-icon {
+  width: 48px;
+  height: 48px;
+  opacity: 0.5;
+}
+
+@media (max-width: 480px) {
+  .product-physical-characteristics-content-characteristics {
+    min-width: 100%;
+    max-width: 100%;
+  }
 }
 
 @media (max-width: 768px) {
@@ -398,6 +595,20 @@ product-physical-characteristics {
   .product-physical-characteristics-content-characteristics {
     min-width: calc(50% - 10px);
     max-width: calc(50% - 10px);
+  }
+
+  .product-image-and-details {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .product-image-and-details-img {
+    width: 100%;
+    height: auto;
+  }
+
+  .product-image-and-details-details {
+    width: 100%;
   }
 }
 </style>

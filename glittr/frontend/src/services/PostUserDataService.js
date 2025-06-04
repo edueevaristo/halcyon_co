@@ -2,9 +2,9 @@ import http from "@/http-common";
 
 class PostUserDataService {
 
-    getUser() {
+    getUser(token) {
 
-        return http.get("/User");
+        return http.get("/me", { headers: { Authorization: "Bearer " + localStorage.getItem("token") } });
     }
 
     create(data) {

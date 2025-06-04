@@ -2,34 +2,66 @@
   <main class="main-feedbacks">
     <section class="section-feedback-user-and-photo-and-date">
       <div class="feedback-user-and-photo">
-        <img src="@/assets/images/user-feedback-1.svg" alt="Foto de perfil do usuário do feedback">
+        <img
+            src="@/assets/images/user-feedback-1.svg"
+            :alt="`Foto de perfil de ${shortName}`"
+        >
       </div>
 
       <div class="feedback-user-and-date">
-        <h1 class="feedback-user-name">Amanda Vieira</h1>
-        <p class="feedback-user-date">26/03/2025 22:04</p>
+        <h1 class="feedback-user-name">{{ shortName }}</h1>
+        <p class="feedback-user-date">{{ formattedDate }}</p>
       </div>
-
     </section>
 
     <section class="feedback-stars">
-      <img src="@/assets/icons/star.svg" alt="Estrelas de avaliação">
-      <img src="@/assets/icons/star.svg" alt="Estrelas de avaliação">
-      <img src="@/assets/icons/star.svg" alt="Estrelas de avaliação">
-      <img src="@/assets/icons/star.svg" alt="Estrelas de avaliação">
-      <img src="@/assets/icons/star.svg" alt="Estrelas de avaliação">
+      <div v-for="index in 5" :key="index">
+        <span v-html="starFilledSvg" v-if="index <= review.stars"></span>
+        <span v-html="starEmptySvg" v-else></span>
+      </div>
     </section>
 
     <section class="feedback-description">
-      <p>Eu amo a base da WePink, ela durou umas 8 horas tranquilo na minha pele. A Vírginia sabe o que faz mesmooo rs
-        eu peço respeito com as minha maria com a minha familia com a minha virgiia</p>
+      <p>{{ review.comment }}</p>
     </section>
   </main>
 </template>
 
 <script>
 export default {
-  name: 'FeedbackComponent'
+  name: 'FeedbackComponent',
+  props: {
+    review: {
+      type: Object,
+      required: true
+    }
+  },
+  data() {
+    return {
+      starFilledSvg: `
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3.64062 13.125L4.65625 8.73438L1.25 5.78125L5.75 5.39062L7.5 1.25L9.25 5.39062L13.75 5.78125L10.3438 8.73438L11.3594 13.125L7.5 10.7969L3.64062 13.125Z" fill="#E10CFF"/>
+        </svg>
+      `,
+      starEmptySvg: `
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M5.53125 10.5156L7.5 9.32812L9.46875 10.5312L8.95313 8.28125L10.6875 6.78125L8.40625 6.57812L7.5 4.45312L6.59375 6.5625L4.3125 6.76562L6.04688 8.28125L5.53125 10.5156ZM3.64062 13.125L4.65625 8.73438L1.25 5.78125L5.75 5.39062L7.5 1.25L9.25 5.39062L13.75 5.78125L10.3438 8.73438L11.3594 13.125L7.5 10.7969L3.64062 13.125Z" fill="#757575"/>
+        </svg>
+      `
+    }
+  },
+  computed: {
+    shortName() {
+      if (!this.review.user?.name) return 'Usuário';
+      const names = this.review.user.name.split(' ');
+      return `${names[0]} ${names.length > 1 ? names[1].charAt(0) + '.' : ''}`;
+    },
+    formattedDate() {
+      if (!this.review.created_at) return '';
+      const date = new Date(this.review.created_at);
+      return date.toLocaleDateString('pt-BR') + ' ' + date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+    }
+  }
 };
 </script>
 
@@ -41,6 +73,8 @@ export default {
   align-items: flex-start;
   gap: 15px;
   align-self: stretch;
+  padding: 16px;
+  border-bottom: 1px solid #f0f0f0;
 }
 
 .section-feedback-user-and-photo-and-date {
@@ -55,6 +89,13 @@ export default {
   height: 45px;
   aspect-ratio: 1/1;
   border-radius: 100px;
+  overflow: hidden;
+}
+
+.feedback-user-and-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .feedback-user-and-date {
@@ -93,6 +134,11 @@ export default {
   margin-top: -14px;
 }
 
+.feedback-stars img {
+  width: 18px;
+  height: 18px;
+}
+
 .feedback-description {
   align-self: stretch;
 }
@@ -104,5 +150,6 @@ export default {
   font-style: normal;
   font-weight: 400;
   line-height: 120%;
+  margin-top: 8px;
 }
 </style>

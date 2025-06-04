@@ -89,8 +89,7 @@
 <script>
 
 import PostUserDataService from "@/services/PostUserDataService.js";
-import { showGlittrModal } from '@/stores/useSweetAlertGlittr.js';
-
+import {showGlittrModal} from '@/stores/useSweetAlertGlittr.js';
 
 
 const UserIcon = {
@@ -161,27 +160,26 @@ export default {
   },
   methods: {
     async submitForm() {
+
       try {
-        const response = await PostUserDataService.create(this.form);
 
-        console.log(response);
+        await PostUserDataService.create(this.form);
 
-        showGlittrModal(  {
+        showGlittrModal({
           icon: 'success',
           title: 'Cadastro realizado!',
           text: 'Sua conta foi criada com sucesso. Agora é só fazer login e aproveitar!',
           confirmButtonText: 'Ir para o login',
           routeAfterConfirm: '/login'
-        })
-      } catch (error) {
+        });
 
-        console.log(error);
+      } catch (error) {
 
         showGlittrModal({
           icon: 'error',
           title: 'Erro no cadastro',
           text: error.response?.data?.message || 'Algo deu errado. Tente novamente mais tarde.',
-        })
+        });
       }
     }
   }

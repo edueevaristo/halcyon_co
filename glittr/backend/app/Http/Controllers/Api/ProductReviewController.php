@@ -1,8 +1,8 @@
 <?php
 
+namespace App\Http\Controllers\Api;
 
-namespace App\Http\Controllers;
-
+use App\Http\Controllers\Controller;
 use App\Models\ProductReview;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,13 +20,14 @@ class ProductReviewController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'user_id' => 'required|exists:users,id',
             'product_id' => 'required|exists:products,id',
             'comment' => 'required|string|max:1000',
             'stars' => 'required|integer|min:1|max:5',
         ]);
 
         $review = ProductReview::create([
-            'user_id' => Auth::id(),
+            'user_id' => $request->user_id,
             'product_id' => $request->product_id,
             'comment' => $request->comment,
             'stars' => $request->stars,
@@ -45,7 +46,8 @@ class ProductReviewController extends Controller
         $review = ProductReview::findOrFail($id);
 
         if ($review->user_id !== Auth::id()) {
-            return response()->json(['error' => 'Unauthorized'], 403);
+
+            return response()->json(['error' => 'Usuário não autorizado.'], 403);
         }
 
         $request->validate([
@@ -63,7 +65,8 @@ class ProductReviewController extends Controller
         $review = ProductReview::findOrFail($id);
 
         if ($review->user_id !== Auth::id()) {
-            return response()->json(['error' => 'Unauthorized'], 403);
+
+            return response()->json(['error' => 'Usuário não autorizado.'], 403);
         }
 
         $review->delete();
