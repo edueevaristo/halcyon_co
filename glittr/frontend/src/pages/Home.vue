@@ -24,7 +24,6 @@
       </section>
 
       <CompareModal/>
-      <AddProduct/>
     </main>
   </div>
 </template>

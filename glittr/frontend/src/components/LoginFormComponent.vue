@@ -67,6 +67,12 @@ export default {
         const response = await PostUserDataService.login(this.form);
         localStorage.setItem("token", response.data.token);
 
+        const responseUser = await PostUserDataService.getUser();
+        localStorage.setItem("user", responseUser.data.me.name);
+
+        localStorage.setItem("user_id", responseUser.data.me.id);
+        localStorage.setItem("email", responseUser.data.me.email);
+
         await router.push("/");
 
       } catch (error) {

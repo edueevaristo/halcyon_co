@@ -1,44 +1,41 @@
 <template>
-  <div>
-    <div v-if="open" class="modal-overlay" @click.self="closeModal">
-      <div class="modal-content">
-        <button class="close-button" @click="closeModal">✕</button>
+  <div v-if="open" class="modal-overlay" @click.self="closeModal">
+    <div class="modal-content" role="dialog" aria-modal="true">
+      <button class="close-button" @click="closeModal" aria-label="Fechar">✕</button>
 
-        <h2 class="modal-title">Cadastrar Avaliação</h2>
-        <p class="modal-subtitle">
-          Deixe sua opinião para ajudar outras pessoas!
-        </p>
+      <h2 class="modal-title">Cadastrar Avaliação</h2>
+      <p class="modal-subtitle">Deixe sua opinião para ajudar outras pessoas!</p>
 
-        <h4 class="modal-subtitle-2">Avaliação</h4>
+      <h4 class="modal-subtitle-2">Avaliação</h4>
 
-        <form @submit.prevent="submitReview">
-          <div class="form-group">
-            <label for="name">Nome:</label>
-            <input id="name" v-model="review.name" required type="text" placeholder="Seu nome" />
-          </div>
+      <form @submit.prevent="submitReview">
+        <div class="form-group">
+          <label for="stars" class="label-name">Nota:</label>
+          <select
+              id="stars"
+              v-model.number="review.stars"
+              required
+              class="label-input"
+          >
+            <option disabled value="">Selecione</option>
+            <option v-for="n in 5" :key="n" :value="n">{{ n }}</option>
+          </select>
+        </div>
 
-          <div class="form-group">
-            <label for="rating">Nota:</label>
-            <select id="rating" v-model.number="review.rating" required>
-              <option disabled value="">Selecione</option>
-              <option v-for="n in 5" :key="n" :value="n">{{ n }}</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="comment">Comentário:</label>
-            <textarea
+        <div class="form-group">
+          <label for="comment" class="label-name">Comentário:</label>
+          <textarea
               id="comment"
               v-model="review.comment"
               placeholder="Escreva seu comentário"
               rows="4"
               required
-            ></textarea>
-          </div>
+              class="label-input"
+          ></textarea>
+        </div>
 
-          <button type="submit" class="submit-button">Enviar Avaliação</button>
-        </form>
-      </div>
+        <button type="submit" class="submit-button">Enviar Avaliação</button>
+      </form>
     </div>
   </div>
 </template>
@@ -47,12 +44,18 @@
 import { ref } from "vue";
 
 const open = ref(false);
+const emit = defineEmits(["openModalAvaliation", "submitReview"]);
 
 const review = ref({
-  name: "",
-  rating: null,
+  user_id: localStorage.getItem("user_id"),
+  stars: null,
   comment: "",
 });
+
+const openModalAvaliation = () => {
+  open.value = true;
+  emit("openModalAvaliation");
+};
 
 const closeModal = () => {
   open.value = false;
@@ -61,51 +64,22 @@ const closeModal = () => {
 
 const clearForm = () => {
   review.value = {
-    name: "",
-    rating: null,
+    user_id: null,
+    stars: null,
     comment: "",
   };
 };
 
 const submitReview = () => {
-
-    console.log("Avaliação enviada:", review.value);
-
+  emit("submitReview", review.value);
+  console.log("Avaliação enviada:", review.value);
   closeModal();
 };
+
+defineExpose({ openModalAvaliation });
 </script>
 
 <style scoped>
-
-.add-product-icon {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  cursor: pointer;
-}
-
-.floating-button {
-  position: fixed;
-  bottom: 24px;
-  right: 100px;
-  color: #fff;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  z-index: 1000;
-  display: flex;
-  width: 60px;
-  height: 60px;
-  padding: 13px;
-  justify-content: center;
-  align-items: center;
-  flex-shrink: 0;
-  border-radius: 9999px;
-  border: 1px solid #9400EF;
-  background: #ED008C;
-  box-shadow: 0 -2px 15px -3px rgba(237, 0, 140, 0.25), 0 4px 6px -4px #E10CFF;
-}
-
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -128,6 +102,19 @@ const submitReview = () => {
   position: relative;
   overflow-y: auto;
   box-sizing: border-box;
+}
+
+.modal-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+  background-color: #ed008c;
+  border-radius: 8px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+  background-color: #ffe6f1;
 }
 
 .close-button {
@@ -156,8 +143,8 @@ const submitReview = () => {
 
 .modal-subtitle-2 {
   margin-bottom: 16px;
-  color: #B0B0B0;
-  font-family: 'Poppins', sans-serif;
+  color: #b0b0b0;
+  font-family: "Poppins", sans-serif;
   font-size: 16px;
   font-weight: 400;
   line-height: 20px;
@@ -169,32 +156,33 @@ const submitReview = () => {
   flex-direction: column;
 }
 
-label {
-  font-weight: 600;
+.label-name {
+  color: #ed008c;
+  font-family: "Poppins", sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 20px;
   margin-bottom: 8px;
 }
 
-input[type="text"],
-select,
-textarea {
-  padding: 8px 12px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+.label-input {
+  font-family: "Poppins", sans-serif;
   font-size: 14px;
-  font-family: inherit;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #757575;
+  background: #fff;
   resize: vertical;
 }
 
-input[type="text"]:focus,
-select:focus,
-textarea:focus {
+.label-input:focus {
   outline: none;
-  border-color: #ED008C;
-  box-shadow: 0 0 5px #ED008C;
+  border-color: #ed008c;
+  box-shadow: 0 0 5px #ed008c;
 }
 
 .submit-button {
-  background-color: #ED008C;
+  background-color: #ed008c;
   border: none;
   color: white;
   font-weight: 600;
@@ -206,6 +194,6 @@ textarea:focus {
 }
 
 .submit-button:hover {
-  background-color: #C700B3;
+  background-color: #c700b3;
 }
 </style>

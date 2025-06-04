@@ -94,8 +94,8 @@
       <h6 class="product-category-information-optional">Informações opcionais</h6>
 
       <div class="form-group">
-        <label for="product_price_average" class="label-name">Preço médio</label>
-        <input type="text" id="product_price_average" name="product_price_average" class="label-input"
+        <label for="product_price_average" class="label-name">Preço médio (R$)</label>
+        <input type="number" id="product_price_average" name="product_price_average" class="label-input"
                v-model.number="form.price_average">
       </div>
 
@@ -111,7 +111,7 @@
 
       <div class="form-buttons">
         <button class="cancel-button-form" @click.prevent="resetForm()">
-          Cancelar cadastro
+          Limpar campos
         </button>
         <button class="post-button-form" type="submit">
           <span class="post-button-icon"><img src="@/assets/icons/saved.svg" alt="Icone de salvar"></span>Cadastrar

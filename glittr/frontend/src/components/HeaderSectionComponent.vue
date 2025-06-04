@@ -1,9 +1,7 @@
 <template>
   <header class="header">
     <div class="header-container">
-
       <div class="logo-container">
-
         <!-- Botão de menu hambúrguer para mobile -->
         <button class="mobile-menu-button" @click="toggleMobileMenu">
           <img src="@/assets/icons/menu.svg" alt="Abrir menu"/>
@@ -17,24 +15,22 @@
       <!-- Menu normal desktop -->
       <div v-if="isLoggedIn" class="user-actions desktop-only">
         <ul class="nav-links">
-          <li>O que é a Glittr?</li>
+          <RouterLink to="/landing" class="link-style"><li>O que é a Glittr?</li></RouterLink>
           <li>Comparador</li>
-          <li>Produtos</li>
-          <button class="CTA-AddProdutos" @click="addProdutos">
-            <span class="login-text">Adicionar produtos </span>
-            <img src="@/assets/icons/add.svg" alt="Ícone de adicionar.">
-          </button>
+
+          <RouterLink to="/" class="link-style"><li>Produtos</li></RouterLink>
+          <AddProduct v-if="isLoggedIn" @click="addProdutos" />
         </ul>
 
         <div class="profile-dropdown">
           <span class="user-profile" @click="toggleDropdown">
             <img src="@/assets/icons/bebe.png" alt="Ícone de usuário.">
-            Meu perfil
+            Olá, {{ userName }}
             <img src="@/assets/icons/chevron-down.svg" alt="Abrir menu"/>
           </span>
           <ul v-if="showDropdown" class="dropdown-menu">
-            <li @click="goToProfile"> 👤 Ver perfil</li>
-            <li @click="logout"> 👋 Sair</li>
+<!--            <li @click="goToProfile"> 👤 Ver perfil</li>-->
+            <li @click="handleLogout"> 👋 Sair</li>
           </ul>
         </div>
       </div>
@@ -58,26 +54,23 @@
     <transition name="slide-fade">
       <div v-if="showMobileMenu" class="mobile-menu">
         <ul class="nav-links">
-          <li>O que é a Glittr?</li>
+          <RouterLink to="/landing" class="link-style"><li>O que é a Glittr?</li></RouterLink>
           <li>Comparador</li>
-          <li>Produtos</li>
+          <RouterLink to="/" class="link-style"><li>Produtos</li></RouterLink>
         </ul>
 
         <div v-if="isLoggedIn">
-          <button class="CTA-AddProdutos" @click="addProdutos">
-            <span class="login-text">Adicionar produtos</span>
-            <img src="@/assets/icons/add.svg" alt="Ícone de adicionar.">
-          </button>
+          <AddProduct v-if="isLoggedIn && showMobileMenu" :hide-button="true" />
 
           <div class="profile-dropdown">
             <span class="user-profile" @click="toggleDropdown">
               <img src="@/assets/icons/bebe.png" alt="Ícone de usuário.">
-              Meu perfil
+              Olá, {{ userName }}
               <img src="@/assets/icons/chevron-down.svg" alt="Abrir menu"/>
             </span>
             <ul v-if="showDropdown" class="dropdown-menu">
-              <li @click="goToProfile"> 👤 Ver perfil</li>
-              <li @click="logout"> 👋 Sair</li>
+<!--              <li @click="goToProfile"> 👤 Ver perfil</li>-->
+              <li @click="handleLogout"> 👋 Sair</li>
             </ul>
           </div>
         </div>
@@ -95,21 +88,55 @@
 </template>
 
 <script>
+
+import RegisterProductsModalComponent from '../components/RegisterProductsModalComponent.vue';
+
 export default {
   name: "HeaderSection",
+  components: {
+    AddProduct: RegisterProductsModalComponent
+  },
   data() {
     return {
       isLoggedIn: false,
       showDropdown: false,
       showMobileMenu: false,
+      userName: "Usuário"
     };
   },
+  mounted() {
+    this.checkAuthStatus();
+  },
   methods: {
-    login() {
-      this.isLoggedIn = true;
+    async checkAuthStatus() {
+
+      const token = localStorage.getItem('token');
+      this.isLoggedIn = !!token;
+
+      const userData = localStorage.getItem('user');
+
+      if (userData) {
+        this.userName = userData.split(' ')[0];
+      }
     },
-    logout() {
-      this.isLoggedIn = false;
+    async handleLogout() {
+      try {
+
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        localStorage.removeItem('user_id');
+        localStorage.removeItem('email');
+
+        this.isLoggedIn = false;
+        this.showDropdown = false;
+        this.showMobileMenu = false;
+
+        this.$router.push('/login');
+
+      } catch (error) {
+
+        console.error('Erro ao fazer logout:', error);
+      }
     },
     toggleDropdown() {
       this.showDropdown = !this.showDropdown;
@@ -119,8 +146,12 @@ export default {
       this.showDropdown = false;
     },
     goToProfile() {
+      this.$router.push('/profile');
     },
-  },
+    login() {
+      this.$router.push('/login');
+    }
+  }
 };
 </script>
 
@@ -182,6 +213,11 @@ export default {
   cursor: pointer;
 }
 
+.link-style {
+  text-decoration: none;
+  color: #fff;
+}
+
 .login-text {
   color: #fff;
   text-align: center;
@@ -240,13 +276,6 @@ li:hover {
   border: none;
 }
 
-
-.logout-button {
-  background: none;
-  border: none;
-}
-
-
 .profile-dropdown {
   position: relative;
   cursor: pointer;
@@ -287,7 +316,6 @@ li:hover {
   background-color: #f3f3f3;
 }
 
-
 /* Oculta elementos no mobile */
 .desktop-only {
   display: flex;
@@ -326,7 +354,6 @@ li:hover {
 
 /* Responsivo */
 @media (max-width: 768px) {
-
   .nav-links {
     flex-direction: column;
     align-items: flex-start;
@@ -341,6 +368,4 @@ li:hover {
     display: block;
   }
 }
-
 </style>
-
