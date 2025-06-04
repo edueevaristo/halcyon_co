@@ -4,7 +4,7 @@
       <img :src="imageUrl" alt="Imagem do produto" class="product-image"/>
       <div class="product-content">
         <h3 class="product-title">{{ title }}</h3>
-        <button class="compare-button">
+        <button class="compare-button" @click.stop.prevent="openCompareModal">
           <div v-html="compareIcon"></div>
           <span class="button-text">Comparar produto</span>
         </button>
@@ -15,6 +15,8 @@
 </template>
 
 <script>
+import {useCompareStore} from '../stores/useCompareStore'
+
 export default {
   name: "ProductCard",
   props: {
@@ -33,15 +35,21 @@ export default {
   data() {
     return {
       compareIcon: `<svg id="112:697" layer-name="SVG" width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-[16px] h-[16px]">
-<path d="M11.166 10.6667L13.166 5.33334L15.166 10.6667C14.586 11.1 13.886 11.3333 13.166 11.3333C12.446 11.3333 11.746 11.1 11.166 10.6667Z" stroke="white" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"></path>
-<path d="M1.83398 10.6667L3.83398 5.33334L5.83398 10.6667C5.25398 11.1 4.55398 11.3333 3.83398 11.3333C3.11398 11.3333 2.41398 11.1 1.83398 10.6667Z" stroke="white" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"></path>
-<path d="M5.16602 14H11.8327" stroke="white" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"></path>
-<path d="M8.5 2V14" stroke="white" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"></path>
-<path d="M2.5 4.66668H3.83333C5.16667 4.66668 7.16667 4.00001 8.5 3.33334C9.83333 4.00001 11.8333 4.66668 13.1667 4.66668H14.5" stroke="white" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"></path>
-</svg>`,
+                      <path d="M11.166 10.6667L13.166 5.33334L15.166 10.6667C14.586 11.1 13.886 11.3333 13.166 11.3333C12.446 11.3333 11.746 11.1 11.166 10.6667Z" stroke="white" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"></path>
+                      <path d="M1.83398 10.6667L3.83398 5.33334L5.83398 10.6667C5.25398 11.1 4.55398 11.3333 3.83398 11.3333C3.11398 11.3333 2.41398 11.1 1.83398 10.6667Z" stroke="white" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"></path>
+                      <path d="M5.16602 14H11.8327" stroke="white" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"></path>
+                      <path d="M8.5 2V14" stroke="white" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"></path>
+                      <path d="M2.5 4.66668H3.83333C5.16667 4.66668 7.16667 4.00001 8.5 3.33334C9.83333 4.00001 11.8333 4.66668 13.1667 4.66668H14.5" stroke="white" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>`
     };
   },
-};
+  methods: {
+    openCompareModal() {
+      const store = useCompareStore()
+      store.openModal(this.id)
+    }
+  },
+}
 </script>
 
 <style scoped>
