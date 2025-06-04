@@ -134,7 +134,6 @@ class ProductsController extends Controller
         }
 
 
-
         \Log::info('Atributos recebidos:', ['raw' => $request->input('attributes'), 'processed' => $attributes]);
 
         $productData = array_merge($validated, [
@@ -244,6 +243,31 @@ class ProductsController extends Controller
 
         return response()->json([
             'product' => $this->formatProductResponse($product)
+        ], 200);
+    }
+
+    public function showByCategory($category)
+    {
+        $products = Product::with(['category', 'subcategory'])->where('category_id', $category)->get();
+
+        return response()->json([
+            'products' => $products->map(function ($product) {
+                return $this->formatProductResponse($product);
+            })
+        ], 200);
+    }
+
+    public function showBySubcategory($category, $subcategory)
+    {
+        $products = Product::with(['category', 'subcategory'])
+            ->where('category_id', $category)
+            ->where('subcategory_id', $subcategory)
+            ->get();
+
+        return response()->json([
+            'products' => $products->map(function ($product) {
+                return $this->formatProductResponse($product);
+            })
         ], 200);
     }
 

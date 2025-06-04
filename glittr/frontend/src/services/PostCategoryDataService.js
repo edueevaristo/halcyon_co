@@ -4,7 +4,7 @@ class PostCategoryDataService {
 
     async getById(id) {
         try {
-            return await http.get(`/categories/${id}`);
+            return await http.get(`/categories/show/${id}`);
 
         } catch (error) {
 

@@ -1,93 +1,74 @@
 <template>
   <div>
-    <!-- Botão flutuante -->
-    <button class="floating-button" @click="open = true">
+    <button class="floating-button" @click="store.openModal()">
       <img src="@/assets/icons/judge.svg" alt="">
     </button>
 
-    <!-- Modal -->
-    <div v-if="open" class="modal-overlay" @click.self="open = false">
+    <div v-if="store.modalCompare" class="modal-overlay" @click.self="store.closeModal()">
       <div class="modal-content">
-        <button class="close-button" @click="open = false">✕</button>
-
-        <!-- Título -->
+        <button class="close-button" @click="store.closeModal()">✕</button>
         <h2 class="modal-title">Compare produtos</h2>
         <p class="modal-subtitle">
           Compare até dois produtos lado a lado para tomar a melhor decisão.
         </p>
 
-        <!-- Mensagem de erro -->
         <div v-if="store.error" class="error-message">
           {{ store.error }}
         </div>
 
-        <!-- Tabela de comparação -->
-        <CompareTableComponent :products="products"/>
+        <div v-if="loading" style="text-align:center; padding: 32px;">
+          <span>Carregando produto...</span>
+        </div>
+
+        <CompareTableComponent
+            v-if="!loading"
+            :initialProduct="initialProduct"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import {ref, watch} from 'vue'
-import {useCompareStore} from '../stores/useCompareStore'
+import { ref, watch } from 'vue'
+import { useCompareStore } from '../stores/useCompareStore'
 import CompareTableComponent from './CompareTableComponent.vue'
+import PostProductDataService from '../services/PostProductDataService'
 
 const store = useCompareStore()
-const open = ref(false)
+const initialProduct = ref(null)
+const loading = ref(false)
 
-// limpa erro quando fecha modal
-watch(open, (val) => {
-  if (!val) {
+watch(() => store.modalCompare, async (val) => {
+
+  if (val && store.selectedProductId) {
+
+    loading.value = true
+
+    try {
+
+      const response = await PostProductDataService.getById(store.selectedProductId)
+      initialProduct.value = response.data.product || response.data
+
+    } catch (e) {
+
+      store.error = 'Erro ao buscar produto para comparação.'
+
+    } finally {
+
+      loading.value = false
+    }
+
+  } else {
+
     store.clearError()
+    initialProduct.value = null
+    loading.value = false
   }
 })
-
-// MOCK: será substituído pela store mais tarde
-const products = ref([
-  {
-    name: 'Base da Virgínia',
-    image: 'https://via.placeholder.com/100x100?text=Produto+1',
-    attributes: {
-      Média: '2',
-      brand: 'WePink',
-      category: 'Base',
-      price: 'R$200',
-      skinType: 'Seca',
-      finish: 'Matte',
-      coverage: 'Média',
-      texture: 'Líquida',
-      spf: 'Não tem',
-      shades: '12 tons',
-      oilFree: '-',
-      ingredients: 'CYCLOPENTASILOXANE, AQUA, TRIMETHYLSILOXYSILICATE',
-      description: 'Alta fixação para sua make',
-    }
-  },
-  {
-    name: 'Base BTSkin',
-    image: 'https://via.placeholder.com/100x100?text=Produto+2',
-    attributes: {
-      Média: '5',
-      brand: 'BtSkin',
-      category: 'Base',
-      price: 'R$79,90',
-      skinType: 'Oleosa',
-      finish: 'Glow',
-      coverage: 'Altíssima',
-      texture: 'Líquida',
-      spf: '40',
-      shades: '40 tons',
-      oilFree: 'Sim',
-      ingredients: 'Aqua, Cyclopentasiloxane, Isododecane',
-      description: 'Cobertura alta com leveza'
-    }
-  }
-])
 </script>
 
 <style scoped>
-/* botão flutuante */
 .floating-button {
   position: fixed;
   bottom: 24px;
@@ -116,22 +97,22 @@ const products = ref([
   background: rgba(0, 0, 0, 0.4);
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  padding-top: 60px;
+  align-items: center;
+  padding: 16px;
   z-index: 1001;
+  overflow-y: auto;
 }
 
-/* modal */
 .modal-content {
-background: #fff;
-    border-radius: 16px;
-    width: 100%;
-    max-width: 900px;
-    max-height: 90vh;
-    padding: 32px;
-    position: relative;
-    overflow-y: auto;
-    box-sizing: border-box;
+  background: #fff;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 1100px;
+  max-height: 90vh;
+  padding: 32px;
+  position: relative;
+  overflow-y: auto;
+  box-sizing: border-box;
 }
 
 .modal-content::-webkit-scrollbar {
@@ -146,7 +127,6 @@ background: #fff;
 .modal-content::-webkit-scrollbar-track {
   background-color: #ffe6f1;
 }
-
 
 .close-button {
   position: absolute;
@@ -179,5 +159,57 @@ background: #fff;
   border-radius: 8px;
   font-size: 14px;
   margin-bottom: 20px;
+}
+
+.product-selection {
+  margin: 20px 0;
+}
+
+.product-selection h3 {
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.product-card {
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.selection-product-image {
+  width: 100%;
+  height: 120px;
+  object-fit: contain;
+  margin-bottom: 8px;
+}
+
+.selection-product-name {
+  font-size: 14px;
+  text-align: center;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.select-container {
+  margin: 20px 0;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>

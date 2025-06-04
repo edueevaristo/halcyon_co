@@ -28,6 +28,31 @@ class PostProductDataService {
         }
     }
 
+    async getAllByCategory(id) {
+
+        try {
+
+            return await http.get(`/products/show/category/${id}`);
+
+        } catch (error) {
+
+            console.error(`Erro ao buscar produtos da categoria com id ${id}:`, error);
+            throw error;
+        }
+    }
+
+    async getAllBySubCategory(category, subcategory) {
+
+        try {
+
+            return await http.get(`/products/show/subcategory/${category}/${subcategory}`);
+
+        } catch (error) {
+
+            console.error(`Erro ao buscar produtos da subcategoria com id da categoria ${category} e id da subcategoria ${subcategory}:`, error);
+            throw error;
+        }
+    }
 
     async insert(formData) {
 
