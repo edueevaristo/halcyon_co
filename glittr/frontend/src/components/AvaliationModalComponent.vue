@@ -80,6 +80,13 @@ defineExpose({ openModalAvaliation });
 </script>
 
 <style scoped>
+
+input, textarea, select {
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+  color: #000;
+}
+
 .modal-overlay {
   position: fixed;
   inset: 0;

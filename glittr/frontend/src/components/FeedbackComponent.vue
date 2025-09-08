@@ -3,7 +3,7 @@
     <section class="section-feedback-user-and-photo-and-date">
       <div class="feedback-user-and-photo">
         <img
-            src="@/assets/images/user-feedback-1.svg"
+            src="@/assets/icons/LogoGlittr.svg"
             :alt="`Foto de perfil de ${shortName}`"
         >
       </div>

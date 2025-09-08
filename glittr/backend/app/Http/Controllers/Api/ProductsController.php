@@ -3,13 +3,20 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
+use Log;
 
 class ProductsController extends Controller
 {
+    /**
+     * @throws ValidationException
+     */
     protected function validateImageFiles(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -67,6 +74,9 @@ class ProductsController extends Controller
         return array_values($currentImages);
     }
 
+    /**
+     * @throws ValidationException
+     */
     public function insert(Request $request)
     {
         $validated = $request->validate([
@@ -84,7 +94,7 @@ class ProductsController extends Controller
         // Valida imagens
         $imageValidation = $this->validateImageFiles($request);
 
-        if ($imageValidation instanceof \Illuminate\Http\JsonResponse) {
+        if ($imageValidation instanceof JsonResponse) {
 
             return $imageValidation;
         }
@@ -99,8 +109,8 @@ class ProductsController extends Controller
 
                 try {
                     $attributes = json_decode($validated['attributes'], true);
-                } catch (\Exception $e) {
-                    \Log::error('Falha ao decodificar JSON de atributos', [
+                } catch (Exception $e) {
+                    Log::error('Falha ao decodificar JSON de atributos', [
                         'error' => $e->getMessage(),
                         'attributes' => $validated['attributes']
                     ]);
@@ -116,7 +126,7 @@ class ProductsController extends Controller
 
             foreach ($attributes as $attr) {
 
-                if (isset($attr['value']) && is_array($attr['value']) && isset($attr['value']['name'])) {
+                if (isset($attr['value']['name']) && is_array($attr['value'])) {
 
                     $validatedAttributes[] = [
                         'name' => $attr['value']['name'],
@@ -133,15 +143,10 @@ class ProductsController extends Controller
             }
         }
 
-
-        \Log::info('Atributos recebidos:', ['raw' => $request->input('attributes'), 'processed' => $attributes]);
-
         $productData = array_merge($validated, [
             'image_path' => json_encode($imagePaths),
             'attributes' => !empty($validatedAttributes) ? json_encode($validatedAttributes) : null,
         ]);
-
-        \Log::info('Dados completos do produto:', $productData);
 
         $product = Product::create($productData);
 
@@ -152,6 +157,9 @@ class ProductsController extends Controller
         ], 201);
     }
 
+    /**
+     * @throws ValidationException
+     */
     public function update(Request $request)
     {
         $request->validate([
@@ -189,7 +197,7 @@ class ProductsController extends Controller
 
             foreach ($attributes as $attr) {
 
-                if (isset($attr['value']) && is_array($attr['value']) && isset($attr['value']['name'])) {
+                if (isset($attr['value']['name']) && is_array($attr['value'])) {
 
                     $validatedAttributes[] = [
                         'name' => $attr['value']['name'],

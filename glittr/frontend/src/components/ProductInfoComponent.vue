@@ -90,7 +90,9 @@
       <transition name="slide-fade">
         <div v-if="feedbackSectionOpen" class="feedback-section-content">
           <div class="product-feedback-add">
-            <button class="product-feedback-button-add" @click="openModalAvaliation">
+
+
+            <button v-if="isLoggedIn" class="product-feedback-button-add" @click="openModalAvaliation">
               <img src="@/assets/icons/icon-conversation.svg" class="product-feedback-button-icon"
                    alt="Icone de conversa">
               <span class="product-feedback-button-text">Adicionar avaliação</span>
@@ -151,7 +153,8 @@ export default {
       },
       reviews: [],
       feedbackSectionOpen: true,
-      isRotating: false
+      isRotating: false,
+      isLoggedIn: localStorage.getItem('token') !== null,
     };
   },
   mounted() {

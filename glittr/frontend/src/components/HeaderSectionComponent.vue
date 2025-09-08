@@ -16,15 +16,14 @@
       <div v-if="isLoggedIn" class="user-actions desktop-only">
         <ul class="nav-links">
           <RouterLink to="/landing" class="link-style"><li>O que é a Glittr?</li></RouterLink>
-          <li>Comparador</li>
-
+          <RouterLink to="/" class="link-style"><li>Comparador</li></RouterLink>
           <RouterLink to="/" class="link-style"><li>Produtos</li></RouterLink>
           <AddProduct v-if="isLoggedIn" @click="addProdutos" />
         </ul>
 
         <div class="profile-dropdown">
           <span class="user-profile" @click="toggleDropdown">
-            <img src="@/assets/icons/bebe.png" alt="Ícone de usuário.">
+            <img src="@/assets/icons/LogoGlittr.svg" alt="Ícone de usuário.">
             Olá, {{ userName }}
             <img src="@/assets/icons/chevron-down.svg" alt="Abrir menu"/>
           </span>
@@ -37,9 +36,9 @@
 
       <div v-else class="guest-actions desktop-only">
         <ul class="nav-links">
-          <li>O que é a Glittr?</li>
-          <li>Comparador</li>
-          <li>Produtos</li>
+          <RouterLink to="/landing" class="link-style"><li>O que é a Glittr?</li></RouterLink>
+          <RouterLink to="/" class="link-style"><li>Comparador</li></RouterLink>
+          <RouterLink to="/" class="link-style"><li>Produtos</li></RouterLink>
         </ul>
 
         <RouterLink to="/presentation" class="CTA-Login">
@@ -64,7 +63,7 @@
 
           <div class="profile-dropdown">
             <span class="user-profile" @click="toggleDropdown">
-              <img src="@/assets/icons/bebe.png" alt="Ícone de usuário.">
+              <img src="@/assets/icons/LogoGlittr.svg" alt="Ícone de usuário.">
               Olá, {{ userName }}
               <img src="@/assets/icons/chevron-down.svg" alt="Abrir menu"/>
             </span>
