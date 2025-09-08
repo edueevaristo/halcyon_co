@@ -63,7 +63,6 @@ const availableProducts = ref([])
 const winner = ref(null)
 const categoryId = ref(null)
 
-// Formata os produtos para o select
 const formatForSelect = (product) => ({
   id: product.id,
   label: product.product_name || product.name,
@@ -89,7 +88,6 @@ const loadAvailableProducts = async (categoryId, excludeId) => {
   if (categoryId) {
     try {
       const response = await PostProductDataService.getAllByCategory(categoryId)
-      console.log('Opa', response);
       availableProducts.value = response.data.products
           .filter(p => p.id !== excludeId)
           .map(formatForSelect)
@@ -118,20 +116,14 @@ const selectSecondProduct = async (productId) => {
 
 const removeProduct = (index) => {
   if (index === 0) {
-
     store.closeModal();
-
   } else {
-
     products.value = [products.value[0]];
-
   }
 }
 
 watch(() => props.initialProduct, (newVal) => {
-
   if (newVal) {
-
     products.value = [{
       id: newVal.id,
       name: newVal.product_name || newVal.name,
@@ -140,12 +132,9 @@ watch(() => props.initialProduct, (newVal) => {
     }]
     categoryId.value = newVal.category.id
     loadAvailableProducts(newVal.category.id, newVal.id)
-
   } else {
-
     products.value = []
   }
-
 }, {immediate: true})
 
 const isIngredient = (key) => {
@@ -153,23 +142,18 @@ const isIngredient = (key) => {
 }
 
 const formatAttributeValue = (value) => {
-
   if (value === true) return 'SIM';
   if (value === false) return 'NÃO';
-
   return value
 }
 
 const getAttributeValue = (attributes, name) => {
-
   const attr = attributes.find(a => a.name.toLowerCase() === name.toLowerCase())
   return attr ? attr.value : null
 }
 
 const determineWinner = () => {
-
   if (products.value.length < 2) {
-
     winner.value = null
     return
   }
@@ -227,13 +211,10 @@ const allAttributes = computed(() => {
 })
 
 onMounted(async () => {
-
   if (products.value.length > 0 && products.value[0]?.category_id) {
-
     const response = await PostProductDataService.getAllByCategory(products.value[0].category_id)
     availableProducts.value = response.data.products.map(formatForSelect)
   }
-
 })
 </script>
 
@@ -254,38 +235,35 @@ onMounted(async () => {
   transition: all 0.3s ease;
 }
 
-.compare-table.winner-left th:nth-child(2),
-.compare-table.winner-left td:nth-child(2) {
+.compare-table.winner-left th:nth-child(2) {
   position: relative;
+
 }
 
-.compare-table.winner-left th:nth-child(2)::after,
-.compare-table.winner-left td:nth-child(2)::after {
+.compare-table.winner-left th:nth-child(2)::after {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  bottom: 0;
+  height: 208px !important;
   border: 3px solid #ED008C;
   border-radius: 8px;
   pointer-events: none;
   z-index: 1;
 }
 
-.compare-table.winner-right th:nth-child(3),
-.compare-table.winner-right td:nth-child(3) {
+.compare-table.winner-right th:nth-child(3) {
   position: relative;
 }
 
-.compare-table.winner-right th:nth-child(3)::after,
-.compare-table.winner-right td:nth-child(3)::after {
+.compare-table.winner-right th:nth-child(3)::after {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  bottom: 0;
+  height: 208px !important;
   border: 3px solid #ED008C;
   border-radius: 8px;
   pointer-events: none;

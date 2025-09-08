@@ -137,7 +137,7 @@ const subcategories = ref([]);
 const editing = ref(false);
 const productId = ref(null);
 const imagePreviews = ref([]);
-const emit = defineEmits(['product-updated']);
+const emit = defineEmits(['product-updated', 'close-modal']);
 
 const form = ref({
   product_name: "",
@@ -227,13 +227,16 @@ const handleSubmit = async () => {
 
     await showGlittrModal({
       icon: 'success',
-      title: editing.value ? 'Atualizado' : 'Cadastrado',
-      text: `Produto ${editing.value ? 'atualizado' : 'cadastrado'} com sucesso!`,
-      confirmButtonText: 'OK'
+      title: editing.value ? 'Obrigad@!' : 'Obrigad@!',
+      text: `Você arrasou! ✨
+              Cada produto adicionado deixa a Glittr ainda mais completa e ajuda outras pessoas a encontrarem o match perfeito.
+              A gente vai dar uma olhadinha e, se estiver tudo certo, logo ele aparece por aqui. Enquanto isso, bora brilhar? 🌟`,
+      confirmButtonText: 'Continuar navegando'
     });
 
     resetForm();
     emit('product-updated');
+    emit('close-modal');
 
   } catch (error) {
     console.error('Erro ao salvar produto:', error);

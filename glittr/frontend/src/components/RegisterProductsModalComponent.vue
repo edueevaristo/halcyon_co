@@ -15,7 +15,7 @@
           pessoas a encontrarem o produto ideal!
         </p>
         <h4 class="modal-subtitle-2">Informações gerais</h4>
-        <FormInputRegisterProductComponent @product-registered="handleProductRegistered"/>
+        <FormInputRegisterProductComponent @product-updated="handleProductRegistered" @close-modal="showModal = false"/>
       </div>
     </div>
   </div>

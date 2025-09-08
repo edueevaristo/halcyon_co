@@ -1,15 +1,15 @@
 <template>
   <div>
-    <button class="floating-button" @click="store.openModal()">
-      <img src="@/assets/icons/judge.svg" alt="">
-    </button>
+<!--    <button class="floating-button" @click="store.openModal()">-->
+<!--      <img src="@/assets/icons/judge.svg" alt="">-->
+<!--    </button>-->
 
     <div v-if="store.modalCompare" class="modal-overlay" @click.self="store.closeModal()">
       <div class="modal-content">
         <button class="close-button" @click="store.closeModal()">✕</button>
         <h2 class="modal-title">Compare produtos</h2>
         <p class="modal-subtitle">
-          Compare até dois produtos lado a lado para tomar a melhor decisão.
+          Compare até dois produtos lado a lado para tomar a melhor decisão.<br><b>Podendo ser</b> sugerido pela Gllitr na decisão da compra.
         </p>
 
         <div v-if="store.error" class="error-message">

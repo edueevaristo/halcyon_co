@@ -33,7 +33,7 @@
 
 <script>
 
-import bebeAvatar from "@/assets/icons/bebe.png";
+import bebeAvatar from "@/assets/icons/LogoGlittr.svg";
 
 export default {
   name: "NavbarProductComponent",
