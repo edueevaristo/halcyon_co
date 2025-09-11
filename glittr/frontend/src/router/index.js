@@ -8,20 +8,20 @@ import ProductInfo from "../pages/ProductInfo.vue";
 import Register from "../pages/Register.vue";
 
 const routes = [
-    {
-        path: '/login',
-        name: 'Login',
-        component: Login,
-    },
-    {
-        path: '/register',
-        name: 'Registro',
-        component: Register,
-    },
+    // {
+    //     path: '/login',
+    //     name: 'Login',
+    //     component: Login,
+    // },
+    // {
+    //     path: '/register',
+    //     name: 'Registro',
+    //     component: Register,
+    // },
     {
         path: '/',
-        name: 'Home',
-        component: Home,
+        name: 'Landing',
+        component: LandingPage,
     },
     {
         path: '/logo',
@@ -32,17 +32,17 @@ const routes = [
         path: '/presentation',
         name: 'Presentation',
         component: Presentation,
-    },
-    {
-        path: '/landing',
-        name: 'Landing',
-        component: LandingPage,
-    },
-    {
-        path: '/product/:id',
-        name: 'product',
-        component: ProductInfo,
     }
+    // {
+    //     path: '/landing',
+    //     name: 'Landing',
+    //     component: LandingPage,
+    // }
+    // {
+    //     path: '/product/:id',
+    //     name: 'product',
+    //     component: ProductInfo,
+    // }
 ]
 
 const router = createRouter({
