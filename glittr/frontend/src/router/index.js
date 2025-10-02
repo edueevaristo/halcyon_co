@@ -8,16 +8,16 @@ import ProductInfo from "../pages/ProductInfo.vue";
 import Register from "../pages/Register.vue";
 
 const routes = [
-    // {
-    //     path: '/login',
-    //     name: 'Login',
-    //     component: Login,
-    // },
-    // {
-    //     path: '/register',
-    //     name: 'Registro',
-    //     component: Register,
-    // },
+    {
+        path: '/login',
+        name: 'Login',
+        component: Login,
+    },
+    {
+        path: '/register',
+        name: 'Registro',
+        component: Register,
+    },
     {
         path: '/',
         name: 'Landing',
