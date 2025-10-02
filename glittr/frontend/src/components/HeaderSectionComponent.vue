@@ -15,10 +15,10 @@
       <!-- Menu normal desktop -->
       <div v-if="isLoggedIn" class="user-actions desktop-only">
         <ul class="nav-links">
-          <RouterLink to="/landing" class="link-style"><li>O que é a Glittr?</li></RouterLink>
-          <RouterLink to="/" class="link-style"><li>Comparador</li></RouterLink>
-          <RouterLink to="/" class="link-style"><li>Produtos</li></RouterLink>
-          <AddProduct v-if="isLoggedIn" @click="addProdutos" />
+<!--          <RouterLink to="/landing" class="link-style"><li>O que é a Glittr?</li></RouterLink>-->
+<!--          <RouterLink to="/" class="link-style"><li>Comparador</li></RouterLink>-->
+<!--          <RouterLink to="/" class="link-style"><li>Produtos</li></RouterLink>-->
+<!--          <AddProduct v-if="isLoggedIn" @click="addProdutos" />-->
         </ul>
 
         <div class="profile-dropdown">
@@ -28,7 +28,7 @@
             <img src="@/assets/icons/chevron-down.svg" alt="Abrir menu"/>
           </span>
           <ul v-if="showDropdown" class="dropdown-menu">
-<!--            <li @click="goToProfile"> 👤 Ver perfil</li>-->
+            <!--<li @click="goToProfile"> 👤 Ver perfil</li>-->
             <li @click="handleLogout"> 👋 Sair</li>
           </ul>
         </div>
@@ -36,16 +36,16 @@
 
       <div v-else class="guest-actions desktop-only">
         <ul class="nav-links">
-          <RouterLink to="/landing" class="link-style"><li>O que é a Glittr?</li></RouterLink>
-          <RouterLink to="/" class="link-style"><li>Comparador</li></RouterLink>
-          <RouterLink to="/" class="link-style"><li>Produtos</li></RouterLink>
+<!--          <RouterLink to="/landing" class="link-style"><li>O que é a Glittr?</li></RouterLink>-->
+<!--          <RouterLink to="/" class="link-style"><li>Comparador</li></RouterLink>-->
+<!--          <RouterLink to="/" class="link-style"><li>Produtos</li></RouterLink>-->
         </ul>
 
-        <RouterLink to="/presentation" class="CTA-Login">
-          <div v-html="loginIcon"></div>
-          <span class="login-text">Começar agora</span>
-          <img src="@/assets/icons/chevron-right.svg" alt="Seta pra direita.">
-        </RouterLink>
+<!--        <RouterLink to="/presentation" class="CTA-Login">-->
+<!--          <div v-html="loginIcon"></div>-->
+<!--          <span class="login-text">Começar agora</span>-->
+<!--          <img src="@/assets/icons/chevron-right.svg" alt="Seta pra direita.">-->
+<!--        </RouterLink>-->
       </div>
     </div>
 
@@ -68,7 +68,7 @@
               <img src="@/assets/icons/chevron-down.svg" alt="Abrir menu"/>
             </span>
             <ul v-if="showDropdown" class="dropdown-menu">
-<!--              <li @click="goToProfile"> 👤 Ver perfil</li>-->
+                <!--<li @click="goToProfile"> 👤 Ver perfil</li>-->
               <li @click="handleLogout"> 👋 Sair</li>
             </ul>
           </div>
