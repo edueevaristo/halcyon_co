@@ -36,6 +36,6 @@ COPY docker/nginx/default.conf /etc/nginx/conf.d/default.conf
 EXPOSE 8080
 
 # Comando para iniciar o PHP-FPM + Nginx
-CMD service php8.3-fpm start && nginx -g 'daemon off;'
+CMD php-fpm -D && nginx -g 'daemon off;'
 
 USER $user
