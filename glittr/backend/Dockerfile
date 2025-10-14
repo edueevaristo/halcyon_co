@@ -25,26 +25,29 @@ RUN useradd -G www-data,root -u $uid -d /home/$user $user \
 
 WORKDIR /var/www
 
-COPY composer.json composer.lock* ./
-
-RUN if [ -f composer.lock ]; then composer install --no-dev --no-scripts --no-autoloader; \
-    else composer install --no-scripts --no-autoloader; fi
-
-COPY . .
-
-RUN composer dump-autoload --optimize
-
 COPY docker/php/custom.ini /usr/local/etc/php/conf.d/custom.ini
 COPY docker/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY docker/nginx/default.conf /etc/nginx/conf.d/default.conf
 
-RUN mkdir -p /var/www/storage /var/www/bootstrap/cache /tmp/nginx/body \
-    && chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache \
-    && chmod -R 775 /var/www/storage /var/www/bootstrap/cache \
-    && chmod -R 777 /tmp/nginx
+RUN mkdir -p /tmp/nginx/body && chmod -R 777 /tmp/nginx
 
 COPY docker/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
+
+COPY composer.json composer.lock* ./
+
+RUN if [ -f composer.lock ]; then \
+        composer update --no-dev --no-scripts --no-interaction --ignore-platform-reqs; \
+    else \
+        composer install --no-dev --no-scripts --no-interaction --ignore-platform-reqs; \
+    fi
+
+COPY . /var/www
+
+RUN composer install --no-dev --optimize-autoloader --no-interaction
+
+RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache \
+    && chmod -R 775 /var/www/storage /var/www/bootstrap/cache
 
 EXPOSE 8080
 
