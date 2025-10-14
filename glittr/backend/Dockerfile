@@ -33,6 +33,9 @@ COPY docker/php/custom.ini /usr/local/etc/php/conf.d/custom.ini
 COPY docker/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY docker/nginx/default.conf /etc/nginx/conf.d/default.conf
 
+RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
+RUN chmod -R 775 /var/www/storage /var/www/bootstrap/cache
+
 # Copia entrypoint e dá permissão de execução
 COPY docker/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
@@ -42,6 +45,8 @@ RUN mkdir -p /tmp/nginx/body && chmod -R 777 /tmp/nginx
 
 # Expõe a porta (Render detecta via $PORT)
 EXPOSE 8080
+
+COPY . /var/www
 
 # Executa entrypoint
 CMD ["/entrypoint.sh"]
