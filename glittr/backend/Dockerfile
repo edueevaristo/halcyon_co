@@ -34,6 +34,4 @@ RUN mkdir -p /tmp/nginx/body && chmod -R 777 /tmp/nginx
 
 EXPOSE 8080
 
-USER $user
-
 CMD ["/entrypoint.sh"]
