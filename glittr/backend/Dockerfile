@@ -20,6 +20,8 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN useradd -G www-data,root -u $uid -d /home/$user $user && \
     mkdir -p /home/$user/.composer && chown -R $user:$user /home/$user
 
+    
+
 WORKDIR /var/www
 
 COPY docker/php/custom.ini /usr/local/etc/php/conf.d/custom.ini
@@ -28,6 +30,9 @@ COPY docker/nginx/default.conf /etc/nginx/conf.d/default.conf
 
 COPY docker/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
+RUN mkdir -p /var/lib/nginx/body && \
+    chmod -R 777 /var/lib/nginx
+
 
 EXPOSE 8080
 
