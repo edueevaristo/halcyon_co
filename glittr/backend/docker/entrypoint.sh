@@ -1,10 +1,10 @@
 #!/bin/sh
 
-envsubst '$PORT' < /etc/nginx/conf.d/default.conf > /etc/nginx/conf.d/default.conf.tmp
-mv /etc/nginx/conf.d/default.conf.tmp /etc/nginx/conf.d/default.conf
+mkdir -p /tmp/nginx/body
+chmod -R 777 /tmp/nginx
 
-mkdir -p /var/lib/nginx/body
-chmod -R 777 /var/lib/nginx
+envsubst '$PORT' < /etc/nginx/conf.d/default.conf > /tmp/default.conf
+mv /tmp/default.conf /etc/nginx/conf.d/default.conf
 
 php-fpm -D
 nginx -g 'daemon off;'
