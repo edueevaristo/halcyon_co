@@ -31,6 +31,7 @@ COPY docker/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 RUN mkdir -p /tmp/nginx/body && chmod -R 777 /tmp/nginx
+RUN apt-get update && apt-get install -y gettext-base
 
 EXPOSE 8080
 
