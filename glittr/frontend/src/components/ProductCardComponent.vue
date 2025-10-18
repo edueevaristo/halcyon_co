@@ -4,6 +4,14 @@
       <img :src="imageUrl" alt="Imagem do produto" class="product-image"/>
       <div class="product-content">
         <h3 class="product-title">{{ title }}</h3>
+        <div v-if="likesCount > 0 || reviewsCount > 0" class="product-stats">
+          <div v-if="likesCount > 0" class="stat-item">
+            <span class="stat-text">{{ likesCount }} {{ likesCount === 1 ? 'pessoa amou' : 'pessoas amaram' }}</span>
+          </div>
+          <div v-if="reviewsCount > 0" class="stat-item">
+            <span class="stat-text">{{ reviewsCount }} {{ reviewsCount === 1 ? 'avaliação' : 'avaliações' }}</span>
+          </div>
+        </div>
         <button class="compare-button" @click.stop.prevent="openCompareModal">
           <div v-html="compareIcon"></div>
           <span class="button-text">Comparar produto</span>
@@ -30,6 +38,14 @@ export default {
     title: {
       type: String,
       required: true,
+    },
+    likesCount: {
+      type: Number,
+      default: 0
+    },
+    reviewsCount: {
+      type: Number,
+      default: 0
     },
   },
   data() {
@@ -127,5 +143,25 @@ export default {
 
 .product-card:hover .product-title {
   color: #ED008C;
+}
+
+.product-stats {
+  margin: -8px 0 8px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+}
+
+.stat-text {
+  color: #757575;
+  font-family: 'Poppins', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
 }
 </style>

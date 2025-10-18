@@ -14,6 +14,8 @@
         :id="product.id"
         :imageUrl="getImageUrl(product)"
         :title="product.product_name"
+        :likesCount="product.likes_count || 0"
+        :reviewsCount="product.reviews_count || 0"
     />
   </section>
 </template>
@@ -73,22 +75,27 @@ export default {
   },
   methods: {
     getImageUrl(product) {
-      if (!product.image_path || !product.image_path[0]) return '';
+
+      if (!product.image_path || !Array.isArray(product.image_path) || !product.image_path[0]) {
+
+        return '';
+      }
 
       try {
 
-        if (product.image_path[0].includes('http')) {
+        const imagePath = product.image_path[0];
 
-          return product.image_path[0];
+        if (imagePath.includes('http')) {
+
+          return imagePath;
         }
 
-        return `http://127.0.0.1:8000${product.image_path[0].replace(/^\/storage\//, '')}`;
-
+        const cleanPath = imagePath.replace(/^\/storage\//, '');
+        return `http://127.0.0.1:8000/storage/${cleanPath}`;
+        
       } catch (error) {
-
         console.error("Erro ao processar imagem:", error);
         return '';
-
       }
     },
     async fetchProducts() {
@@ -98,7 +105,7 @@ export default {
       try {
 
         const response = await PostProductDataService.getAll();
-        this.products = response.data.products || [];
+        this.products = response.data.data || response.data.products || [];
 
         console.log("Produtos carregados:", this.products);
 
@@ -115,6 +122,11 @@ export default {
   },
   mounted() {
     this.fetchProducts();
+    // Escuta evento de produto atualizado
+    window.addEventListener('product-updated', this.fetchProducts);
+  },
+  beforeUnmount() {
+    window.removeEventListener('product-updated', this.fetchProducts);
   }
 };
 </script>

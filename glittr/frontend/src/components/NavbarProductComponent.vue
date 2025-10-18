@@ -34,6 +34,7 @@
 <script>
 
 import bebeAvatar from "@/assets/icons/LogoGlittr.svg";
+import PostUserDataService from '@/services/PostUserDataService.js';
 
 export default {
   name: "NavbarProductComponent",
@@ -49,13 +50,38 @@ export default {
     this.checkAuthStatus();
   },
   methods: {
-    checkAuthStatus() {
+    async checkAuthStatus() {
       const token = localStorage.getItem('token');
       this.isLoggedIn = !!token;
 
-      const userData = localStorage.getItem('user');
-      if (userData) {
-        this.userName = userData.split(' ')[0];
+      if (token) {
+        try {
+          const response = await PostUserDataService.getUser(token);
+          const user = response.data.me;
+          
+          this.userName = user.name.split(' ')[0];
+
+          if (user.profile_image_url) {
+
+            if (user.profile_image_url.startsWith('http')) {
+
+              this.userAvatar = user.profile_image_url;
+
+            } else {
+
+              const cleanPath = user.profile_image_url.replace(/^\/storage\//, '');
+              this.userAvatar = `http://127.0.0.1:8000/storage/${cleanPath}`;
+            }
+          }
+        } catch (error) {
+
+          const userData = localStorage.getItem('user');
+
+          if (userData) {
+
+            this.userName = userData.split(' ')[0];
+          }
+        }
       }
     },
     toggleDropdown() {
@@ -91,10 +117,11 @@ export default {
 
 .navbar-content {
   display: flex;
-  width: 1280px;
+  width: 100%;
   max-width: 1280px;
   justify-content: space-between;
   align-items: center;
+  box-sizing: border-box;
 }
 
 .logo img {
@@ -171,6 +198,8 @@ export default {
   width: 32px;
   height: 32px;
   border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #e10cff;
 }
 
 .user-name {

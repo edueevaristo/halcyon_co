@@ -77,7 +77,9 @@ export default {
   gap: 37px;
   margin-left: auto;
   margin-right: auto;
-  width: 98vw;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .landing-page {

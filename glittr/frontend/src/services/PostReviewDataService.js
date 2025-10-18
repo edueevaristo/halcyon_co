@@ -33,8 +33,10 @@ class PostReviewDataService {
     async getAllForProduct(productId) {
 
         try {
-
-            return await http.get(`/products/${productId}/reviews`);
+            const token = localStorage.getItem('token');
+            const headers = token ? { "Authorization": "Bearer " + token } : {};
+            
+            return await http.get(`/products/${productId}/reviews`, { headers });
 
         } catch (error) {
 

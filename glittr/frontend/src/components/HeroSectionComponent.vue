@@ -125,7 +125,8 @@ export default {
 }
 
 .divider-line {
-  width: 528.8px;
+  flex: 1;
+  max-width: 528.8px;
   height: 1px;
   background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(148, 0, 239, 0.3) 50%, rgba(0, 0, 0, 0) 100%);
 }
