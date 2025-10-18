@@ -70,8 +70,13 @@
               Confirmar senha
             </span>
           </label>
-          <input type="password" class="input" placeholder="••••••••">
+          <input type="password" class="input" placeholder="••••••••" v-model="form.confirmPassword">
         </div>
+
+        <ImageUploadComponent 
+          @image-selected="handleImageSelected" 
+          @image-removed="handleImageRemoved" 
+        />
 
         <button class="submit-button">
           <span>Criar minha conta</span>
@@ -90,6 +95,7 @@
 
 import PostUserDataService from "@/services/PostUserDataService.js";
 import {showGlittrModal} from '@/stores/useSweetAlertGlittr.js';
+import ImageUploadComponent from '@/components/ImageUploadComponent.vue';
 
 
 const UserIcon = {
@@ -147,7 +153,8 @@ export default {
     EmailIcon,
     PasswordIcon,
     ConfirmIcon,
-    UserAddIcon
+    UserAddIcon,
+    ImageUploadComponent
   },
   data() {
     return {
@@ -155,15 +162,41 @@ export default {
         name: '',
         email: '',
         password: '',
-      }
+        confirmPassword: '',
+      },
+      profileImage: null
     }
   },
   methods: {
+    handleImageSelected(file) {
+      this.profileImage = file;
+    },
+    
+    handleImageRemoved() {
+      this.profileImage = null;
+    },
+    
     async submitForm() {
+      if (this.form.password !== this.form.confirmPassword) {
+        showGlittrModal({
+          icon: 'error',
+          title: 'Erro na senha',
+          text: 'As senhas não coincidem. Verifique e tente novamente.',
+        });
+        return;
+      }
 
       try {
+        const formData = new FormData();
+        formData.append('name', this.form.name);
+        formData.append('email', this.form.email);
+        formData.append('password', this.form.password);
+        
+        if (this.profileImage) {
+          formData.append('profile_image', this.profileImage);
+        }
 
-        await PostUserDataService.create(this.form);
+        await PostUserDataService.create(formData);
 
         showGlittrModal({
           icon: 'success',
@@ -174,7 +207,6 @@ export default {
         });
 
       } catch (error) {
-
         showGlittrModal({
           icon: 'error',
           title: 'Erro no cadastro',

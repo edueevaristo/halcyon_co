@@ -12,17 +12,42 @@ export default {
 </script>
 
 <style>
-html,
-body,
-#app {
-  height: 100%;
-  margin: 0;
-  padding: 0;
+html {
+  overflow-x: hidden;
+  width: 100%;
 }
 
-
 body {
-  display: flex;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+  box-sizing: border-box;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+#app {
+  width: 100%;
+  max-width: 100vw;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Previne overflow horizontal em todos os elementos */
+* {
+  max-width: 100%;
+}
+
+/* Corrige problemas específicos de width */
+.header,
+.main-product,
+.product-grid,
+.modal-overlay {
+  max-width: 100vw;
   overflow-x: hidden;
 }
 

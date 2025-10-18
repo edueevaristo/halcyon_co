@@ -47,6 +47,8 @@ const closeModal = () => {
 
 const handleProductRegistered = () => {
   closeModal();
+  // Emite evento para recarregar produtos
+  window.dispatchEvent(new CustomEvent('product-updated'));
 };
 
 </script>

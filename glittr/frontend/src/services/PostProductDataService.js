@@ -5,8 +5,10 @@ class PostProductDataService {
     async getById(id) {
 
         try {
-
-            return await http.get(`/products/show/${id}`);
+            const token = localStorage.getItem('token');
+            const headers = token ? { "Authorization": "Bearer " + token } : {};
+            
+            return await http.get(`/products/show/${id}`, { headers });
 
         } catch (error) {
 

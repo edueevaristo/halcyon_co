@@ -20,9 +20,10 @@
         v-model="form.password"
     />
 
-    <button type="submit" class="login-button">
-      <div class="button-icon" v-html="loginIcon"></div>
-      <span class="button-text">Acessar minha conta</span>
+    <button type="submit" class="login-button" :disabled="isLoading">
+      <div v-if="!isLoading" class="button-icon" v-html="loginIcon"></div>
+      <div v-else class="loading-spinner"></div>
+      <span class="button-text">{{ isLoading ? 'Logando...' : 'Acessar minha conta' }}</span>
     </button>
   </form>
 </template>
@@ -45,6 +46,7 @@ export default {
         email: "",
         password: "",
       },
+      isLoading: false,
       emailIcon: `<svg id="112:584" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-[16px] h-[16px] text-[#E10CFF]">
 <path d="M13.334 2.66666H2.66732C1.93094 2.66666 1.33398 3.26361 1.33398 3.99999V12C1.33398 12.7364 1.93094 13.3333 2.66732 13.3333H13.334C14.0704 13.3333 14.6673 12.7364 14.6673 12V3.99999C14.6673 3.26361 14.0704 2.66666 13.334 2.66666Z" stroke="#E10CFF" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"></path>
 <path d="M14.6673 4.66666L8.68732 8.46666C8.4815 8.59561 8.24353 8.664 8.00065 8.664C7.75777 8.664 7.5198 8.59561 7.31398 8.46666L1.33398 4.66666" stroke="#E10CFF" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -61,28 +63,28 @@ export default {
   },
   methods: {
     async login() {
+      this.isLoading = true;
 
       try {
-
         const response = await PostUserDataService.login(this.form);
         localStorage.setItem("token", response.data.token);
 
         const responseUser = await PostUserDataService.getUser();
         localStorage.setItem("user", responseUser.data.me.name);
-
         localStorage.setItem("user_id", responseUser.data.me.id);
         localStorage.setItem("email", responseUser.data.me.email);
 
         await router.push("/");
-
       } catch (error) {
-
         showGlittrModal({
           icon: "error",
           title: "Erro no login",
           text: error.response?.data?.message || "Algo deu errado. Tente novamente mais tarde.",
+          showCancelButton: false,
           confirmButtonText: "Fechar",
         });
+      } finally {
+        this.isLoading = false;
       }
     },
   },
@@ -119,5 +121,24 @@ export default {
   font-size: 14px;
   font-weight: 600;
   line-height: 20px;
+}
+
+.login-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.loading-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #f8fafc;
+  border-top: 2px solid transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 </style>

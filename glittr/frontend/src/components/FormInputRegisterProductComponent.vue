@@ -96,7 +96,7 @@
       <div class="form-group">
         <label for="product_price_average" class="label-name">Preço médio (R$)</label>
         <input type="number" id="product_price_average" name="product_price_average" class="label-input"
-               v-model.number="form.price_average">
+               step="0.01" min="0" v-model.number="form.price_average">
       </div>
 
       <div class="form-group">

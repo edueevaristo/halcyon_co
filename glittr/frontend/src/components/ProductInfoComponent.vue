@@ -2,10 +2,16 @@
   <main class="main-product">
     <section class="product-title-and-compare-button">
       <h1 class="title-product">{{ product.product.product_name }}</h1>
-      <button class="compare-button">
-        <img src="@/assets/icons/balance-compare.svg" alt="Comparar produto">
-        <span class="button-text-compare">Comparar produto</span>
-      </button>
+      <div class="product-actions">
+        <button v-if="isLoggedIn" @click="toggleProductLike" class="like-product-button" :class="{ 'liked': product.product.is_liked }">
+          <span v-html="product.product.is_liked ? heartIconLiked : heartIcon"></span>
+          <span>{{ product.product.likes_count || 0 }}</span>
+        </button>
+        <button class="compare-button">
+          <img src="@/assets/icons/balance-compare.svg" alt="Comparar produto">
+          <span class="button-text-compare">Comparar produto</span>
+        </button>
+      </div>
     </section>
 
     <section class="product-info-title-section">
@@ -14,8 +20,8 @@
 
     <section class="product-image-and-details">
       <div class="product-image-and-details-img">
-        <img :src="`http://127.0.0.1:8000${product.product.image_path[0].replace(/^\/storage\//, '')}`"
-             alt="Imagem do produto de teste">
+        <img :src="getProductImage()"
+             alt="Imagem do produto">
       </div>
 
       <div class="product-image-and-details-details">
@@ -105,6 +111,7 @@
                   v-for="(review, index) in reviews"
                   :key="index"
                   :review="review"
+                  :productId="product.product.id"
               />
             </template>
             <div v-else class="no-reviews-message">
@@ -155,11 +162,22 @@ export default {
       feedbackSectionOpen: true,
       isRotating: false,
       isLoggedIn: localStorage.getItem('token') !== null,
+      heartIcon: `
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#757575"/>
+        </svg>
+      `,
+      heartIconLiked: `
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#E10CFF"/>
+        </svg>
+      `,
     };
   },
   mounted() {
     this.review.product_id = this.product.product.id;
     this.fetchReviews();
+    console.log('Produto montado:', this.product.product.id);
   },
   setup() {
     const avaliationModal = ref(null);
@@ -220,12 +238,62 @@ export default {
         });
       }
     },
+    getProductImage() {
+      if (this.product?.product?.image_path && this.product.product.image_path.length > 0) {
+
+        const imagePath = this.product.product.image_path[0];
+
+        if (imagePath.startsWith('http')) {
+
+          return imagePath;
+
+        }
+
+        return `http://127.0.0.1:8000/storage/${imagePath.replace(/^\/storage\//, '')}`;
+
+      }
+
+      return '@/assets/images/product-test.png';
+
+    },
     async fetchReviews() {
+
       try {
+
         const response = await PostReviewDataService.getAllForProduct(this.product.product.id);
+        console.log('Reviews carregadas com propriedades:', response.data.map(r => ({
+          id: r.id, 
+          can_like: r.can_like, 
+          is_liked: r.is_liked, 
+          likes_count: r.likes_count
+        })));
         this.reviews = response.data;
+
       } catch (error) {
+
         console.error(error);
+      }
+    },
+    
+    async toggleProductLike() {
+      if (!this.isLoggedIn) return;
+      
+      try {
+        const response = await fetch(`http://127.0.0.1:8000/api/products/${this.product.product.id}/like`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          this.product.product.is_liked = data.liked;
+          this.product.product.likes_count = data.likes_count;
+        }
+      } catch (error) {
+        console.error('Erro ao dar like no produto:', error);
       }
     },
   },
@@ -276,6 +344,44 @@ export default {
   justify-content: space-between;
   align-items: center;
   align-self: stretch;
+}
+
+.product-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.like-product-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: none;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  color: #757575;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.like-product-button:hover {
+  border-color: #E10CFF;
+  background-color: #f9f9f9;
+}
+
+.like-product-button.liked {
+  border-color: #E10CFF;
+  color: #E10CFF;
+  background-color: #fef7ff;
+}
+
+.like-product-button.liked svg {
+  color: #E10CFF !important;
+}
+
+.like-product-button.liked svg path {
+  fill: #E10CFF !important;
 }
 
 .product-info-title-section {
