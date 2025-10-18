@@ -3,29 +3,25 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class ProductReview extends Model
+class ReviewReply extends Model
 {
-    protected $fillable = ['user_id', 'product_id', 'comment', 'stars'];
+    protected $fillable = ['user_id', 'review_id', 'reply'];
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function product()
+    public function review(): BelongsTo
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(ProductReview::class, 'review_id');
     }
 
     public function likes()
     {
-        return $this->hasMany(ReviewLike::class, 'review_id');
-    }
-
-    public function replies()
-    {
-        return $this->hasMany(ReviewReply::class, 'review_id');
+        return $this->hasMany(ReplyLike::class, 'reply_id');
     }
 
     public function isLikedBy($userId)

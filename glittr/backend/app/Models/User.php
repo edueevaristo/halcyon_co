@@ -22,6 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'profile_image',
     ];
 
     /**
@@ -50,5 +51,10 @@ class User extends Authenticatable
     public function productReviews()
     {
         return $this->hasMany(ProductReview::class);
+    }
+
+    public function getProfileImageUrlAttribute()
+    {
+        return $this->profile_image ? asset('storage/' . $this->profile_image) : null;
     }
 }

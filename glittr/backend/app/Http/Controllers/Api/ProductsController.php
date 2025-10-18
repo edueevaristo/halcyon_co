@@ -89,17 +89,24 @@ class ProductsController extends Controller
             'ingredients' => 'nullable|string',
             'product_link' => 'nullable|url',
             'attributes' => 'nullable',
+            'image_path' => 'nullable|array',
         ]);
 
-        // Valida imagens
-        $imageValidation = $this->validateImageFiles($request);
+        if ($request->has('image_path') && is_array($request->image_path)) {
 
-        if ($imageValidation instanceof JsonResponse) {
+            $imagePaths = $request->image_path;
 
-            return $imageValidation;
+        } else {
+
+            $imageValidation = $this->validateImageFiles($request);
+
+            if ($imageValidation instanceof JsonResponse) {
+
+                return $imageValidation;
+            }
+
+            $imagePaths = $this->storeImages($request);
         }
-
-        $imagePaths = $this->storeImages($request);
 
         $attributes = [];
 
@@ -109,15 +116,21 @@ class ProductsController extends Controller
 
                 try {
                     $attributes = json_decode($validated['attributes'], true);
+
                 } catch (Exception $e) {
+
                     Log::error('Falha ao decodificar JSON de atributos', [
                         'error' => $e->getMessage(),
                         'attributes' => $validated['attributes']
                     ]);
+
                 }
+
             } elseif (is_array($validated['attributes'])) {
+
                 $attributes = $validated['attributes'];
             }
+
         }
 
         $validatedAttributes = [];
@@ -178,11 +191,19 @@ class ProductsController extends Controller
             'price_average' => 'nullable|numeric|min:0',
             'ingredients' => 'nullable|string',
             'product_link' => 'nullable|url',
+            'image_path' => 'nullable|array',
         ]);
 
-        $this->validateImageFiles($request);
-        $imagePaths = $this->storeImages($request, $product);
-        $imagePaths = $this->deleteRemovedImages($request, $imagePaths);
+        if ($request->has('image_path') && is_array($request->image_path)) {
+
+            $imagePaths = $request->image_path;
+
+        } else {
+
+            $this->validateImageFiles($request);
+            $imagePaths = $this->storeImages($request, $product);
+            $imagePaths = $this->deleteRemovedImages($request, $imagePaths);
+        }
 
         $attributes = $request->input('attributes') ?? [];
 
@@ -216,7 +237,7 @@ class ProductsController extends Controller
 
         $updateData = array_merge($validated, [
             'image_path' => json_encode($imagePaths),
-            'attributes' => !empty($formattedAttributes) ? json_encode($formattedAttributes) : null,
+            'attributes' => !empty($validatedAttributes) ? json_encode($validatedAttributes) : null,
         ]);
 
         $product->update($updateData);
@@ -232,7 +253,7 @@ class ProductsController extends Controller
         $products = Product::with(['category', 'subcategory'])->get();
 
         return response()->json([
-            'products' => $products->map(function ($product) {
+            'data' => $products->map(function ($product) {
                 return $this->formatProductResponse($product);
             })
         ], 200);
@@ -281,6 +302,8 @@ class ProductsController extends Controller
 
     protected function formatProductResponse($product)
     {
+        $userId = auth('sanctum')->id();
+
         return [
             'id' => $product->id,
             'product_name' => $product->product_name,
@@ -293,6 +316,9 @@ class ProductsController extends Controller
             'price_average' => $product->price_average,
             'ingredients' => $product->ingredients,
             'product_link' => $product->product_link,
+            'likes_count' => $product->likes()->count(),
+            'is_liked' => $userId ? $product->isLikedBy($userId) : false,
+            'reviews_count' => $product->reviews()->count(),
             'created_at' => $product->created_at,
             'updated_at' => $product->updated_at,
         ];

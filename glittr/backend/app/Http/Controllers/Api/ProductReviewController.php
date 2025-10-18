@@ -11,10 +11,33 @@ class ProductReviewController extends Controller
 {
     public function index($productId)
     {
-        return ProductReview::with('user')
+        $reviews = ProductReview::with(['user', 'likes', 'replies.user'])
             ->where('product_id', $productId)
             ->orderByDesc('created_at')
             ->get();
+
+        // Tenta pegar o usuário autenticado (pode ser null se não estiver logado)
+        $userId = auth('sanctum')->id();
+
+        $reviews->each(function ($review) use ($userId) {
+
+            if ($review->user) {
+
+                $review->user->profile_image_url = $review->user->profile_image_url;
+            }
+
+            // Adiciona informações de likes
+            $review->likes_count = $review->likes->count();
+            $review->is_liked = $userId ? $review->likes->contains('user_id', $userId) : false;
+
+            // Adiciona informações de replies
+            $review->replies_count = $review->replies->count();
+            $review->can_like = $userId && $review->user_id !== $userId; // Não pode dar like na própria avaliação
+
+            unset($review->likes);
+        });
+
+        return $reviews;
     }
 
     public function store(Request $request)
