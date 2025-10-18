@@ -127,6 +127,8 @@
 </template>
 
 <script>
+import PostFeedbackDataService from '@/services/PostFeedbackDataService.js';
+
 export default {
   name: 'FeedbackComponent',
   props: {
@@ -201,19 +203,9 @@ export default {
       if (!this.isLoggedIn) return;
       
       try {
-        const response = await fetch(`http://127.0.0.1:8000/api/reviews/${this.review.id}/like`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`,
-            'Content-Type': 'application/json'
-          }
-        });
-        
-        if (response.ok) {
-          const data = await response.json();
-          this.review.is_liked = data.liked;
-          this.review.likes_count = data.likes_count;
-        }
+        const response = await PostFeedbackDataService.toggleReviewLike(this.review.id);
+        this.review.is_liked = response.data.liked;
+        this.review.likes_count = response.data.likes_count;
       } catch (error) {
         console.error('Erro ao dar like:', error);
       }
@@ -229,12 +221,8 @@ export default {
     
     async loadReplies() {
       try {
-        const response = await fetch(`http://127.0.0.1:8000/api/reviews/${this.review.id}/replies`);
-        if (response.ok) {
-          const data = await response.json();
-          console.log('Respostas carregadas:', data.replies);
-          this.replies = data.replies;
-        }
+        const response = await PostFeedbackDataService.getReplies(this.review.id);
+        this.replies = response.data.replies;
       } catch (error) {
         console.error('Erro ao carregar respostas:', error);
       }
@@ -244,21 +232,10 @@ export default {
       if (!this.newReply.trim() || !this.isLoggedIn) return;
       
       try {
-        const response = await fetch(`http://127.0.0.1:8000/api/reviews/${this.review.id}/replies`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ reply: this.newReply })
-        });
-        
-        if (response.ok) {
-          const data = await response.json();
-          this.replies.push(data.reply);
-          this.review.replies_count = (this.review.replies_count || 0) + 1;
-          this.newReply = '';
-        }
+        const response = await PostFeedbackDataService.createReply(this.review.id, this.newReply);
+        this.replies.push(response.data.reply);
+        this.review.replies_count = (this.review.replies_count || 0) + 1;
+        this.newReply = '';
       } catch (error) {
         console.error('Erro ao enviar resposta:', error);
       }
@@ -276,29 +253,16 @@ export default {
     },
     
     getProfileImageUrl(url) {
-      if (!url) return require('@/assets/icons/LogoGlittr.svg');
-      if (url.startsWith('http')) return url;
-      const cleanPath = url.replace(/^\/storage\//, '');
-      return `http://127.0.0.1:8000/storage/${cleanPath}`;
+      return PostFeedbackDataService.getImageUrl(url);
     },
     
     async toggleReplyLike(reply) {
       if (!this.isLoggedIn) return;
       
       try {
-        const response = await fetch(`http://127.0.0.1:8000/api/replies/${reply.id}/like`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`,
-            'Content-Type': 'application/json'
-          }
-        });
-        
-        if (response.ok) {
-          const data = await response.json();
-          reply.is_liked = data.liked;
-          reply.likes_count = data.likes_count;
-        }
+        const response = await PostFeedbackDataService.toggleReplyLike(reply.id);
+        reply.is_liked = response.data.liked;
+        reply.likes_count = response.data.likes_count;
       } catch (error) {
         console.error('Erro ao dar like na resposta:', error);
       }
@@ -306,15 +270,8 @@ export default {
     
     async loadMentionableUsers() {
       try {
-        console.log('Carregando usuários mencionáveis para produto:', this.productId);
-        const response = await fetch(`http://127.0.0.1:8000/api/products/${this.productId}/mentionable-users`);
-        if (response.ok) {
-          const data = await response.json();
-          console.log('Usuários carregados:', data.users);
-          this.mentionableUsers = data.users;
-        } else {
-          console.error('Erro na resposta:', response.status);
-        }
+        const response = await PostFeedbackDataService.getMentionableUsers(this.productId);
+        this.mentionableUsers = response.data.users;
       } catch (error) {
         console.error('Erro ao carregar usuários mencionáveis:', error);
       }
