@@ -249,7 +249,12 @@ export default {
 
         }
 
-        return `http://127.0.0.1:8000/storage/${imagePath.replace(/^\/storage\//, '')}`;
+        const hostname = window.location.hostname;
+        const baseUrl = (hostname === 'localhost' || hostname === '127.0.0.1') 
+            ? 'http://127.0.0.1:8000' 
+            : 'https://halcyon-co.onrender.com';
+            
+        return `${baseUrl}/storage/${imagePath.replace(/^\/storage\//, '')}`;
 
       }
 
@@ -279,7 +284,12 @@ export default {
       if (!this.isLoggedIn) return;
       
       try {
-        const response = await fetch(`http://127.0.0.1:8000/api/products/${this.product.product.id}/like`, {
+        const hostname = window.location.hostname;
+        const baseUrl = (hostname === 'localhost' || hostname === '127.0.0.1') 
+            ? 'http://127.0.0.1:8000/api' 
+            : 'https://halcyon-co.onrender.com/api';
+            
+        const response = await fetch(`${baseUrl}/products/${this.product.product.id}/like`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`,

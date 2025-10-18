@@ -90,8 +90,13 @@ export default {
           return imagePath;
         }
 
+        const hostname = window.location.hostname;
+        const baseUrl = (hostname === 'localhost' || hostname === '127.0.0.1') 
+            ? 'http://127.0.0.1:8000' 
+            : 'https://halcyon-co.onrender.com';
+            
         const cleanPath = imagePath.replace(/^\/storage\//, '');
-        return `http://127.0.0.1:8000/storage/${cleanPath}`;
+        return `${baseUrl}/storage/${cleanPath}`;
         
       } catch (error) {
         console.error("Erro ao processar imagem:", error);
