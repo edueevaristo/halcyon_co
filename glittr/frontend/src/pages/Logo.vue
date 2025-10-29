@@ -33,16 +33,23 @@ export default {
 
 .logo-container {
   display: flex;
-  height: 48px;
+  height: 80px;
   align-items: center;
+  justify-content: center;
 }
 
 .logo-wrapper {
   display: flex;
-  width: 30px;
-  height: 30px;
+  width: 120px;
+  height: 60px;
   justify-content: center;
   align-items: center;
+}
+
+.logo-wrapper img {
+  width: 100%;
+  height: auto;
+  max-width: 120px;
 }
 
 .logo-image {
