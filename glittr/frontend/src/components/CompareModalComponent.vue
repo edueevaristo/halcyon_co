@@ -1,9 +1,5 @@
 <template>
   <div>
-<!--    <button class="floating-button" @click="store.openModal()">-->
-<!--      <img src="@/assets/icons/judge.svg" alt="">-->
-<!--    </button>-->
-
     <div v-if="store.modalCompare" class="modal-overlay" @click.self="store.closeModal()">
       <div class="modal-content">
         <button class="close-button" @click="store.closeModal()">✕</button>

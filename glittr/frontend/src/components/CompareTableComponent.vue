@@ -1,49 +1,152 @@
 <template>
   <div class="compare-table-wrapper">
-    <table class="compare-table" :class="{ 'winner-left': winner === 0, 'winner-right': winner === 1 }">
-      <thead>
-      <tr>
-        <th></th>
-        <th v-for="(product, index) in 2" :key="product && product.id ? product.id : 'mock-' + index"
-            class="product-header">
+
+    <div v-if="products.length === 2" class="comparison-section">
+
+      <div class="winner-announcement" v-if="winner !== null">
+        <div class="winner-badge">
+          <span class="crown-icon">👑</span>
+          <span class="winner-text">VENCEDOR: {{ products[winner].name }}
+            <br><a :href="products[winner].product_link" target="_blank" style="color: white !important; text-decoration: none;">Clique aqui para ir até a loja</a>
+          </span>
+        </div>
+      </div>
+      
+      <div class="score-comparison">
+        <div class="score-card" :class="{ 'winner': winner === 0, 'loser': winner === 1 }">
+          <div class="product-header">
+            <img :src="products[0].image" alt="Produto" class="product-thumb">
+            <h3 class="product-title">{{ products[0].name }}</h3>
+          </div>
+          
+          <div class="metrics-grid">
+            <div class="metric-item">
+              <div class="metric-icon star-icon">⭐</div>
+              <div class="metric-content">
+                <span class="metric-value">{{ products[0].average_rating || 0 }}</span>
+                <span class="metric-label">{{ products[0].reviews_count }} avaliações</span>
+              </div>
+            </div>
+            
+            <div class="metric-item">
+              <div class="metric-icon heart-icon">❤️</div>
+              <div class="metric-content">
+                <span class="metric-value">{{ products[0].likes_count || 0 }}</span>
+                <span class="metric-label">likes</span>
+              </div>
+            </div>
+            
+            <div class="metric-item">
+              <div class="metric-icon price-icon">💰</div>
+              <div class="metric-content">
+                <span class="metric-value">R$ {{ products[0].price_average || 0 }}</span>
+                <span class="metric-label">preço médio</span>
+              </div>
+            </div>
+            
+            <div class="metric-item">
+              <div class="metric-icon attr-icon">📋</div>
+              <div class="metric-content">
+                <span class="metric-value">{{ (products[0].attributes && Array.isArray(products[0].attributes)) ? products[0].attributes.length : 0 }}</span>
+                <span class="metric-label">atributos</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="final-score">
+            <span class="score-label">Pontuação</span>
+            <span class="score-value">{{ calculateScore(products[0]) }}</span>
+          </div>
+        </div>
+        
+        <div class="vs-separator">
+          <div class="vs-circle">
+            <span class="vs-text">VS</span>
+          </div>
+        </div>
+        
+        <div class="score-card" :class="{ 'winner': winner === 1, 'loser': winner === 0 }">
+          <div class="product-header">
+            <img :src="products[1].image" alt="Produto" class="product-thumb">
+            <h3 class="product-title">{{ products[1].name }}</h3>
+          </div>
+          
+          <div class="metrics-grid">
+            <div class="metric-item">
+              <div class="metric-icon star-icon">⭐</div>
+              <div class="metric-content">
+                <span class="metric-value">{{ products[1].average_rating || 0 }}</span>
+                <span class="metric-label">{{ products[1].reviews_count }} avaliações</span>
+              </div>
+            </div>
+            
+            <div class="metric-item">
+              <div class="metric-icon heart-icon">❤️</div>
+              <div class="metric-content">
+                <span class="metric-value">{{ products[1].likes_count || 0 }}</span>
+                <span class="metric-label">likes</span>
+              </div>
+            </div>
+            
+            <div class="metric-item">
+              <div class="metric-icon price-icon">💰</div>
+              <div class="metric-content">
+                <span class="metric-value">R$ {{ products[1].price_average || 0 }}</span>
+                <span class="metric-label">preço médio</span>
+              </div>
+            </div>
+            
+            <div class="metric-item">
+              <div class="metric-icon attr-icon">📋</div>
+              <div class="metric-content">
+                <span class="metric-value">{{ (products[1].attributes && Array.isArray(products[1].attributes)) ? products[1].attributes.length : 0 }}</span>
+                <span class="metric-label">atributos</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="final-score">
+            <span class="score-label">Pontuação</span>
+            <span class="score-value">{{ calculateScore(products[1]) }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="compare-container">
+      <div class="products-header">
+        <div class="attribute-column-header"></div>
+        <div v-for="(product, index) in 2" :key="product && product.id ? product.id : 'mock-' + index" class="product-column-header">
           <template v-if="products[index] && products[index].name">
             <img :src="products[index].image" alt="Imagem do produto" class="product-image"/>
             <div class="product-name">{{ products[index].name }}</div>
             <button @click="removeProduct(index)" class="remove-btn">✖</button>
           </template>
           <template v-else-if="index === 1 && initialProduct">
-            <div class="product-image"
-                 style="background:#f3e6f9;height:90px;width:90px;border-radius:8px;margin:0 auto 8px auto;"></div>
-            <Select
-                :options="availableProducts"
-                :placeholder="'Selecione para comparar'"
-                @update:modelValue="selectSecondProduct"
-            />
+            <div class="product-image" style="background:#f3e6f9;height:90px;width:90px;border-radius:8px;margin:0 auto 8px auto;"></div>
+            <Select :options="availableProducts" :placeholder="'Selecione para comparar'" @update:modelValue="selectSecondProduct"/>
           </template>
           <template v-else>
-            <div class="product-image"
-                 style="background:#f3e6f9;height:90px;width:90px;border-radius:8px;margin:0 auto 8px auto;"></div>
+            <div class="product-image" style="background:#f3e6f9;height:90px;width:90px;border-radius:8px;margin:0 auto 8px auto;"></div>
           </template>
-        </th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr v-for="(label, key) in allAttributes" :key="key">
-        <td class="attribute-label">{{ label }}</td>
-        <td v-for="(product, idx) in products" :key="'attr-' + key + '-' + idx" class="attribute-value">
-          <template v-if="product && product.attributes">
-            <span v-if="isIngredient(key)" class="ingredients">{{
-                formatAttributeValue(getAttributeValue(product.attributes, key)) || '-'
-              }}</span>
-            <span v-else>{{ formatAttributeValue(getAttributeValue(product.attributes, key)) || '-' }}</span>
-          </template>
-          <template v-else>
-            <span style="color:#bbb;">-</span>
-          </template>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+        </div>
+      </div>
+      
+      <div class="attributes-container">
+        <div v-for="(label, key) in allAttributes" :key="key" class="attribute-row">
+          <div class="attribute-label">{{ label }}</div>
+          <div v-for="(product, idx) in products" :key="'attr-' + key + '-' + idx" class="attribute-value">
+            <template v-if="product && product.attributes">
+              <span v-if="isIngredient(key)" class="ingredients">{{ formatAttributeValue(getAttributeValue(product.attributes, key)) || '-' }}</span>
+              <span v-else>{{ formatAttributeValue(getAttributeValue(product.attributes, key)) || '-' }}</span>
+            </template>
+            <template v-else>
+              <span style="color:#bbb;">-</span>
+            </template>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -74,14 +177,19 @@ const formatForSelect = (product) => ({
 const getProductImage = (product) => {
   if (!product.image_path) return ''
 
+  const hostname = window.location.hostname;
+  const baseUrl = (hostname === 'localhost' || hostname === '127.0.0.1') 
+      ? 'http://127.0.0.1:8000' 
+      : 'https://halcyon-co.onrender.com';
+
   if (Array.isArray(product.image_path)) {
     const firstImage = product.image_path[0]
-    return firstImage.startsWith('http') ? firstImage : `http://127.0.0.1:8000${firstImage.replace(/^\/storage\//, '')}`
+    return firstImage.startsWith('http') ? firstImage : `${baseUrl}/storage/${firstImage.replace(/^\/storage\//, '')}`
   }
 
   return product.image_path.startsWith('http')
       ? product.image_path
-      : `http://127.0.0.1:8000${product.image_path.replace(/^\/storage\//, '')}`
+      : `${baseUrl}/storage/${product.image_path.replace(/^\/storage\//, '')}`
 }
 
 const loadAvailableProducts = async (categoryId, excludeId) => {
@@ -106,7 +214,12 @@ const selectSecondProduct = async (productId) => {
         id: product.id,
         name: product.product_name || product.name,
         image: getProductImage(product),
-        attributes: product.attributes
+        attributes: product.attributes,
+        average_rating: product.average_rating || 0,
+        likes_count: product.likes_count || 0,
+        reviews_count: product.reviews_count || 0,
+        price_average: product.price_average || 0,
+        product_link: product.product_link
       }]
     }
   } catch (e) {
@@ -128,7 +241,12 @@ watch(() => props.initialProduct, (newVal) => {
       id: newVal.id,
       name: newVal.product_name || newVal.name,
       image: getProductImage(newVal),
-      attributes: newVal.attributes
+      attributes: newVal.attributes,
+      average_rating: newVal.average_rating || 0,
+      likes_count: newVal.likes_count || 0,
+      reviews_count: newVal.reviews_count || 0,
+      price_average: newVal.price_average || 0,
+      product_link: newVal.product_link
     }]
     categoryId.value = newVal.category.id
     loadAvailableProducts(newVal.category.id, newVal.id)
@@ -144,6 +262,9 @@ const isIngredient = (key) => {
 const formatAttributeValue = (value) => {
   if (value === true) return 'SIM';
   if (value === false) return 'NÃO';
+  if (typeof value === 'string') {
+    return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+  }
   return value
 }
 
@@ -152,20 +273,30 @@ const getAttributeValue = (attributes, name) => {
   return attr ? attr.value : null
 }
 
+const calculateScore = (product) => {
+  if (!product) return 0
+  const rating = product.average_rating || 0
+  const likes = product.likes_count || 0
+  const reviews = product.reviews_count || 0
+  const attributes = (product.attributes && Array.isArray(product.attributes)) ? product.attributes.length : 0
+  const price = product.price_average || 0
+  
+
+  const priceBonus = price > 0 ? Math.max(0, (100 - price) * 0.1) : 0
+  return Math.round((rating * 3) + (likes * 0.1) + (reviews * 0.8) + (attributes * 0.5) + priceBonus)
+}
+
 const determineWinner = () => {
   if (products.value.length < 2) {
     winner.value = null
     return
   }
 
-  const product1 = products.value[0]
-  const product2 = products.value[1]
+  const score1 = calculateScore(products.value[0])
+  const score2 = calculateScore(products.value[1])
 
-  const count0 = (product1?.attributes && Array.isArray(product1.attributes)) ? product1.attributes.length : 0
-  const count1 = (product2?.attributes && Array.isArray(product2.attributes)) ? product2.attributes.length : 0
-
-  if (count0 > count1) winner.value = 0
-  else if (count1 > count0) winner.value = 1
+  if (score1 > score2) winner.value = 0
+  else if (score2 > score1) winner.value = 1
   else winner.value = null
 }
 
@@ -205,7 +336,8 @@ const allAttributes = computed(() => {
       })
 
   return Array.from(allKeys).reduce((acc, key) => {
-    acc[key] = labels[key] || key
+    const label = labels[key] || key
+    acc[key] = typeof label === 'string' ? label.charAt(0).toUpperCase() + label.slice(1) : label
     return acc
   }, {})
 })
@@ -224,91 +356,322 @@ onMounted(async () => {
   padding: 16px;
 }
 
-.compare-table {
+.comparison-section {
+  margin-bottom: 32px;
+}
+
+.winner-announcement {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.winner-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #ED008C 0%, #E10CFF 100%);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 16px;
+  box-shadow: 0 8px 32px rgba(237, 0, 140, 0.3);
+  animation: pulse 2s infinite;
+  margin-bottom: 16px;
+}
+
+
+
+.winner-link {
+  margin-top: 8px;
+  font-size: 12px;
+}
+
+.product-link {
+  color: white !important;
+  text-decoration: underline;
+  font-size: 12px;
+  word-break: break-all;
+  transition: opacity 0.2s ease;
+}
+
+.product-link:hover {
+  opacity: 0.8;
+}
+
+.product-link:visited {
+  color: white !important;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.crown-icon {
+  font-size: 20px;
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-8px); }
+  60% { transform: translateY(-4px); }
+}
+
+.score-comparison {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 24px;
+  align-items: stretch;
+}
+
+.score-card {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border: 2px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 24px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
+}
+
+.score-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #ED008C 0%, #E10CFF 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.score-card.winner {
+  background: linear-gradient(135deg, #fef7ff 0%, #ffffff 100%);
+  border-color: #ED008C;
+  box-shadow: 0 20px 40px rgba(237, 0, 140, 0.15);
+  transform: translateY(-4px);
+}
+
+.score-card.winner::before {
+  opacity: 1;
+}
+
+.score-card.loser {
+  opacity: 0.8;
+  transform: translateY(2px);
+}
+
+.product-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.product-thumb {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  object-fit: cover;
+  border: 2px solid #f1f5f9;
+}
+
+.product-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1e293b;
+  line-height: 1.3;
+  text-align: center;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex: 1;
+}
+
+.metric-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  background: #f8fafc;
+  border-radius: 12px;
+  transition: background-color 0.2s ease;
+}
+
+.metric-item:hover {
+  background: #f1f5f9;
+}
+
+.metric-icon {
+  font-size: 18px;
+  width: 24px;
+  text-align: center;
+}
+
+.metric-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.metric-value {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.metric-label {
+  font-size: 11px;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.final-score {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border-radius: 12px;
+  margin-top: auto;
+}
+
+.score-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.score-value {
+  font-size: 28px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #ED008C 0%, #E10CFF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.vs-separator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vs-circle {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #ED008C 0%, #E10CFF 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 32px rgba(237, 0, 140, 0.3);
+  position: relative;
+}
+
+.vs-circle::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  background: white;
+  border-radius: 50%;
+}
+
+.vs-text {
+  font-size: 18px;
+  font-weight: 800;
+  color: #ED008C;
+  position: relative;
+  z-index: 1;
+}
+
+.compare-container {
   width: 100%;
-  border-collapse: collapse;
   border: 1px solid #e5e5e5;
   border-radius: 12px;
   overflow: hidden;
   background: #fff;
   font-family: sans-serif;
-  transition: all 0.3s ease;
 }
 
-.compare-table.winner-left th:nth-child(2) {
-  position: relative;
-
+.products-header {
+  display: grid;
+  grid-template-columns: 200px 1fr 1fr;
+  background-color: #f8fafc;
+  border-bottom: 2px solid #e5e5e5;
 }
 
-.compare-table.winner-left th:nth-child(2)::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 208px !important;
-  border: 3px solid #ED008C;
-  border-radius: 8px;
-  pointer-events: none;
-  z-index: 1;
+.attribute-column-header {
+  padding: 16px;
 }
 
-.compare-table.winner-right th:nth-child(3) {
-  position: relative;
-}
-
-.compare-table.winner-right th:nth-child(3)::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 208px !important;
-  border: 3px solid #ED008C;
-  border-radius: 8px;
-  pointer-events: none;
-  z-index: 1;
-}
-
-thead th {
-  background-color: #fff;
+.product-column-header {
+  padding: 16px;
   text-align: center;
-  padding: 16px;
-}
-
-.product-header {
-  vertical-align: top;
-  padding: 16px;
-  position: relative;
+  border-left: 1px solid #e5e5e5;
 }
 
 .product-image {
   height: 90px;
-  margin-bottom: 8px;
+  width: 90px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin: 0 auto 8px;
+  display: block;
 }
 
 .product-name {
   font-weight: 600;
   color: #333;
+  margin-bottom: 8px;
+}
+
+.attributes-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.attribute-row {
+  display: grid;
+  grid-template-columns: 200px 1fr 1fr;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.attribute-row:last-child {
+  border-bottom: none;
 }
 
 .attribute-label {
   font-weight: 600;
   color: #e91e63;
-  text-align: left;
   padding: 12px 16px;
-  border-top: 1px solid #eee;
-  width: 30%;
-  vertical-align: top;
+  background: #fafafa;
+  border-right: 1px solid #e5e5e5;
 }
 
 .attribute-value {
   padding: 12px 16px;
   text-align: center;
-  border-top: 1px solid #eee;
   color: #444;
-  vertical-align: top;
-  position: relative;
+  border-left: 1px solid #f0f0f0;
 }
 
 .ingredients {
@@ -320,12 +683,89 @@ thead th {
 
 .remove-btn {
   background-color: #e91e63;
+  color: white;
+  border: none;
+  border-radius: 4px;
   height: 30px;
-  align-items: center;
-  text-align: center;
-  padding: auto;
+  width: 30px;
   display: flex;
+  align-items: center;
   justify-content: center;
-  margin: 0 auto;
+  margin: 8px auto 0;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.remove-btn:hover {
+  background-color: #c2185b;
+}
+
+@media (max-width: 480px) {
+  .score-comparison {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .vs-separator {
+    order: 2;
+  }
+  
+  .vs-circle {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .vs-text {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 640px) {
+  .score-card {
+    padding: 20px;
+    min-height: auto;
+  }
+  
+  .metrics-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .product-thumb {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .product-title {
+    font-size: 14px;
+  }
+  
+  .winner-announcement {
+    padding: 16px;
+    margin-bottom: 24px;
+  }
+  
+  .winner-badge {
+    font-size: 14px;
+    padding: 12px 20px;
+    margin-bottom: 12px;
+  }
+  
+  .buy-winner-btn {
+    font-size: 12px;
+    padding: 10px 16px;
+  }
+  
+  .final-score {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+  }
+  
+  .score-value {
+    font-size: 24px;
+  }
+  
+
 }
 </style>

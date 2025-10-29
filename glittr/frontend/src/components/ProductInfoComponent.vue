@@ -3,11 +3,11 @@
     <section class="product-title-and-compare-button">
       <h1 class="title-product">{{ product.product.product_name }}</h1>
       <div class="product-actions">
-        <button v-if="isLoggedIn" @click="toggleProductLike" class="like-product-button" :class="{ 'liked': product.product.is_liked }">
+        <button v-if="isLoggedIn && isAuthorized" @click="toggleProductLike" class="like-product-button" :class="{ 'liked': product.product.is_liked }">
           <span v-html="product.product.is_liked ? heartIconLiked : heartIcon"></span>
           <span>{{ product.product.likes_count || 0 }}</span>
         </button>
-        <button class="compare-button">
+        <button @click="openCompareModal" class="compare-button">
           <img src="@/assets/icons/balance-compare.svg" alt="Comparar produto">
           <span class="button-text-compare">Comparar produto</span>
         </button>
@@ -98,7 +98,7 @@
           <div class="product-feedback-add">
 
 
-            <button v-if="isLoggedIn" class="product-feedback-button-add" @click="openModalAvaliation">
+            <button v-if="isLoggedIn && isAuthorized" class="product-feedback-button-add" @click="openModalAvaliation">
               <img src="@/assets/icons/icon-conversation.svg" class="product-feedback-button-icon"
                    alt="Icone de conversa">
               <span class="product-feedback-button-text">Adicionar avaliação</span>
@@ -134,6 +134,8 @@ import FeedbackComponent from "@/components/FeedbackComponent.vue";
 import AvaliationModalComponent from "./AvaliationModalComponent.vue";
 import PostReviewDataService from "@/services/PostReviewDataService.js";
 import {showGlittrModal} from "@/stores/useSweetAlertGlittr.js";
+import {useCompareStore} from "@/stores/useCompareStore.js";
+import {isAuthorizedUser} from "@/utils/auth.js";
 import arrowUpIcon from "@/assets/icons/arrow-up.svg";
 import arrowDownIcon from "@/assets/icons/arrow-down.svg";
 
@@ -162,6 +164,7 @@ export default {
       feedbackSectionOpen: true,
       isRotating: false,
       isLoggedIn: localStorage.getItem('token') !== null,
+      isAuthorized: isAuthorizedUser(),
       heartIcon: `
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#757575"/>
@@ -177,7 +180,6 @@ export default {
   mounted() {
     this.review.product_id = this.product.product.id;
     this.fetchReviews();
-    console.log('Produto montado:', this.product.product.id);
   },
   setup() {
     const avaliationModal = ref(null);
@@ -240,42 +242,23 @@ export default {
     },
     getProductImage() {
       if (this.product?.product?.image_path && this.product.product.image_path.length > 0) {
-
         const imagePath = this.product.product.image_path[0];
-
         if (imagePath.startsWith('http')) {
-
           return imagePath;
-
         }
-
         const hostname = window.location.hostname;
         const baseUrl = (hostname === 'localhost' || hostname === '127.0.0.1') 
             ? 'http://127.0.0.1:8000' 
             : 'https://halcyon-co.onrender.com';
-            
         return `${baseUrl}/storage/${imagePath.replace(/^\/storage\//, '')}`;
-
       }
-
       return '@/assets/images/product-test.png';
-
     },
     async fetchReviews() {
-
       try {
-
         const response = await PostReviewDataService.getAllForProduct(this.product.product.id);
-        console.log('Reviews carregadas com propriedades:', response.data.map(r => ({
-          id: r.id, 
-          can_like: r.can_like, 
-          is_liked: r.is_liked, 
-          likes_count: r.likes_count
-        })));
         this.reviews = response.data;
-
       } catch (error) {
-
         console.error(error);
       }
     },
@@ -305,6 +288,11 @@ export default {
       } catch (error) {
         console.error('Erro ao dar like no produto:', error);
       }
+    },
+    
+    openCompareModal() {
+      const compareStore = useCompareStore();
+      compareStore.openModal(this.product.product.id);
     },
   },
 };

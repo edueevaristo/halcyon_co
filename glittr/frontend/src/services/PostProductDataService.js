@@ -17,11 +17,11 @@ class PostProductDataService {
         }
     }
 
-    async getAll() {
+    async getAll(page = 1, perPage = 12) {
 
         try {
 
-            return await http.get("/products");
+            return await http.get(`/products?page=${page}&per_page=${perPage}`);
 
         } catch (error) {
 

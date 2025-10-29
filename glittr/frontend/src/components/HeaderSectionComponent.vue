@@ -13,12 +13,12 @@
       </div>
 
       <!-- Menu normal desktop -->
-      <div v-if="isLoggedIn" class="user-actions desktop-only">
+      <div v-if="isLoggedIn && isAuthorized" class="user-actions desktop-only">
         <ul class="nav-links">
           <RouterLink to="/landing" class="link-style"><li>O que é a Glittr?</li></RouterLink>
           <RouterLink to="/" class="link-style"><li>Comparador</li></RouterLink>
           <RouterLink to="/" class="link-style"><li>Produtos</li></RouterLink>
-          <AddProduct v-if="isLoggedIn" @click="addProdutos" />
+          <AddProduct v-if="isLoggedIn && isAuthorized" @click="addProdutos" />
         </ul>
 
         <div class="profile-dropdown">
@@ -42,8 +42,6 @@
       <div v-else class="guest-actions desktop-only">
         <ul class="nav-links">
           <RouterLink to="/landing" class="link-style"><li>O que é a Glittr?</li></RouterLink>
-          <RouterLink to="/" class="link-style"><li>Comparador</li></RouterLink>
-          <RouterLink to="/" class="link-style"><li>Produtos</li></RouterLink>
         </ul>
 
         <RouterLink to="/presentation" class="CTA-Login">
@@ -59,12 +57,10 @@
       <div v-if="showMobileMenu" class="mobile-menu">
         <ul class="nav-links">
           <RouterLink to="/landing" class="link-style"><li>O que é a Glittr?</li></RouterLink>
-          <li>Comparador</li>
-          <RouterLink to="/" class="link-style"><li>Produtos</li></RouterLink>
         </ul>
 
-        <div v-if="isLoggedIn">
-          <AddProduct v-if="isLoggedIn && showMobileMenu" :hide-button="true" />
+        <div v-if="isLoggedIn && isAuthorized">
+          <AddProduct v-if="isLoggedIn && isAuthorized && showMobileMenu" :hide-button="true" />
 
           <div class="profile-dropdown">
             <span class="user-profile" @click="toggleDropdown">
@@ -114,6 +110,7 @@ export default {
       showMobileMenu: false,
       userName: "Usuário",
       userProfileImage: null,
+      isAuthorized: false,
       loginIcon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z" fill="white"/><path d="M12 14C7.58172 14 4 17.5817 4 22H20C20 17.5817 16.4183 14 12 14Z" fill="white"/></svg>',
       logoIcon: LogoIcon
     };
@@ -139,10 +136,8 @@ export default {
           const response = await PostUserDataService.getUser(token);
           const user = response.data.me;
           
-          console.log('Dados do usuário:', user);
-          console.log('Profile image URL original:', user.profile_image_url);
-          
           this.userName = user.name.split(' ')[0];
+          this.isAuthorized = user.is_authorized || false;
           
 
           if (user.profile_image_url) {

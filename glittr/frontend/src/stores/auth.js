@@ -11,7 +11,7 @@ export const useAuth = defineStore('auth', () => {
     localStorage.setItem('token', tokenValue);
     token.value = tokenValue;
 
-    console.log(token.value);
+
   }
 
   function setUser(userValue) {
@@ -37,7 +37,7 @@ export const useAuth = defineStore('auth', () => {
       });
       return data;
     } catch (error) {
-      console.log(error);
+
     }
   }
 
