@@ -96,8 +96,8 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  width: 90%;
-  padding: 0 9px;
+  width: 100%;
+  align-items: center;
 }
 
 .login-button {
@@ -111,7 +111,8 @@ export default {
   border: none;
   cursor: pointer;
   margin: 0;
-  width: 428px;
+  width: 100%;
+  max-width: 400px;
 }
 
 .button-text {

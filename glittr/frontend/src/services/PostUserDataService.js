@@ -18,8 +18,16 @@ class PostUserDataService {
     }
 
     update(data) {
-
         return http.put("/User", data)
+    }
+
+    updateProfile(formData) {
+        return http.post("/profile/update", formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                Authorization: "Bearer " + localStorage.getItem("token")
+            }
+        })
     }
 
 }

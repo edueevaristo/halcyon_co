@@ -90,7 +90,7 @@ export default {
 .login-container {
   display: flex;
   width: 448px;
-  max-width: 100%;
+  max-width: 90%;
   flex-direction: column;
   align-items: center;
   border-radius: 16px;
@@ -115,8 +115,7 @@ export default {
   justify-content: center;
   align-items: center;
   padding: 24px;
-  width: 428px;
-  max-width: 428px;
+  width: 100%;
   text-align: center;
 }
 

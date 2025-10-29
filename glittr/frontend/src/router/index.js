@@ -6,6 +6,7 @@ import Presentation from "../pages/Presentation.vue";
 import LandingPage from "../pages/LandingPage.vue";
 import ProductInfo from "../pages/ProductInfo.vue";
 import Register from "../pages/Register.vue";
+import Profile from "../pages/Profile.vue";
 import {isAuthorizedUser} from "../utils/auth.js";
 
 const routes = [
@@ -50,6 +51,18 @@ const routes = [
         path: '/product/:id',
         name: 'product',
         component: ProductInfo,
+        beforeEnter: (to, from, next) => {
+            if (!localStorage.getItem('token') || !isAuthorizedUser()) {
+                next('/landing');
+            } else {
+                next();
+            }
+        }
+    },
+    {
+        path: '/profile',
+        name: 'Profile',
+        component: Profile,
         beforeEnter: (to, from, next) => {
             if (!localStorage.getItem('token') || !isAuthorizedUser()) {
                 next('/landing');

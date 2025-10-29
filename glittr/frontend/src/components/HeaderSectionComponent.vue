@@ -33,7 +33,7 @@
             <img src="@/assets/icons/chevron-down.svg" alt="Abrir menu"/>
           </span>
           <ul v-if="showDropdown" class="dropdown-menu">
-            <!--<li @click="goToProfile"> 👤 Ver perfil</li>-->
+            <li @click="goToProfile"> 👤 Ver perfil</li>
             <li @click="handleLogout"> 👋 Sair</li>
           </ul>
         </div>
@@ -74,7 +74,7 @@
               <img src="@/assets/icons/chevron-down.svg" alt="Abrir menu"/>
             </span>
             <ul v-if="showDropdown" class="dropdown-menu">
-                <!--<li @click="goToProfile"> 👤 Ver perfil</li>-->
+              <li @click="goToProfile"> 👤 Ver perfil</li>
               <li @click="handleLogout"> 👋 Sair</li>
             </ul>
           </div>
@@ -176,6 +176,8 @@ export default {
     },
     async handleLogout() {
       try {
+        this.showDropdown = false;
+        this.showMobileMenu = false;
 
         localStorage.removeItem('token');
         localStorage.removeItem('user');
@@ -183,14 +185,11 @@ export default {
         localStorage.removeItem('email');
 
         this.isLoggedIn = false;
-        this.showDropdown = false;
-        this.showMobileMenu = false;
         this.userProfileImage = null;
 
         this.$router.push('/login');
 
       } catch (error) {
-
         console.error('Erro ao fazer logout:', error);
       }
     },
@@ -202,6 +201,8 @@ export default {
       this.showDropdown = false;
     },
     goToProfile() {
+      this.showDropdown = false;
+      this.showMobileMenu = false;
       this.$router.push('/profile');
     },
     login() {
@@ -229,6 +230,7 @@ export default {
   background-color: #141414;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   box-sizing: border-box;
+  overflow: visible;
 }
 
 .header-container {
@@ -237,6 +239,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   background-color: #141414;
+  overflow: visible;
 }
 
 .logo-container {
@@ -297,6 +300,7 @@ export default {
   gap: 30px;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 
 .CTA-Login {
@@ -342,6 +346,7 @@ li:hover {
 .profile-dropdown {
   position: relative;
   cursor: pointer;
+  z-index: 1000;
 }
 
 .user-profile {
@@ -365,19 +370,20 @@ li:hover {
 }
 
 .dropdown-menu {
-  position: absolute;
-  top: 100%;
-  right: 0;
+  position: fixed;
+  top: 70px;
+  right: 40px;
   background-color: #fff;
   color: #000;
   border: 1px solid #ccc;
   border-radius: 8px;
   list-style: none;
-  margin-top: 8px;
+  margin: 0;
   padding: 8px 0;
-  z-index: 1000;
+  z-index: 9999;
   min-width: 160px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
 }
 
 .dropdown-menu li {

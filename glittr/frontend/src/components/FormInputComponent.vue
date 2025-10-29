@@ -109,6 +109,12 @@ export default {
   color: #64748b;
   font-family: Ubuntu, sans-serif;
   font-size: 14px;
+  outline: none;
+}
+
+.form-input:focus {
+  border-color: rgba(225, 12, 255, 0.5);
+  outline: none;
 }
 
 .icon-wrapper {
