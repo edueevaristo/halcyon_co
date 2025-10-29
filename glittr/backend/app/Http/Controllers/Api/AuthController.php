@@ -104,4 +104,29 @@ class AuthController extends Controller
             'me' => $user,
         ]);
     }
+
+    public function updateProfile(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+        ]);
+
+        $user = $request->user();
+        $user->name = $request->name;
+
+        if ($request->hasFile('profile_image')) {
+            if ($user->profile_image) {
+                Storage::disk('public')->delete($user->profile_image);
+            }
+            $user->profile_image = $request->file('profile_image')->store('profile_images', 'public');
+        }
+
+        $user->save();
+
+        return response()->json([
+            'message' => 'Perfil atualizado com sucesso!',
+            'user' => $user
+        ]);
+    }
 }
