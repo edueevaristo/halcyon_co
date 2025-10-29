@@ -47,6 +47,7 @@ export default {
       type: Number,
       default: 0
     },
+
   },
   data() {
     return {
@@ -60,6 +61,7 @@ export default {
     };
   },
   methods: {
+
     openCompareModal() {
       const store = useCompareStore()
       store.openModal(this.id)

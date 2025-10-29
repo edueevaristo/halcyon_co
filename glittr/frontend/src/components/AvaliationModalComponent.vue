@@ -72,7 +72,7 @@ const clearForm = () => {
 
 const submitReview = () => {
   emit("submitReview", review.value);
-  console.log("Avaliação enviada:", review.value);
+
   closeModal();
 };
 

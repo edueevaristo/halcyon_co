@@ -214,10 +214,7 @@ const handleSubmit = async () => {
       });
     }
 
-    console.log('Dados do formulário:');
-    for (let [key, value] of formData.entries()) {
-      console.log(key, value);
-    }
+
 
     const apiCall = editing.value
         ? () => PostProductDataService.update(productId.value, formData)
@@ -320,9 +317,6 @@ const removeImage = (index) => {
     imagePreviews.value.splice(index, 1);
     form.value.image_files.splice(index, 1);
 
-  } else {
-
-    console.error(`Índice de imagem inválido: ${index}`);
   }
 
 };

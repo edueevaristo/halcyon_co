@@ -146,10 +146,7 @@
             <h4 class="text-footer-link"><a href="#">Plataforma</a></h4>
             <h4 class="text-footer-link"><a class="como-funciona-footer" @click="scrollToHowItWorks">Como funciona</a></h4>
           </div>
-          <div class="footer-section">
-            <h4 class="text-footer-link"><a href="#">Comparador</a></h4>
-            <h4 class="text-footer-link"><a href="#">Produtos</a></h4>
-          </div>
+
           <div class="footer-section">
             <h4 class="text-footer-link"><a href="#">A Empresa</a></h4>
             <h4 class="text-footer-link"><a href="#">Fale conosco</a></h4>
