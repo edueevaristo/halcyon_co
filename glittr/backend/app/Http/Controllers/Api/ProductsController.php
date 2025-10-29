@@ -14,9 +14,6 @@ use Log;
 
 class ProductsController extends Controller
 {
-    /**
-     * @throws ValidationException
-     */
     protected function validateImageFiles(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -25,7 +22,6 @@ class ProductsController extends Controller
         ]);
 
         if ($validator->fails()) {
-
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
@@ -37,14 +33,11 @@ class ProductsController extends Controller
         $imagePaths = [];
 
         if ($product && $product->image_path) {
-
             $imagePaths = json_decode($product->image_path, true) ?? [];
         }
 
         if ($request->hasFile('image_files')) {
-
             foreach ($request->file('image_files') as $image) {
-
                 $path = $image->store('products', 'public');
                 $imagePaths[] = Storage::url($path);
             }
@@ -56,15 +49,10 @@ class ProductsController extends Controller
     protected function deleteRemovedImages(Request $request, $currentImages)
     {
         if ($request->has('removed_images')) {
-
             $removedImages = json_decode($request->removed_images, true) ?? [];
-
             foreach ($removedImages as $imageUrl) {
-
                 $path = str_replace('/storage/', '', parse_url($imageUrl, PHP_URL_PATH));
                 Storage::disk('public')->delete($path);
-
-
                 $currentImages = array_filter($currentImages, function ($img) use ($imageUrl) {
                     return $img !== $imageUrl;
                 });
@@ -74,9 +62,6 @@ class ProductsController extends Controller
         return array_values($currentImages);
     }
 
-    /**
-     * @throws ValidationException
-     */
     public function insert(Request $request)
     {
         $validated = $request->validate([
@@ -93,61 +78,42 @@ class ProductsController extends Controller
         ]);
 
         if ($request->has('image_path') && is_array($request->image_path)) {
-
             $imagePaths = $request->image_path;
-
         } else {
-
             $imageValidation = $this->validateImageFiles($request);
-
             if ($imageValidation instanceof JsonResponse) {
-
                 return $imageValidation;
             }
-
             $imagePaths = $this->storeImages($request);
         }
 
         $attributes = [];
 
         if (!empty($validated['attributes'])) {
-
             if (is_string($validated['attributes'])) {
-
                 try {
                     $attributes = json_decode($validated['attributes'], true);
-
                 } catch (Exception $e) {
-
                     Log::error('Falha ao decodificar JSON de atributos', [
                         'error' => $e->getMessage(),
                         'attributes' => $validated['attributes']
                     ]);
-
                 }
-
             } elseif (is_array($validated['attributes'])) {
-
                 $attributes = $validated['attributes'];
             }
-
         }
 
         $validatedAttributes = [];
 
         if (!empty($attributes)) {
-
             foreach ($attributes as $attr) {
-
                 if (isset($attr['value']['name']) && is_array($attr['value'])) {
-
                     $validatedAttributes[] = [
                         'name' => $attr['value']['name'],
                         'value' => $attr['value']['value']
                     ];
-
                 } else {
-
                     $validatedAttributes[] = [
                         'name' => $attr['name'],
                         'value' => $attr['value']
@@ -170,9 +136,6 @@ class ProductsController extends Controller
         ], 201);
     }
 
-    /**
-     * @throws ValidationException
-     */
     public function update(Request $request)
     {
         $request->validate([
@@ -195,11 +158,8 @@ class ProductsController extends Controller
         ]);
 
         if ($request->has('image_path') && is_array($request->image_path)) {
-
             $imagePaths = $request->image_path;
-
         } else {
-
             $this->validateImageFiles($request);
             $imagePaths = $this->storeImages($request, $product);
             $imagePaths = $this->deleteRemovedImages($request, $imagePaths);
@@ -208,25 +168,19 @@ class ProductsController extends Controller
         $attributes = $request->input('attributes') ?? [];
 
         if (is_string($attributes)) {
-
             $attributes = json_decode($attributes, true) ?? [];
         }
 
         $validatedAttributes = [];
 
         if (!empty($attributes)) {
-
             foreach ($attributes as $attr) {
-
                 if (isset($attr['value']['name']) && is_array($attr['value'])) {
-
                     $validatedAttributes[] = [
                         'name' => $attr['value']['name'],
                         'value' => $attr['value']['value']
                     ];
-
                 } else {
-
                     $validatedAttributes[] = [
                         'name' => $attr['name'],
                         'value' => $attr['value']
@@ -248,23 +202,27 @@ class ProductsController extends Controller
         ], 200);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::with(['category', 'subcategory'])->get();
+        $perPage = $request->get('per_page', 12);
+        $products = Product::with(['category', 'subcategory'])->paginate($perPage);
 
         return response()->json([
-            'data' => $products->map(function ($product) {
+            'data' => $products->getCollection()->map(function ($product) {
                 return $this->formatProductResponse($product);
-            })
+            }),
+            'current_page' => $products->currentPage(),
+            'last_page' => $products->lastPage(),
+            'per_page' => $products->perPage(),
+            'total' => $products->total()
         ], 200);
     }
 
     public function show($id)
     {
-        $product = Product::with(['category', 'subcategory'])->find($id);
+        $product = Product::with(['category', 'subcategory', 'reviews'])->find($id);
 
         if (!$product) {
-
             return response()->json([
                 'message' => 'Produto não encontrado.'
             ], 404);
@@ -303,6 +261,8 @@ class ProductsController extends Controller
     protected function formatProductResponse($product)
     {
         $userId = auth('sanctum')->id();
+        $reviews = $product->reviews;
+        $avgRating = $reviews->avg('stars') ?? 0;
 
         return [
             'id' => $product->id,
@@ -319,6 +279,7 @@ class ProductsController extends Controller
             'likes_count' => $product->likes()->count(),
             'is_liked' => $userId ? $product->isLikedBy($userId) : false,
             'reviews_count' => $product->reviews()->count(),
+            'average_rating' => round($avgRating, 1),
             'created_at' => $product->created_at,
             'updated_at' => $product->updated_at,
         ];

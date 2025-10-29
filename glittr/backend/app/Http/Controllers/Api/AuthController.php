@@ -26,7 +26,6 @@ class AuthController extends Controller
         $profileImagePath = null;
 
         if ($request->hasFile('profile_image')) {
-
             $profileImagePath = $request->file('profile_image')->store('profile_images', 'public');
         }
 
@@ -47,15 +46,25 @@ class AuthController extends Controller
         return response($response, 201);
     }
 
-    /**
-     * @throws ValidationException
-     */
     public function login(Request $request)
     {
+        $authorizedEmails = [
+            'eduardo.evaristo@glittr.com.br',
+            'amanda.vieira@glittr.com.br',
+            'joao.pedro@glittr.com.br',
+            'jenifer.goncalves@glittr.com.br',
+            'daniel.oliveira@glittr.com.br'
+        ];
+        
+        if (!in_array($request->email, $authorizedEmails)) {
+            throw ValidationException::withMessages([
+                'email' => ['Este e-mail não tem autorização para acessar o sistema.']
+            ]);
+        }
+
         $user = User::where('email', $request->email)->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
-
             throw ValidationException::withMessages([
                 'email' => ['O e-mail ou senha estão incorretos. Verifique suas credenciais e tente novamente.']
             ]);
@@ -72,7 +81,7 @@ class AuthController extends Controller
         $request->user()->tokens()->delete();
 
         return response()->json([
-            'message' => 'success',
+            'message' => 'Logout realizado com sucesso',
         ]);
     }
 
@@ -80,6 +89,16 @@ class AuthController extends Controller
     {
         $user = $request->user();
         $user->profile_image_url = $user->profile_image_url;
+        
+        $authorizedEmails = [
+            'eduardo.evaristo@glittr.com.br',
+            'amanda.vieira@glittr.com.br',
+            'joao.pedro@glittr.com.br',
+            'jenifer.goncalves@glittr.com.br',
+            'daniel.oliveira@glittr.com.br'
+        ];
+        
+        $user->is_authorized = in_array($user->email, $authorizedEmails);
 
         return response()->json([
             'me' => $user,
