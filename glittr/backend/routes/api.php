@@ -15,6 +15,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [AuthController::class, 'me']);
     Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/profile/update', [AuthController::class, 'updateProfile'])->middleware('authorized');
 });
 
 Route::middleware(['auth:sanctum', 'authorized'])->prefix('products')->group(function () {
