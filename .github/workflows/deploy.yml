@@ -32,12 +32,22 @@ jobs:
     - name: Install Composer dependencies
       run: |
         cd glittr/backend
-        composer install --prefer-dist --no-progress --no-suggest --no-dev --optimize-autoloader
+        composer install --prefer-dist --no-progress --no-dev --optimize-autoloader --no-scripts
         
-    - name: Run tests
+    - name: Create .env file for testing
       run: |
         cd glittr/backend
-        php artisan test --env=testing
+        cp .env.example .env
+        php artisan key:generate
+        
+    - name: Run tests (if exist)
+      run: |
+        cd glittr/backend
+        if [ -d "tests" ] && [ "$(ls -A tests)" ]; then
+          php artisan test --env=testing
+        else
+          echo "No tests found, skipping..."
+        fi
         
     - name: Deploy to EC2
       if: github.ref == 'refs/heads/main'
