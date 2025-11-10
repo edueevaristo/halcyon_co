@@ -180,7 +180,7 @@ const getProductImage = (product) => {
   const hostname = window.location.hostname;
   const baseUrl = (hostname === 'localhost' || hostname === '127.0.0.1') 
       ? 'http://127.0.0.1:8000' 
-      : 'https://halcyon-co.onrender.com';
+      : 'http://18.222.253.169';
 
   if (Array.isArray(product.image_path)) {
     const firstImage = product.image_path[0]

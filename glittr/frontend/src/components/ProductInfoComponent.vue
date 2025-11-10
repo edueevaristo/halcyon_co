@@ -249,7 +249,7 @@ export default {
         const hostname = window.location.hostname;
         const baseUrl = (hostname === 'localhost' || hostname === '127.0.0.1') 
             ? 'http://127.0.0.1:8000' 
-            : 'https://halcyon-co.onrender.com';
+            : 'http://18.222.253.169';
         return `${baseUrl}/storage/${imagePath.replace(/^\/storage\//, '')}`;
       }
       return '@/assets/images/product-test.png';
@@ -270,7 +270,7 @@ export default {
         const hostname = window.location.hostname;
         const baseUrl = (hostname === 'localhost' || hostname === '127.0.0.1') 
             ? 'http://127.0.0.1:8000/api' 
-            : 'https://halcyon-co.onrender.com/api';
+            : 'http://18.222.253.169/api';
             
         const response = await fetch(`${baseUrl}/products/${this.product.product.id}/like`, {
           method: 'POST',

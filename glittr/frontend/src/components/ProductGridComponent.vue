@@ -97,7 +97,7 @@ export default {
         const hostname = window.location.hostname;
         const baseUrl = (hostname === 'localhost' || hostname === '127.0.0.1') 
             ? 'http://127.0.0.1:8000' 
-            : 'https://halcyon-co.onrender.com';
+            : 'http://18.222.253.169';
         const cleanPath = imagePath.replace(/^\/storage\//, '');
         return `${baseUrl}/storage/${cleanPath}`;
       } catch (error) {
