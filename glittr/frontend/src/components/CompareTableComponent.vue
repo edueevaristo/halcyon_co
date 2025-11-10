@@ -354,6 +354,9 @@ onMounted(async () => {
 .compare-table-wrapper {
   overflow-x: auto;
   padding: 16px;
+  width: 100%;
+  max-width: 100vw;
+  box-sizing: border-box;
 }
 
 .comparison-section {
@@ -700,14 +703,39 @@ onMounted(async () => {
   background-color: #c2185b;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 1024px) {
+  .compare-table-wrapper {
+    padding: 12px;
+  }
+  
+  .products-header {
+    grid-template-columns: 150px 1fr 1fr;
+  }
+  
+  .attribute-row {
+    grid-template-columns: 150px 1fr 1fr;
+  }
+  
+  .attribute-label {
+    font-size: 14px;
+    padding: 10px 12px;
+  }
+  
+  .attribute-value {
+    font-size: 14px;
+    padding: 10px 12px;
+  }
+}
+
+@media (max-width: 768px) {
   .score-comparison {
     grid-template-columns: 1fr;
-    gap: 20px;
+    gap: 16px;
   }
   
   .vs-separator {
     order: 2;
+    margin: 8px 0;
   }
   
   .vs-circle {
@@ -718,54 +746,162 @@ onMounted(async () => {
   .vs-text {
     font-size: 16px;
   }
+  
+  .compare-container {
+    overflow-x: auto;
+  }
+  
+  .products-header {
+    grid-template-columns: 120px 1fr 1fr;
+    min-width: 480px;
+  }
+  
+  .attribute-row {
+    grid-template-columns: 120px 1fr 1fr;
+    min-width: 480px;
+  }
+  
+  .attribute-label {
+    font-size: 12px;
+    padding: 8px 10px;
+  }
+  
+  .attribute-value {
+    font-size: 12px;
+    padding: 8px 10px;
+  }
+  
+  .product-image {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .product-name {
+    font-size: 12px;
+  }
 }
 
 @media (max-width: 640px) {
   .score-card {
-    padding: 20px;
+    padding: 16px;
     min-height: auto;
   }
   
   .metrics-grid {
     grid-template-columns: 1fr;
-    gap: 12px;
+    gap: 10px;
   }
   
   .product-thumb {
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
   }
   
   .product-title {
-    font-size: 14px;
-  }
-  
-  .winner-announcement {
-    padding: 16px;
-    margin-bottom: 24px;
+    font-size: 13px;
   }
   
   .winner-badge {
-    font-size: 14px;
-    padding: 12px 20px;
-    margin-bottom: 12px;
-  }
-  
-  .buy-winner-btn {
-    font-size: 12px;
+    font-size: 13px;
     padding: 10px 16px;
+    flex-direction: column;
+    gap: 4px;
   }
   
   .final-score {
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
     text-align: center;
+    padding: 12px;
   }
   
   .score-value {
-    font-size: 24px;
+    font-size: 22px;
   }
   
+  .metric-item {
+    padding: 8px;
+  }
+  
+  .metric-value {
+    font-size: 13px;
+  }
+  
+  .metric-label {
+    font-size: 10px;
+  }
+}
 
+@media (max-width: 480px) {
+  .compare-table-wrapper {
+    padding: 8px;
+  }
+  
+  .products-header {
+    grid-template-columns: 100px 1fr 1fr;
+    min-width: 400px;
+  }
+  
+  .attribute-row {
+    grid-template-columns: 100px 1fr 1fr;
+    min-width: 400px;
+  }
+  
+  .attribute-label {
+    font-size: 11px;
+    padding: 6px 8px;
+  }
+  
+  .attribute-value {
+    font-size: 11px;
+    padding: 6px 8px;
+  }
+  
+  .product-image {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .product-name {
+    font-size: 11px;
+  }
+  
+  .remove-btn {
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+  }
+  
+  .ingredients {
+    max-width: 120px;
+    font-size: 10px;
+  }
+  
+  .winner-badge {
+    font-size: 12px;
+    padding: 8px 12px;
+  }
+  
+  .crown-icon {
+    font-size: 16px;
+  }
+  
+  .score-card {
+    padding: 12px;
+  }
+  
+  .metric-item {
+    padding: 6px;
+    gap: 6px;
+  }
+  
+  .metric-icon {
+    font-size: 14px;
+    width: 20px;
+  }
+  
+  .score-value {
+    font-size: 20px;
+  }
 }
 </style>

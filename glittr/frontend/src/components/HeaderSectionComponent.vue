@@ -141,20 +141,16 @@ export default {
           
 
           if (user.profile_image_url) {
-
             if (user.profile_image_url.startsWith('http')) {
-
               this.userProfileImage = user.profile_image_url;
-
             } else {
-
-
+              const baseUrl = window.location.hostname === 'localhost'
+                ? 'http://127.0.0.1:8000'
+                : 'https://halcyon-co.onrender.com';
               const cleanPath = user.profile_image_url.replace(/^\/storage\//, '');
-              this.userProfileImage = `http://127.0.0.1:8000/storage/${cleanPath}`;
+              this.userProfileImage = `${baseUrl}/storage/${cleanPath}`;
             }
-
           } else {
-
             this.userProfileImage = null;
           }
 

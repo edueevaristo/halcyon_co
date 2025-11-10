@@ -9,7 +9,7 @@ const getBaseURL = () => {
         return "http://127.0.0.1:8000/api";
     }
 
-    return "https://halcyon-co.onrender.com/api";
+    return "http://18.222.253.169/api";
 };
 
 const http = axios.create({
