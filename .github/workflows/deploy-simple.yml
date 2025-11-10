@@ -16,20 +16,20 @@ jobs:
         username: ${{ secrets.EC2_USERNAME }}
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
-          echo "🚀 Iniciando deploy..."
+          echo "Iniciando deploy..."
           cd /var/www/glittr
           
-          echo "📥 Baixando código..."
+          echo "Baixando código..."
           sudo git pull origin main
           
-          echo "📦 Instalando dependências..."
+          echo "Instalando dependências..."
           sudo -u www-data composer install --no-dev --optimize-autoloader --no-scripts
           
-          echo "🔧 Configurando Laravel..."
+          echo "Configurando Laravel..."
           sudo -u www-data php artisan config:cache
           sudo -u www-data php artisan route:cache
           
-          echo "🔄 Recarregando Apache..."
+          echo "Recarregando Apache..."
           sudo systemctl reload apache2
           
-          echo "✅ Deploy concluído com sucesso!"
+          echo "Deploy concluído com sucesso!"
