@@ -20,18 +20,18 @@
           </div>
           
           <div class="metrics-grid">
-            <div class="metric-item">
+            <div class="metric-item" :class="{ 'clickable': !isPremium }" @click="handleMetricClick('reviews')">
               <div class="metric-icon star-icon">⭐</div>
               <div class="metric-content">
-                <span class="metric-value">{{ products[0].average_rating || 0 }}</span>
-                <span class="metric-label">{{ products[0].reviews_count }} avaliações</span>
+                <span class="metric-value">{{ isPremium ? (products[0].average_rating || 0) : '🔒 Premium' }}</span>
+                <span class="metric-label">{{ isPremium ? products[0].reviews_count : '🔒 Desbloqueie' }} avaliações</span>
               </div>
             </div>
             
-            <div class="metric-item">
+            <div class="metric-item" :class="{ 'clickable': !isPremium }" @click="handleMetricClick('likes')">
               <div class="metric-icon heart-icon">❤️</div>
               <div class="metric-content">
-                <span class="metric-value">{{ products[0].likes_count || 0 }}</span>
+                <span class="metric-value">{{ isPremium ? (products[0].likes_count || 0) : '🔒 Premium' }}</span>
                 <span class="metric-label">likes</span>
               </div>
             </div>
@@ -72,18 +72,18 @@
           </div>
           
           <div class="metrics-grid">
-            <div class="metric-item">
+            <div class="metric-item" :class="{ 'clickable': !isPremium }" @click="handleMetricClick('reviews')">
               <div class="metric-icon star-icon">⭐</div>
               <div class="metric-content">
-                <span class="metric-value">{{ products[1].average_rating || 0 }}</span>
-                <span class="metric-label">{{ products[1].reviews_count }} avaliações</span>
+                <span class="metric-value">{{ isPremium ? (products[1].average_rating || 0) : '🔒 Premium' }}</span>
+                <span class="metric-label">{{ isPremium ? products[1].reviews_count : '🔒 Desbloqueie' }} avaliações</span>
               </div>
             </div>
             
-            <div class="metric-item">
+            <div class="metric-item" :class="{ 'clickable': !isPremium }" @click="handleMetricClick('likes')">
               <div class="metric-icon heart-icon">❤️</div>
               <div class="metric-content">
-                <span class="metric-value">{{ products[1].likes_count || 0 }}</span>
+                <span class="metric-value">{{ isPremium ? (products[1].likes_count || 0) : '🔒 Premium' }}</span>
                 <span class="metric-label">likes</span>
               </div>
             </div>
@@ -148,23 +148,47 @@
       </div>
     </div>
   </div>
+  
+  <PremiumModalComponent 
+    :isVisible="showPremiumModal" 
+    :action="modalAction" 
+    @close="closePremiumModal" 
+  />
 </template>
 
 <script setup>
 import {computed, ref, watch, onMounted} from 'vue'
 import {useCompareStore} from '../stores/useCompareStore'
+import {useAuth} from '../stores/auth'
 import PostProductDataService from "@/services/PostProductDataService.js"
 import Select from './UI/Select.vue'
+import PremiumModalComponent from './PremiumModalComponent.vue'
 
 const props = defineProps({
   initialProduct: Object
 })
 
 const store = useCompareStore()
+const auth = useAuth()
 const products = ref([])
 const availableProducts = ref([])
 const winner = ref(null)
 const categoryId = ref(null)
+
+const isPremium = computed(() => auth.isPremium)
+const showPremiumModal = ref(false)
+const modalAction = ref('')
+
+const handleMetricClick = (action) => {
+  if (!isPremium.value) {
+    modalAction.value = action
+    showPremiumModal.value = true
+  }
+}
+
+const closePremiumModal = () => {
+  showPremiumModal.value = false
+}
 
 const formatForSelect = (product) => ({
   id: product.id,
@@ -275,13 +299,14 @@ const getAttributeValue = (attributes, name) => {
 
 const calculateScore = (product) => {
   if (!product) return 0
-  const rating = product.average_rating || 0
-  const likes = product.likes_count || 0
-  const reviews = product.reviews_count || 0
-  const attributes = (product.attributes && Array.isArray(product.attributes)) ? product.attributes.length : 0
-  const price = product.price_average || 0
   
-
+  // Para usuários não premium, usar valores padrão para cálculo
+  const rating = isPremium.value ? (product.average_rating || 0) : 3.5
+  const likes = isPremium.value ? (product.likes_count || 0) : 15
+  const reviews = isPremium.value ? (product.reviews_count || 0) : 8
+  const attributes = (product.attributes && Array.isArray(product.attributes)) ? product.attributes.length : 0
+  const price = product.price_average || 50
+  
   const priceBonus = price > 0 ? Math.max(0, (100 - price) * 0.1) : 0
   return Math.round((rating * 3) + (likes * 0.1) + (reviews * 0.8) + (attributes * 0.5) + priceBonus)
 }
@@ -518,6 +543,16 @@ onMounted(async () => {
 
 .metric-item:hover {
   background: #f1f5f9;
+}
+
+.metric-item.clickable {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.metric-item.clickable:hover {
+  background: #e3f2fd;
+  transform: translateY(-1px);
 }
 
 .metric-icon {

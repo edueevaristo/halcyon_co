@@ -204,18 +204,45 @@ class ProductsController extends Controller
 
     public function index(Request $request)
     {
+        $user = auth('sanctum')->user();
+        $isPremium = $user ? $user->is_premium : false;
         $perPage = $request->get('per_page', 12);
-        $products = Product::with(['category', 'subcategory'])->paginate($perPage);
+        
+        $query = Product::with(['category', 'subcategory']);
+        
+        if (!$isPremium) {
+            $query->limit(10);
+        }
+        
+        $products = $isPremium ? $query->paginate($perPage) : $query->get();
+        $totalProducts = Product::count();
+        $hasMoreProducts = !$isPremium && $totalProducts > 10;
 
-        return response()->json([
-            'data' => $products->getCollection()->map(function ($product) {
-                return $this->formatProductResponse($product);
-            }),
-            'current_page' => $products->currentPage(),
-            'last_page' => $products->lastPage(),
-            'per_page' => $products->perPage(),
-            'total' => $products->total()
-        ], 200);
+        if ($isPremium) {
+            return response()->json([
+                'data' => $products->getCollection()->map(function ($product) use ($isPremium) {
+                    return $this->formatProductResponse($product, $isPremium);
+                }),
+                'current_page' => $products->currentPage(),
+                'last_page' => $products->lastPage(),
+                'per_page' => $products->perPage(),
+                'total' => $products->total(),
+                'user_is_premium' => $isPremium
+            ], 200);
+        } else {
+            return response()->json([
+                'data' => $products->map(function ($product) use ($isPremium) {
+                    return $this->formatProductResponse($product, $isPremium);
+                }),
+                'current_page' => 1,
+                'last_page' => 1,
+                'per_page' => 10,
+                'total' => 10,
+                'actual_total' => $totalProducts,
+                'has_more_products' => $hasMoreProducts,
+                'user_is_premium' => $isPremium
+            ], 200);
+        }
     }
 
     public function show($id)
@@ -227,44 +254,82 @@ class ProductsController extends Controller
                 'message' => 'Produto não encontrado.'
             ], 404);
         }
+        
+        $user = auth('sanctum')->user();
+        $isPremium = $user ? $user->is_premium : false;
 
         return response()->json([
-            'product' => $this->formatProductResponse($product)
+            'product' => $this->formatProductResponse($product, $isPremium),
+            'user_is_premium' => $isPremium
         ], 200);
     }
 
     public function showByCategory($category)
     {
-        $products = Product::with(['category', 'subcategory'])->where('category_id', $category)->get();
+        $user = auth('sanctum')->user();
+        $isPremium = $user ? $user->is_premium : false;
+        
+        $query = Product::with(['category', 'subcategory'])->where('category_id', $category);
+        
+        if (!$isPremium) {
+            $query->limit(10);
+        }
+        
+        $products = $query->get();
+        $totalInCategory = Product::where('category_id', $category)->count();
+        $hasMoreProducts = !$isPremium && $totalInCategory > 10;
 
         return response()->json([
-            'products' => $products->map(function ($product) {
-                return $this->formatProductResponse($product);
-            })
+            'products' => $products->map(function ($product) use ($isPremium) {
+                return $this->formatProductResponse($product, $isPremium);
+            }),
+            'total_in_category' => $totalInCategory,
+            'has_more_products' => $hasMoreProducts,
+            'user_is_premium' => $isPremium
         ], 200);
     }
 
     public function showBySubcategory($category, $subcategory)
     {
-        $products = Product::with(['category', 'subcategory'])
+        $user = auth('sanctum')->user();
+        $isPremium = $user ? $user->is_premium : false;
+        
+        $query = Product::with(['category', 'subcategory'])
             ->where('category_id', $category)
-            ->where('subcategory_id', $subcategory)
-            ->get();
+            ->where('subcategory_id', $subcategory);
+        
+        if (!$isPremium) {
+            $query->limit(10);
+        }
+        
+        $products = $query->get();
+        $totalInSubcategory = Product::where('category_id', $category)
+            ->where('subcategory_id', $subcategory)->count();
+        $hasMoreProducts = !$isPremium && $totalInSubcategory > 10;
 
         return response()->json([
-            'products' => $products->map(function ($product) {
-                return $this->formatProductResponse($product);
-            })
+            'products' => $products->map(function ($product) use ($isPremium) {
+                return $this->formatProductResponse($product, $isPremium);
+            }),
+            'total_in_subcategory' => $totalInSubcategory,
+            'has_more_products' => $hasMoreProducts,
+            'user_is_premium' => $isPremium
         ], 200);
     }
 
-    protected function formatProductResponse($product)
+    protected function formatProductResponse($product, $isPremium = null)
     {
         $userId = auth('sanctum')->id();
+        $user = auth('sanctum')->user();
         $reviews = $product->reviews;
         $avgRating = $reviews->avg('stars') ?? 0;
+        
+        // Se não foi passado o status premium, verifica do usuário
+        if ($isPremium === null) {
+            $isPremium = $user ? $user->is_premium : false;
+        }
 
-        return [
+        $response = [
             'id' => $product->id,
             'product_name' => $product->product_name,
             'description' => $product->description,
@@ -276,12 +341,24 @@ class ProductsController extends Controller
             'price_average' => $product->price_average,
             'ingredients' => $product->ingredients,
             'product_link' => $product->product_link,
-            'likes_count' => $product->likes()->count(),
-            'is_liked' => $userId ? $product->isLikedBy($userId) : false,
-            'reviews_count' => $product->reviews()->count(),
-            'average_rating' => round($avgRating, 1),
             'created_at' => $product->created_at,
             'updated_at' => $product->updated_at,
         ];
+        
+        // Informações de likes e reviews (premium ou ofuscadas)
+        if ($isPremium) {
+            $response['likes_count'] = $product->likes()->count();
+            $response['is_liked'] = $userId ? $product->isLikedBy($userId) : false;
+            $response['reviews_count'] = $product->reviews()->count();
+            $response['average_rating'] = round($avgRating, 1);
+        } else {
+            $response['likes_count'] = '***';
+            $response['is_liked'] = false;
+            $response['reviews_count'] = '***';
+            $response['average_rating'] = '***';
+            $response['premium_required'] = true;
+        }
+        
+        return $response;
     }
 }

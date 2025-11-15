@@ -7,7 +7,6 @@ import LandingPage from "../pages/LandingPage.vue";
 import ProductInfo from "../pages/ProductInfo.vue";
 import Register from "../pages/Register.vue";
 import Profile from "../pages/Profile.vue";
-import {isAuthorizedUser} from "../utils/auth.js";
 
 const routes = [
     {
@@ -25,7 +24,7 @@ const routes = [
         name: 'Home',
         component: Home,
         beforeEnter: (to, from, next) => {
-            if (!localStorage.getItem('token') || !isAuthorizedUser()) {
+            if (!localStorage.getItem('token')) {
                 next('/landing');
             } else {
                 next();
@@ -52,7 +51,7 @@ const routes = [
         name: 'product',
         component: ProductInfo,
         beforeEnter: (to, from, next) => {
-            if (!localStorage.getItem('token') || !isAuthorizedUser()) {
+            if (!localStorage.getItem('token')) {
                 next('/landing');
             } else {
                 next();
@@ -64,11 +63,18 @@ const routes = [
         name: 'Profile',
         component: Profile,
         beforeEnter: (to, from, next) => {
-            if (!localStorage.getItem('token') || !isAuthorizedUser()) {
+            if (!localStorage.getItem('token')) {
                 next('/landing');
             } else {
                 next();
             }
+        }
+    },
+    {
+        path: '/docs',
+        name: 'Docs',
+        beforeEnter() {
+            window.location.href = 'https://glittr.apidog.io';
         }
     }
 ]

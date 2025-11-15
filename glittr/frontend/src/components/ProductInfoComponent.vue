@@ -3,9 +3,9 @@
     <section class="product-title-and-compare-button">
       <h1 class="title-product">{{ product.product.product_name }}</h1>
       <div class="product-actions">
-        <button v-if="isLoggedIn && isAuthorized" @click="toggleProductLike" class="like-product-button" :class="{ 'liked': product.product.is_liked }">
+        <button v-if="isLoggedIn" @click="handleLikeClick" class="like-product-button" :class="{ 'liked': product.product.is_liked, 'obfuscated': isLikesObfuscated }">
           <span v-html="product.product.is_liked ? heartIconLiked : heartIcon"></span>
-          <span>{{ product.product.likes_count || 0 }}</span>
+          <span>{{ formatLikesCount }} <span v-if="isLikesObfuscated">👑</span></span>
         </button>
         <button @click="openCompareModal" class="compare-button">
           <img src="@/assets/icons/balance-compare.svg" alt="Comparar produto">
@@ -98,7 +98,7 @@
           <div class="product-feedback-add">
 
 
-            <button v-if="isLoggedIn && isAuthorized" class="product-feedback-button-add" @click="openModalAvaliation">
+            <button v-if="isLoggedIn" class="product-feedback-button-add" @click="handleAddReviewClick">
               <img src="@/assets/icons/icon-conversation.svg" class="product-feedback-button-icon"
                    alt="Icone de conversa">
               <span class="product-feedback-button-text">Adicionar avaliação</span>
@@ -106,7 +106,7 @@
           </div>
 
           <section class="product-details-feedbacks">
-            <template v-if="reviews.length > 0">
+            <template v-if="!reviewsObfuscated && reviews.length > 0">
               <FeedbackComponent
                   v-for="(review, index) in reviews"
                   :key="index"
@@ -114,6 +114,11 @@
                   :productId="product.product.id"
               />
             </template>
+            <div v-else-if="reviewsObfuscated" class="obfuscated-reviews" @click="handleReviewsClick">
+              <img src="@/assets/icons/icon-conversation.svg" alt="Ícone de comentário" class="comment-icon">
+              <p>🔒 Avaliações Premium - Desbloqueie Agora!</p>
+              <p class="click-hint">Clique para solicitar acesso</p>
+            </div>
             <div v-else class="no-reviews-message">
               <img src="@/assets/icons/icon-conversation.svg" alt="Ícone de comentário" class="comment-icon">
               <p>Nenhum comentário/review adicionado a este produto.</p>
@@ -125,6 +130,12 @@
 
 
     <AvaliationModalComponent ref="avaliationModal" @submit-review="handleSubmitReview"/>
+    
+    <PremiumModalComponent 
+      :isVisible="showPremiumModal" 
+      :action="modalAction" 
+      @close="closePremiumModal" 
+    />
   </main>
 </template>
 
@@ -132,10 +143,12 @@
 import {ref} from 'vue';
 import FeedbackComponent from "@/components/FeedbackComponent.vue";
 import AvaliationModalComponent from "./AvaliationModalComponent.vue";
+import PremiumModalComponent from "./PremiumModalComponent.vue";
 import PostReviewDataService from "@/services/PostReviewDataService.js";
 import {showGlittrModal} from "@/stores/useSweetAlertGlittr.js";
 import {useCompareStore} from "@/stores/useCompareStore.js";
-import {isAuthorizedUser} from "@/utils/auth.js";
+import {useAuth} from "@/stores/auth";
+
 import arrowUpIcon from "@/assets/icons/arrow-up.svg";
 import arrowDownIcon from "@/assets/icons/arrow-down.svg";
 
@@ -144,6 +157,7 @@ export default {
   components: {
     FeedbackComponent: FeedbackComponent,
     AvaliationModalComponent: AvaliationModalComponent,
+    PremiumModalComponent: PremiumModalComponent,
   },
   props: {
     product: {
@@ -164,7 +178,9 @@ export default {
       feedbackSectionOpen: true,
       isRotating: false,
       isLoggedIn: localStorage.getItem('token') !== null,
-      isAuthorized: isAuthorizedUser(),
+      showPremiumModal: false,
+      modalAction: '',
+      reviewsObfuscated: false,
       heartIcon: `
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#757575"/>
@@ -176,6 +192,25 @@ export default {
         </svg>
       `,
     };
+  },
+  computed: {
+    userIsPremium() {
+      try {
+        const auth = useAuth();
+        return auth.isPremium;
+      } catch {
+        return false;
+      }
+    },
+    isLikesObfuscated() {
+      return !this.userIsPremium || this.product?.product?.likes_count === '***' || this.product?.product?.premium_required;
+    },
+    formatLikesCount() {
+      if (this.isLikesObfuscated) {
+        return '🔒 Premium';
+      }
+      return this.product?.product?.likes_count || 0;
+    }
   },
   mounted() {
     this.review.product_id = this.product.product.id;
@@ -257,7 +292,13 @@ export default {
     async fetchReviews() {
       try {
         const response = await PostReviewDataService.getAllForProduct(this.product.product.id);
-        this.reviews = response.data;
+        if (response.data.obfuscated) {
+          this.reviewsObfuscated = true;
+          this.reviews = [];
+        } else {
+          this.reviews = response.data;
+          this.reviewsObfuscated = false;
+        }
       } catch (error) {
         console.error(error);
       }
@@ -280,14 +321,45 @@ export default {
           }
         });
         
-        if (response.ok) {
-          const data = await response.json();
+        const data = await response.json();
+        
+        if (data.obfuscated) {
+          this.modalAction = 'product_like';
+          this.showPremiumModal = true;
+        } else if (response.ok) {
           this.product.product.is_liked = data.liked;
           this.product.product.likes_count = data.likes_count;
         }
       } catch (error) {
         console.error('Erro ao dar like no produto:', error);
       }
+    },
+    
+    handleLikeClick() {
+      if (this.isLikesObfuscated || !this.userIsPremium) {
+        this.modalAction = 'product_like';
+        this.showPremiumModal = true;
+      } else {
+        this.toggleProductLike();
+      }
+    },
+    
+    handleAddReviewClick() {
+      if (!this.userIsPremium) {
+        this.modalAction = 'add_review';
+        this.showPremiumModal = true;
+      } else {
+        this.openModalAvaliation();
+      }
+    },
+    
+    handleReviewsClick() {
+      this.modalAction = 'reviews';
+      this.showPremiumModal = true;
+    },
+    
+    closePremiumModal() {
+      this.showPremiumModal = false;
     },
     
     openCompareModal() {
@@ -685,6 +757,51 @@ export default {
   width: 48px;
   height: 48px;
   opacity: 0.5;
+}
+
+.obfuscated-reviews {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 40px;
+  background: linear-gradient(135deg, #f8f4ff 0%, #fff0fd 100%);
+  border: 2px dashed #9400EF;
+  border-radius: 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.obfuscated-reviews:hover {
+  background: linear-gradient(135deg, #f0e6ff 0%, #ffe6fb 100%);
+  transform: translateY(-2px);
+}
+
+.obfuscated-reviews p {
+  color: #9400EF;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.click-hint {
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  opacity: 0.8;
+}
+
+.like-product-button.obfuscated {
+  border-color: #9400EF;
+  color: #9400EF;
+  background: linear-gradient(135deg, #f8f4ff 0%, #fff0fd 100%);
+  cursor: pointer;
+}
+
+.like-product-button.obfuscated:hover {
+  background: linear-gradient(135deg, #f0e6ff 0%, #ffe6fb 100%);
 }
 
 @media (max-width: 480px) {

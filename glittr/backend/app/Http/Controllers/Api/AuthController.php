@@ -48,20 +48,6 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $authorizedEmails = [
-            'eduardo.evaristo@glittr.com.br',
-            'amanda.vieira@glittr.com.br',
-            'joao.pedro@glittr.com.br',
-            'jenifer.goncalves@glittr.com.br',
-            'daniel.oliveira@glittr.com.br'
-        ];
-        
-        if (!in_array($request->email, $authorizedEmails)) {
-            throw ValidationException::withMessages([
-                'email' => ['Este e-mail não tem autorização para acessar o sistema.']
-            ]);
-        }
-
         $user = User::where('email', $request->email)->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
@@ -89,16 +75,6 @@ class AuthController extends Controller
     {
         $user = $request->user();
         $user->profile_image_url = $user->profile_image_url;
-        
-        $authorizedEmails = [
-            'eduardo.evaristo@glittr.com.br',
-            'amanda.vieira@glittr.com.br',
-            'joao.pedro@glittr.com.br',
-            'jenifer.goncalves@glittr.com.br',
-            'daniel.oliveira@glittr.com.br'
-        ];
-        
-        $user->is_authorized = in_array($user->email, $authorizedEmails);
 
         return response()->json([
             'me' => $user,

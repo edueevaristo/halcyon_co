@@ -13,12 +13,13 @@
       </div>
 
       <!-- Menu normal desktop -->
-      <div v-if="isLoggedIn && isAuthorized" class="user-actions desktop-only">
+      <div v-if="isLoggedIn" class="user-actions desktop-only">
         <ul class="nav-links">
           <RouterLink to="/landing" class="link-style"><li>O que é a Glittr?</li></RouterLink>
           <RouterLink to="/" class="link-style"><li>Comparador</li></RouterLink>
           <RouterLink to="/" class="link-style"><li>Produtos</li></RouterLink>
-          <AddProduct v-if="isLoggedIn && isAuthorized" @click="addProdutos" />
+          <RouterLink to="/docs" class="link-style"><li>Documentação API</li></RouterLink>
+          <AddProduct v-if="isLoggedIn && isPremium" @click="addProdutos" />
         </ul>
 
         <div class="profile-dropdown">
@@ -29,7 +30,7 @@
               class="profile-image"
               @error="handleImageError"
             >
-            Olá, {{ userName }}
+            Olá, {{ userName }} <span v-if="isPremium" class="premium-badge">⭐</span>
             <img src="@/assets/icons/chevron-down.svg" alt="Abrir menu"/>
           </span>
           <ul v-if="showDropdown" class="dropdown-menu">
@@ -42,6 +43,7 @@
       <div v-else class="guest-actions desktop-only">
         <ul class="nav-links">
           <RouterLink to="/landing" class="link-style"><li>O que é a Glittr?</li></RouterLink>
+          <RouterLink to="/docs" class="link-style"><li>Documentação API</li></RouterLink>
         </ul>
 
         <RouterLink to="/presentation" class="CTA-Login">
@@ -57,10 +59,11 @@
       <div v-if="showMobileMenu" class="mobile-menu">
         <ul class="nav-links">
           <RouterLink to="/landing" class="link-style"><li>O que é a Glittr?</li></RouterLink>
+          <RouterLink to="/docs" class="link-style"><li>Documentação API</li></RouterLink>
         </ul>
 
-        <div v-if="isLoggedIn && isAuthorized">
-          <AddProduct v-if="isLoggedIn && isAuthorized && showMobileMenu" :hide-button="true" />
+        <div v-if="isLoggedIn">
+          <AddProduct v-if="isLoggedIn && isPremium && showMobileMenu" :hide-button="true" />
 
           <div class="profile-dropdown">
             <span class="user-profile" @click="toggleDropdown">
@@ -70,7 +73,7 @@
                 class="profile-image"
                 @error="handleImageError"
               >
-              Olá, {{ userName }}
+              Olá, {{ userName }} <span v-if="isPremium" class="premium-badge">⭐</span>
               <img src="@/assets/icons/chevron-down.svg" alt="Abrir menu"/>
             </span>
             <ul v-if="showDropdown" class="dropdown-menu">
@@ -110,7 +113,7 @@ export default {
       showMobileMenu: false,
       userName: "Usuário",
       userProfileImage: null,
-      isAuthorized: false,
+      isPremium: false,
       loginIcon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z" fill="white"/><path d="M12 14C7.58172 14 4 17.5817 4 22H20C20 17.5817 16.4183 14 12 14Z" fill="white"/></svg>',
       logoIcon: LogoIcon
     };
@@ -137,7 +140,7 @@ export default {
           const user = response.data.me;
           
           this.userName = user.name.split(' ')[0];
-          this.isAuthorized = user.is_authorized || false;
+          this.isPremium = user.is_premium || false;
           
 
           if (user.profile_image_url) {
@@ -389,6 +392,12 @@ li:hover {
 
 .dropdown-menu li:hover {
   background-color: #f3f3f3;
+}
+
+.premium-badge {
+  color: #FFD700;
+  font-size: 16px;
+  margin-left: 4px;
 }
 
 /* Oculta elementos no mobile */

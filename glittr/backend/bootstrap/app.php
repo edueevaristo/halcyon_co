@@ -13,7 +13,8 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
-            'authorized' => \App\Http\Middleware\CheckAuthorizedUser::class,
+            'premium' => \App\Http\Middleware\CheckPremiumUser::class,
+            'premium-or-obfuscate' => \App\Http\Middleware\CheckPremiumOrObfuscate::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

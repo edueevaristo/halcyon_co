@@ -5,7 +5,14 @@ import http from "@/http-common";
 export const useAuth = defineStore('auth', () => {
 
   const token = ref(localStorage.getItem("token"));
-  const user = ref(JSON.parse(localStorage.getItem("user")));
+  const user = ref((() => {
+    try {
+      const userData = localStorage.getItem("user");
+      return userData ? JSON.parse(userData) : null;
+    } catch {
+      return null;
+    }
+  })());
 
   function setToken(tokenValue) {
     localStorage.setItem('token', tokenValue);
@@ -21,6 +28,10 @@ export const useAuth = defineStore('auth', () => {
 
   const isAuthenticated = computed(() => {
     return token.value && user.value;
+  })
+
+  const isPremium = computed(() => {
+    return user.value?.is_premium || false;
   })
 
   async function checkToken() {
@@ -61,6 +72,7 @@ export const useAuth = defineStore('auth', () => {
     checkToken,
     getUser,
     isAuthenticated,
+    isPremium,
     clear
   }
 
