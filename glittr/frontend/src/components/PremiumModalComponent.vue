@@ -12,7 +12,7 @@
 
         <div class="contact-info">
           <strong style="color: #333;">Email: </strong>
-          <a :href="emailLink" class="email-link">contato@glittr.com.br</a>
+          <span class="email-link">contato@glittr.com.br</span>
         </div>
 
         <div class="user-info">
@@ -36,6 +36,7 @@
 <script>
 import http from '@/http-common'
 import {useAuth} from '@/stores/auth'
+import {showGlittrModal} from '@/stores/useSweetAlertGlittr.js'
 
 export default {
   name: 'PremiumModalComponent',
@@ -63,26 +64,6 @@ export default {
         name: localStorage.getItem('user'),
         email: localStorage.getItem('email')
       }
-    },
-    emailLink() {
-      const subject = encodeURIComponent('Solicitação de Acesso Premium - Glittr')
-      const body = encodeURIComponent(`
-Olá,
-
-Gostaria de solicitar acesso premium para a plataforma Glittr.
-
-Meus dados:
-- ID: ${this.userInfo?.id || 'N/A'}
-- Nome: ${this.userInfo?.name || 'N/A'}
-- Email: ${this.userInfo?.email || 'N/A'}
-- Funcionalidade solicitada: ${this.getActionText()}
-- Data/Hora: ${new Date().toLocaleString('pt-BR')}
-
-Aguardo retorno.
-
-Obrigado!
-      `)
-      return `mailto:contato@glittr.com.br?subject=${subject}&body=${body}`
     }
   },
   methods: {
@@ -104,16 +85,26 @@ Obrigado!
     async sendRequest() {
       this.loading = true
       try {
-        await http.post('/contact/premium-request', {
+        const response = await http.post('/contact/premium-request', {
           action: this.action
         })
 
-        // Abrir cliente de email
-        window.location.href = this.emailLink
-
         this.closeModal()
+        
+        showGlittrModal({
+          icon: 'success',
+          title: 'Solicitação Enviada!',
+          text: response.data.message,
+          confirmButtonText: 'OK'
+        })
       } catch (error) {
         console.error('Erro ao enviar solicitação:', error)
+        showGlittrModal({
+          icon: 'error',
+          title: 'Erro ao Enviar',
+          text: 'Não foi possível enviar sua solicitação. Tente novamente.',
+          confirmButtonText: 'OK'
+        })
       } finally {
         this.loading = false
       }

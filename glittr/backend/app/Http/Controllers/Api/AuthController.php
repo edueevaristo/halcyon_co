@@ -59,7 +59,16 @@ class AuthController extends Controller
         $user->tokens()->delete();
         $token = $user->createToken('token')->plainTextToken;
 
-        return response()->json(['token' => $token]);
+        return response()->json([
+            'token' => $token,
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'is_premium' => $user->is_premium,
+                'profile_image_url' => $user->profile_image_url
+            ]
+        ]);
     }
 
     public function logout(Request $request)
@@ -77,7 +86,13 @@ class AuthController extends Controller
         $user->profile_image_url = $user->profile_image_url;
 
         return response()->json([
-            'me' => $user,
+            'me' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'is_premium' => $user->is_premium,
+                'profile_image_url' => $user->profile_image_url
+            ]
         ]);
     }
 

@@ -25,11 +25,16 @@ class ContactController extends Controller
             'requested_at' => now()->format('d/m/Y H:i:s'),
         ];
 
-        Mail::send('emails.premium-request', $data, function ($message) {
-            $message->to('contato@glittr.com.br')
-                    ->subject('Solicitação de Acesso Premium');
-        });
-
-        return response()->json(['message' => 'Solicitação enviada com sucesso!']);
+        try {
+            Mail::send('emails.premium-request', $data, function ($message) {
+                $message->to('contato@glittr.com.br')
+                        ->subject('Solicitação de Acesso Premium');
+            });
+            
+            return response()->json(['message' => 'Solicitação enviada com sucesso!']);
+        } catch (\Exception $e) {
+            \Log::info('Solicitação Premium', $data);
+            return response()->json(['message' => 'Solicitação registrada com sucesso!']);
+        }
     }
 }

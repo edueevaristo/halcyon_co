@@ -98,10 +98,15 @@
           <div class="product-feedback-add">
 
 
-            <button v-if="isLoggedIn" class="product-feedback-button-add" @click="handleAddReviewClick">
+            <button v-if="isLoggedIn && userIsPremium" class="product-feedback-button-add" @click="openModalAvaliation">
               <img src="@/assets/icons/icon-conversation.svg" class="product-feedback-button-icon"
                    alt="Icone de conversa">
               <span class="product-feedback-button-text">Adicionar avaliação</span>
+            </button>
+            <button v-else-if="isLoggedIn && !userIsPremium" class="product-feedback-button-add premium-required" @click="handleAddReviewClick">
+              <img src="@/assets/icons/icon-conversation.svg" class="product-feedback-button-icon"
+                   alt="Icone de conversa">
+              <span class="product-feedback-button-text">🔒 Adicionar avaliação (Premium)</span>
             </button>
           </div>
 
@@ -700,6 +705,11 @@ export default {
 .product-feedback-button-add:hover {
   border: 1px solid #ED008C;
   transition: border-color 0.5s ease;
+}
+
+.premium-required {
+  opacity: 0.7;
+  background: linear-gradient(90deg, #9400EF 0%, #E10CFF 100%) !important;
 }
 
 .product-link a {

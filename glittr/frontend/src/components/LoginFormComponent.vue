@@ -68,11 +68,19 @@ export default {
       try {
         const response = await PostUserDataService.login(this.form);
         localStorage.setItem("token", response.data.token);
-
-        const responseUser = await PostUserDataService.getUser();
-        localStorage.setItem("user", responseUser.data.me.name);
-        localStorage.setItem("user_id", responseUser.data.me.id);
-        localStorage.setItem("email", responseUser.data.me.email);
+        
+        // Salvar dados do usuário incluindo is_premium
+        if (response.data.user) {
+          localStorage.setItem("user", JSON.stringify(response.data.user));
+          localStorage.setItem("user_id", response.data.user.id);
+          localStorage.setItem("email", response.data.user.email);
+        } else {
+          // Fallback para buscar dados do usuário
+          const responseUser = await PostUserDataService.getUser();
+          localStorage.setItem("user", JSON.stringify(responseUser.data.me));
+          localStorage.setItem("user_id", responseUser.data.me.id);
+          localStorage.setItem("email", responseUser.data.me.email);
+        }
 
         await router.push("/");
       } catch (error) {

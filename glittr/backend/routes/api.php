@@ -8,6 +8,13 @@ use App\Http\Controllers\Api\ProductsController;
 use App\Http\Controllers\Api\AttributeController;
 use App\Http\Controllers\Api\ProductReviewController;
 use App\Http\Controllers\Api\ImageUploadController;
+use App\Http\Controllers\Api\ReviewLikeController;
+use App\Http\Controllers\Api\ReplyLikeController;
+use App\Http\Controllers\Api\ReviewReplyController;
+use App\Http\Controllers\Api\ProductLikeController;
+use App\Http\Controllers\Api\ContactController;
+use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\PremiumAccessController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -53,14 +60,14 @@ Route::middleware(['auth:sanctum', 'premium'])->group(function () {
     Route::post('/reviews', [ProductReviewController::class, 'store']);
     Route::put('/reviews/{id}', [ProductReviewController::class, 'update']);
     Route::delete('/reviews/{id}', [ProductReviewController::class, 'destroy']);
-    Route::post('/reviews/{review}/like', [App\Http\Controllers\Api\ReviewLikeController::class, 'toggle']);
-    Route::post('/reviews/{review}/replies', [App\Http\Controllers\Api\ReviewReplyController::class, 'store']);
-    Route::post('/replies/{reply}/like', [App\Http\Controllers\Api\ReplyLikeController::class, 'toggle']);
+    Route::post('/reviews/{review}/like', [ReviewLikeController::class, 'toggle']);
+    Route::post('/reviews/{review}/replies', [ReviewReplyController::class, 'store']);
+    Route::post('/replies/{reply}/like', [ReplyLikeController::class, 'toggle']);
 });
 
 // Rota de like com ofuscação
 Route::middleware(['auth:sanctum', 'premium-or-obfuscate'])->group(function () {
-    Route::post('/products/{product}/like', [App\Http\Controllers\Api\ProductLikeController::class, 'toggle']);
+    Route::post('/products/{product}/like', [ProductLikeController::class, 'toggle']);
 });
 
 // Rotas gerais (não premium)
@@ -74,14 +81,29 @@ Route::middleware(['auth:sanctum', 'premium-or-obfuscate'])->group(function () {
     Route::get('/reviews/{id}', [ProductReviewController::class, 'show']);
 });
 
-Route::get('/reviews/{review}/replies', [App\Http\Controllers\Api\ReviewReplyController::class, 'index']);
+Route::get('/reviews/{review}/replies', [ReviewReplyController::class, 'index']);
 
 // Rotas de contato e verificação premium
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::post('/contact/premium-request', [App\Http\Controllers\Api\ContactController::class, 'sendPremiumRequest']);
-    Route::get('/user/premium-status', [App\Http\Controllers\Api\UserController::class, 'checkPremiumStatus']);
-    Route::get('/premium/check-access', [App\Http\Controllers\Api\PremiumAccessController::class, 'checkAccess']);
-    Route::get('/premium/obfuscated-data', [App\Http\Controllers\Api\PremiumAccessController::class, 'getObfuscatedData']);
+
+    Route::post('/contact/premium-request', [ContactController::class, 'sendPremiumRequest']);
+    Route::get('/user/premium-status', [UserController::class, 'checkPremiumStatus']);
+    Route::get('/premium/check-access', [PremiumAccessController::class, 'checkAccess']);
+    Route::get('/premium/obfuscated-data', [PremiumAccessController::class, 'getObfuscatedData']);
+
+    Route::get('/user/refresh-premium', function () {
+        $user = auth()->user();
+        return response()->json([
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'is_premium' => $user->is_premium,
+                'profile_image_url' => $user->profile_image_url
+            ],
+            'message' => 'Dados atualizados com sucesso'
+        ]);
+    });
 });
 
-Route::get('/products/{product}/mentionable-users', [App\Http\Controllers\Api\ReviewReplyController::class, 'getMentionableUsers']);
+Route::get('/products/{product}/mentionable-users', [ReviewReplyController::class, 'getMentionableUsers']);
