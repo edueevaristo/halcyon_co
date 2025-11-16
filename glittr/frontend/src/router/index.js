@@ -74,7 +74,7 @@ const routes = [
         path: '/docs',
         name: 'Docs',
         beforeEnter() {
-            window.location.href = 'https://glittr.apidog.io';
+            window.location.href = 'https://docs.glittr.com.br';
         }
     }
 ]
