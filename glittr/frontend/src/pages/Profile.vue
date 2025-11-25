@@ -116,7 +116,7 @@ export default {
           const hostname = window.location.hostname
           const baseUrl = (hostname === 'localhost' || hostname === '127.0.0.1') 
               ? 'http://127.0.0.1:8000' 
-              : 'http://18.222.253.169'
+              : 'http://3.21.55.156'
           
           this.currentProfileImage = user.profile_image_url.startsWith('http') 
             ? user.profile_image_url 

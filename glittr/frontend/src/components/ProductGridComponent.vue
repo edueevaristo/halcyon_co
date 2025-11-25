@@ -110,7 +110,7 @@ export default {
         const hostname = window.location.hostname;
         const baseUrl = (hostname === 'localhost' || hostname === '127.0.0.1') 
             ? 'http://127.0.0.1:8000' 
-            : 'http://18.222.253.169';
+            : 'http://3.21.55.156';
         const cleanPath = imagePath.replace(/^\/storage\//, '');
         return `${baseUrl}/storage/${cleanPath}`;
       } catch (error) {

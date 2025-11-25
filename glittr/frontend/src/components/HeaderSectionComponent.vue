@@ -149,7 +149,7 @@ export default {
             } else {
               const baseUrl = window.location.hostname === 'localhost'
                 ? 'http://127.0.0.1:8000'
-                : 'http://18.222.253.169';
+                : 'http://3.21.55.156';
               const cleanPath = user.profile_image_url.replace(/^\/storage\//, '');
               this.userProfileImage = `${baseUrl}/storage/${cleanPath}`;
             }
