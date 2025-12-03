@@ -34,6 +34,13 @@
         <h4 class="title-details">Preço médio *</h4>
         <p class="details-product">R$ {{ product.product.price_average }}</p>
 
+        <h4 class="title-details">Avaliações</h4>
+        <p class="details-product" v-if="userIsPremium">
+          {{ product.product.reviews_count || 0 }} reviews 
+          <span v-if="product.product.average_rating">({{ product.product.average_rating }}⭐)</span>
+        </p>
+        <p class="details-product" v-else>🔒 Premium</p>
+
         <h4 class="title-details">Tom </h4>
         <p class="details-product">Quantidade de tons</p>
 
@@ -99,9 +106,10 @@
 
 
             <button v-if="isLoggedIn && userIsPremium" class="product-feedback-button-add" @click="openModalAvaliation">
-              <img src="@/assets/icons/icon-conversation.svg" class="product-feedback-button-icon"
-                   alt="Icone de conversa">
-              <span class="product-feedback-button-text">Adicionar avaliação</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="white"/>
+              </svg>
+              <span class="product-feedback-button-text">Adicionar Avaliação</span>
             </button>
             <button v-else-if="isLoggedIn && !userIsPremium" class="product-feedback-button-add premium-required" @click="handleAddReviewClick">
               <img src="@/assets/icons/icon-conversation.svg" class="product-feedback-button-icon"
@@ -665,11 +673,24 @@ export default {
 
 .product-feedback-button-add {
   display: flex;
-  padding: 10px;
   align-items: center;
-  gap: 15px;
-  border-radius: 10px;
-  background: linear-gradient(90deg, #ED008C 0%, rgba(244, 72, 156, 0.50) 50%, #FA90AB 100%);
+  gap: 8px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #ED008C 0%, #E10CFF 100%);
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(237, 0, 140, 0.3);
+}
+
+.product-feedback-button-add:hover:not(.premium-required) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(237, 0, 140, 0.4);
 }
 
 .product-feedback-button-text {

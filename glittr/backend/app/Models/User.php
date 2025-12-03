@@ -57,6 +57,21 @@ class User extends Authenticatable
 
     public function getProfileImageUrlAttribute()
     {
-        return $this->profile_image ? asset('storage/' . $this->profile_image) : null;
+        return $this->profile_image ? asset('storage/' . $this->profile_image) : asset('assets/icons/LogoGlittr.svg');
+    }
+
+    public function getShortNameAttribute()
+    {
+        $name = trim($this->name);
+        $parts = explode(' ', $name);
+        
+        // Remove títulos do início
+        $titles = ['Sr.', 'Sra.', 'Srta.', 'Dr.', 'Dra.', 'Prof.', 'Profa.'];
+        
+        while (!empty($parts) && in_array($parts[0], $titles)) {
+            array_shift($parts);
+        }
+        
+        return !empty($parts) ? $parts[0] : $name;
     }
 }

@@ -181,7 +181,13 @@ export default {
     shortName() {
       if (!this.review.user?.name) return 'Usuário';
       const names = this.review.user.name.split(' ');
-      return `${names[0]} ${names.length > 1 ? names[1].charAt(0) + '.' : ''}`;
+      const titles = ['Sr.', 'Sra.', 'Srta.', 'Dr.', 'Dra.', 'Prof.', 'Profa.'];
+      
+      // Remove títulos do início
+      let filteredNames = names.filter(name => !titles.includes(name));
+      if (filteredNames.length === 0) filteredNames = names; // fallback
+      
+      return `${filteredNames[0]} ${filteredNames.length > 1 ? filteredNames[1].charAt(0) + '.' : ''}`;
     },
     formattedDate() {
       if (!this.review.created_at) return '';
@@ -244,7 +250,13 @@ export default {
     getShortName(name) {
       if (!name) return 'Usuário';
       const names = name.split(' ');
-      return `${names[0]} ${names.length > 1 ? names[1].charAt(0) + '.' : ''}`;
+      const titles = ['Sr.', 'Sra.', 'Srta.', 'Dr.', 'Dra.', 'Prof.', 'Profa.'];
+      
+      // Remove títulos do início
+      let filteredNames = names.filter(n => !titles.includes(n));
+      if (filteredNames.length === 0) filteredNames = names; // fallback
+      
+      return `${filteredNames[0]} ${filteredNames.length > 1 ? filteredNames[1].charAt(0) + '.' : ''}`;
     },
     
     formatDate(dateString) {
