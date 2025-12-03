@@ -208,12 +208,12 @@ const getProductImage = (product) => {
 
   if (Array.isArray(product.image_path)) {
     const firstImage = product.image_path[0]
-    return firstImage.startsWith('http') ? firstImage : `${baseUrl}${firstImage}`
+    return firstImage.startsWith('http') ? firstImage : `${baseUrl}/storage/${firstImage}`
   }
 
   return product.image_path.startsWith('http')
       ? product.image_path
-      : `${baseUrl}${product.image_path}`
+      : `${baseUrl}/storage/${product.image_path}`
 }
 
 const loadAvailableProducts = async (categoryId, excludeId) => {

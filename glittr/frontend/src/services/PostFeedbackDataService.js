@@ -56,7 +56,7 @@ class PostFeedbackDataService {
             ? 'http://127.0.0.1:8000' 
             : 'https://api.glittr.com.br';
             
-        return `${baseUrl}${imagePath}`;
+        return `${baseUrl}/storage/${imagePath}`;
     }
 }
 

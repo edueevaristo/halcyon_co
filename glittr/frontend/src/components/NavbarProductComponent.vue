@@ -72,7 +72,7 @@ export default {
               const baseUrl = window.location.hostname === 'localhost' 
                 ? 'http://127.0.0.1:8000' 
                 : 'https://api.glittr.com.br';
-              this.userAvatar = `${baseUrl}${user.profile_image_url}`;
+              this.userAvatar = `${baseUrl}/storage/${user.profile_image_url}`;
             }
           }
         } catch (error) {
