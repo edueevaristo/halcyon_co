@@ -69,8 +69,10 @@ export default {
 
             } else {
 
-              const cleanPath = user.profile_image_url.replace(/^\/storage\//, '');
-              this.userAvatar = `http://127.0.0.1:8000/storage/${cleanPath}`;
+              const baseUrl = window.location.hostname === 'localhost' 
+                ? 'http://127.0.0.1:8000' 
+                : 'https://api.glittr.com.br';
+              this.userAvatar = `${baseUrl}${user.profile_image_url}`;
             }
           }
         } catch (error) {

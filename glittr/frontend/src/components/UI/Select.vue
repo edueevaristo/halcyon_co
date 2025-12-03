@@ -15,7 +15,7 @@
       </li>
       <li v-for="option in (Array.isArray(options) ? options : [])" :key="option.value" @click="selectOption(option)"
           class="option-item">
-        <img v-if="option.image" :src="`http://127.0.0.1:8000${option.image_path[0].replace(/^\/storage\//, '')}`"
+        <img v-if="option.image" :src="getImageUrl(option.image_path[0])"
              class="option-image" alt=""/>
         <span style="color: gray;font-size: medium;font-weight: 400;">{{ option.product_name }}</span>
       </li>
@@ -59,6 +59,18 @@ function selectOption(option) {
   // Se options são produtos, emita o id
   emit('update:modelValue', option.id)
   dropdownOpen.value = false
+}
+
+function getImageUrl(imagePath) {
+  if (!imagePath) return ''
+  if (imagePath.startsWith('http')) return imagePath
+  
+  const hostname = window.location.hostname
+  const baseUrl = (hostname === 'localhost' || hostname === '127.0.0.1') 
+      ? 'http://127.0.0.1:8000' 
+      : 'https://api.glittr.com.br'
+  
+  return `${baseUrl}${imagePath}`
 }
 
 // Fecha dropdown ao clicar fora
