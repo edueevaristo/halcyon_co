@@ -3,7 +3,7 @@
     <section class="section-feedback-user-and-photo-and-date">
       <div class="feedback-user-and-photo">
         <img
-            :src="review.user?.profile_image_url || '@/assets/icons/LogoGlittr.svg'"
+            :src="review.user?.profile_image_url || logoGlittr"
             :alt="`Foto de perfil de ${shortName}`"
             class="profile-image"
         >
@@ -128,6 +128,7 @@
 
 <script>
 import PostFeedbackDataService from '@/services/PostFeedbackDataService.js';
+import logoGlittr from '@/assets/icons/LogoGlittr.svg';
 
 export default {
   name: 'FeedbackComponent',
@@ -143,6 +144,7 @@ export default {
   },
   data() {
     return {
+      logoGlittr,
       showReplies: false,
       replies: [],
       newReply: '',

@@ -91,23 +91,23 @@ export default {
   },
   computed: {
     isObfuscated() {
-      return !this.userIsPremium || this.isPremiumRequired;
+      return !this.userIsPremium;
     },
     shouldShowStats() {
-      return (this.likesCount > 0 || this.reviewsCount > 0) || this.isObfuscated;
+      return this.isObfuscated || (this.userIsPremium && (this.likesCount > 0 || this.reviewsCount > 0));
     },
     shouldShowLikes() {
-      return this.likesCount > 0 || (this.isObfuscated && this.likesCount === '***');
+      return this.isObfuscated || (this.userIsPremium && this.likesCount > 0);
     },
     shouldShowReviews() {
-      return this.reviewsCount > 0 || (this.isObfuscated && this.reviewsCount === '***');
+      return this.isObfuscated || (this.userIsPremium && this.reviewsCount > 0);
     },
     formatLikesText() {
-      if (this.likesCount === '***') return '🔒 Curtidas Premium';
+      if (this.isObfuscated) return '🔒 Curtidas Premium';
       return `${this.likesCount} ${this.likesCount === 1 ? 'pessoa amou' : 'pessoas amaram'}`;
     },
     formatReviewsText() {
-      if (this.reviewsCount === '***') return '🔒 Avaliações Premium';
+      if (this.isObfuscated) return '🔒 Avaliações Premium';
       return `${this.reviewsCount} ${this.reviewsCount === 1 ? 'avaliação' : 'avaliações'}`;
     }
   },
@@ -118,7 +118,7 @@ export default {
     },
     
     handleStatsClick(action) {
-      if (!this.userIsPremium || this.isObfuscated) {
+      if (this.isObfuscated) {
         this.modalAction = action;
         this.showPremiumModal = true;
       }
