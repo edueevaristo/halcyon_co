@@ -116,7 +116,7 @@ export default {
           const hostname = window.location.hostname
           const baseUrl = (hostname === 'localhost' || hostname === '127.0.0.1') 
               ? 'http://127.0.0.1:8000' 
-              : 'http://3.21.55.156'
+              : 'https://api.glittr.com.br'
           
           this.currentProfileImage = user.profile_image_url.startsWith('http') 
             ? user.profile_image_url 

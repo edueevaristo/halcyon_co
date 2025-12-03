@@ -233,7 +233,7 @@ const handleSubmit = async () => {
 
     resetForm();
     emit('product-updated');
-    emit('close-modal');
+    // Não fechar automaticamente - deixar o usuário decidir
 
   } catch (error) {
     console.error('Erro ao salvar produto:', error);
@@ -575,36 +575,77 @@ select {
 
 .cancel-button-form {
   display: flex;
-  height: 44px;
-  padding: 10px;
+  height: 48px;
+  padding: 12px 24px;
   align-items: center;
-  gap: 15px;
-  border-radius: 10px;
-  background: #D9D9D9;
-  color: #757575;
-  text-align: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  color: #6c757d;
   font-family: 'Poppins', sans-serif;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 120%;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.cancel-button-form:hover {
+  background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: #495057;
+}
+
+.cancel-button-form:active {
+  transform: translateY(0);
 }
 
 .post-button-form {
   display: flex;
-  height: 44px;
-  padding: 10px;
+  height: 48px;
+  padding: 12px 24px;
   align-items: center;
-  gap: 15px;
-  border-radius: 10px;
-  background: linear-gradient(90deg, #ED008C 0%, #FA90AB 100%);
+  justify-content: center;
+  gap: 10px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #ED008C 0%, #E10CFF 100%);
+  border: none;
   color: #FFF;
-  text-align: center;
   font-family: 'Poppins', sans-serif;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 120%;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(237, 0, 140, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.post-button-form::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.post-button-form:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(237, 0, 140, 0.4);
+}
+
+.post-button-form:hover::before {
+  left: 100%;
+}
+
+.post-button-form:active {
+  transform: translateY(-1px);
 }
 
 .post-button-icon {

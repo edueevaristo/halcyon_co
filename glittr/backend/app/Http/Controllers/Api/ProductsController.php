@@ -39,7 +39,7 @@ class ProductsController extends Controller
         if ($request->hasFile('image_files')) {
             foreach ($request->file('image_files') as $image) {
                 $path = $image->store('products', 'public');
-                $imagePaths[] = Storage::url($path);
+                $imagePaths[] = '/storage/' . $path;
             }
         }
 

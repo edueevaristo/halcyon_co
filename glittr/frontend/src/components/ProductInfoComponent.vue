@@ -289,7 +289,7 @@ export default {
         const hostname = window.location.hostname;
         const baseUrl = (hostname === 'localhost' || hostname === '127.0.0.1') 
             ? 'http://127.0.0.1:8000' 
-            : 'http://3.21.55.156';
+            : 'https://api.glittr.com.br';
         return `${baseUrl}/storage/${imagePath.replace(/^\/storage\//, '')}`;
       }
       return '@/assets/images/product-test.png';
@@ -316,7 +316,7 @@ export default {
         const hostname = window.location.hostname;
         const baseUrl = (hostname === 'localhost' || hostname === '127.0.0.1') 
             ? 'http://127.0.0.1:8000/api' 
-            : 'http://3.21.55.156/api';
+            : 'https://api.glittr.com.br/api';
             
         const response = await fetch(`${baseUrl}/products/${this.product.product.id}/like`, {
           method: 'POST',

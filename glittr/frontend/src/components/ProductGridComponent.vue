@@ -110,7 +110,7 @@ export default {
         const hostname = window.location.hostname;
         const baseUrl = (hostname === 'localhost' || hostname === '127.0.0.1') 
             ? 'http://127.0.0.1:8000' 
-            : 'http://3.21.55.156';
+            : 'https://api.glittr.com.br';
         const cleanPath = imagePath.replace(/^\/storage\//, '');
         return `${baseUrl}/storage/${cleanPath}`;
       } catch (error) {

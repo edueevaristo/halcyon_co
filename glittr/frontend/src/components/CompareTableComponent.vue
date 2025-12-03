@@ -204,7 +204,7 @@ const getProductImage = (product) => {
   const hostname = window.location.hostname;
   const baseUrl = (hostname === 'localhost' || hostname === '127.0.0.1') 
       ? 'http://127.0.0.1:8000' 
-      : 'http://3.21.55.156';
+      : 'https://api.glittr.com.br';
 
   if (Array.isArray(product.image_path)) {
     const firstImage = product.image_path[0]

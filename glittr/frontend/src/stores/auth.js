@@ -8,7 +8,10 @@ export const useAuth = defineStore('auth', () => {
   const user = ref((() => {
     try {
       const userData = localStorage.getItem("user");
-      return userData ? JSON.parse(userData) : null;
+      if (userData && userData !== 'undefined' && userData !== 'null') {
+        return JSON.parse(userData);
+      }
+      return null;
     } catch {
       return null;
     }
@@ -22,8 +25,10 @@ export const useAuth = defineStore('auth', () => {
   }
 
   function setUser(userValue) {
-    localStorage.setItem('user', JSON.stringify(userValue));
-    user.value = userValue;
+    if (userValue && typeof userValue === 'object') {
+      localStorage.setItem('user', JSON.stringify(userValue));
+      user.value = userValue;
+    }
   }
 
   const isAuthenticated = computed(() => {
@@ -31,7 +36,13 @@ export const useAuth = defineStore('auth', () => {
   })
 
   const isPremium = computed(() => {
-    return user.value?.is_premium || false;
+    if (!user.value) {
+      console.log('🔍 Auth Debug: No user data');
+      return false;
+    }
+    const premium = user.value.is_premium === true || user.value.is_premium === 1;
+    console.log('🔍 Auth Debug:', { user: user.value, isPremium: premium });
+    return premium;
   })
 
   async function checkToken() {
