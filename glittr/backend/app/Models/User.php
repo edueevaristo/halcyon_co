@@ -57,7 +57,16 @@ class User extends Authenticatable
 
     public function getProfileImageUrlAttribute()
     {
-        return $this->profile_image ? asset('storage/' . $this->profile_image) : asset('assets/icons/LogoGlittr.svg');
+        if ($this->profile_image) {
+            return asset('storage/' . $this->profile_image);
+        }
+        
+        // Retorna a logo do sistema como padrão
+        $hostname = request()->getHost();
+        $baseUrl = (in_array($hostname, ['localhost', '127.0.0.1'])) 
+            ? 'http://127.0.0.1:8080' 
+            : 'https://glittr.com.br';
+        return $baseUrl . '/src/assets/icons/LogoGlittr.svg';
     }
 
     public function getShortNameAttribute()
