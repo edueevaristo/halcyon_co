@@ -206,6 +206,13 @@ class ProductsController extends Controller
     {
         $user = auth('sanctum')->user();
         $isPremium = $user ? (bool)$user->is_premium : false;
+        
+        \Log::info('User premium status', [
+            'user_id' => $user ? $user->id : null,
+            'is_premium' => $user ? $user->is_premium : null,
+            'isPremium' => $isPremium
+        ]);
+        
         $perPage = $request->get('per_page', 12);
         
         $query = Product::with(['category', 'subcategory']);
@@ -347,19 +354,11 @@ class ProductsController extends Controller
             'updated_at' => $product->updated_at,
         ];
         
-        // Informações de likes e reviews (premium ou ofuscadas)
-        if ($isPremium) {
-            $response['likes_count'] = $product->likes()->count();
-            $response['is_liked'] = $userId ? $product->isLikedBy($userId) : false;
-            $response['reviews_count'] = $product->reviews()->count();
-            $response['average_rating'] = round($avgRating, 1);
-        } else {
-            $response['likes_count'] = '***';
-            $response['is_liked'] = false;
-            $response['reviews_count'] = '***';
-            $response['average_rating'] = '***';
-            $response['premium_required'] = true;
-        }
+        // Informações de likes e reviews sempre visíveis
+        $response['likes_count'] = $product->likes()->count();
+        $response['is_liked'] = $userId ? $product->isLikedBy($userId) : false;
+        $response['reviews_count'] = $product->reviews()->count();
+        $response['average_rating'] = round($avgRating, 1);
         
         return $response;
     }

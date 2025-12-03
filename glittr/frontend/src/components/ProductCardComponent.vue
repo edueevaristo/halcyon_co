@@ -94,20 +94,18 @@ export default {
       return !this.userIsPremium;
     },
     shouldShowStats() {
-      return this.userIsPremium ? (this.likesCount > 0 || this.reviewsCount > 0) : true;
+      return this.likesCount > 0 || this.reviewsCount > 0;
     },
     shouldShowLikes() {
-      return this.userIsPremium ? this.likesCount > 0 : true;
+      return this.likesCount > 0;
     },
     shouldShowReviews() {
-      return this.userIsPremium ? this.reviewsCount > 0 : true;
+      return this.reviewsCount > 0;
     },
     formatLikesText() {
-      if (this.isObfuscated) return '🔒 Curtidas Premium';
       return `${this.likesCount} ${this.likesCount === 1 ? 'pessoa amou' : 'pessoas amaram'}`;
     },
     formatReviewsText() {
-      if (this.isObfuscated) return '🔒 Avaliações Premium';
       return `${this.reviewsCount} ${this.reviewsCount === 1 ? 'avaliação' : 'avaliações'}`;
     }
   },
