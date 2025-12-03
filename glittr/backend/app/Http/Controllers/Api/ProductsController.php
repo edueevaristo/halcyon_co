@@ -205,7 +205,7 @@ class ProductsController extends Controller
     public function index(Request $request)
     {
         $user = auth('sanctum')->user();
-        $isPremium = $user ? $user->is_premium : false;
+        $isPremium = $user ? (bool)$user->is_premium : false;
         $perPage = $request->get('per_page', 12);
         
         $query = Product::with(['category', 'subcategory']);
@@ -218,31 +218,32 @@ class ProductsController extends Controller
         $totalProducts = Product::count();
         $hasMoreProducts = !$isPremium && $totalProducts > 10;
 
+        $responseData = [
+            'data' => ($isPremium ? $products->getCollection() : $products)->map(function ($product) use ($isPremium) {
+                return $this->formatProductResponse($product, $isPremium);
+            }),
+            'user_is_premium' => $isPremium
+        ];
+        
         if ($isPremium) {
-            return response()->json([
-                'data' => $products->getCollection()->map(function ($product) use ($isPremium) {
-                    return $this->formatProductResponse($product, $isPremium);
-                }),
+            $responseData = array_merge($responseData, [
                 'current_page' => $products->currentPage(),
                 'last_page' => $products->lastPage(),
                 'per_page' => $products->perPage(),
-                'total' => $products->total(),
-                'user_is_premium' => $isPremium
-            ], 200);
+                'total' => $products->total()
+            ]);
         } else {
-            return response()->json([
-                'data' => $products->map(function ($product) use ($isPremium) {
-                    return $this->formatProductResponse($product, $isPremium);
-                }),
+            $responseData = array_merge($responseData, [
                 'current_page' => 1,
                 'last_page' => 1,
                 'per_page' => 10,
                 'total' => 10,
                 'actual_total' => $totalProducts,
-                'has_more_products' => $hasMoreProducts,
-                'user_is_premium' => $isPremium
-            ], 200);
+                'has_more_products' => $hasMoreProducts
+            ]);
         }
+        
+        return response()->json($responseData, 200);
     }
 
     public function show($id)

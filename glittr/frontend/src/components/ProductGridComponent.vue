@@ -126,7 +126,8 @@ export default {
         this.currentPage = response.data.current_page || 1;
         this.lastPage = response.data.last_page || 1;
         this.total = response.data.total || 0;
-        this.userIsPremium = response.data.user_is_premium || false;
+        this.userIsPremium = response.data.user_is_premium === true;
+        console.log('User is premium:', this.userIsPremium, response.data.user_is_premium);
         this.hasMoreProducts = response.data.has_more_products || false;
         this.actualTotal = response.data.actual_total || this.total;
       } catch (error) {
