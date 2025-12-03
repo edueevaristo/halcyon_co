@@ -9,7 +9,7 @@ const getBaseURL = () => {
         return "http://127.0.0.1:8000/api";
     }
 
-    return "http://3.21.55.156/api";
+    return "http://3.137.94.17/api";
 };
 
 const http = axios.create({
