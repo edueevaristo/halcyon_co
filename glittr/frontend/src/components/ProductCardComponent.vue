@@ -94,13 +94,13 @@ export default {
       return !this.userIsPremium;
     },
     shouldShowStats() {
-      return this.isObfuscated || (this.userIsPremium && (this.likesCount > 0 || this.reviewsCount > 0));
+      return this.userIsPremium ? (this.likesCount > 0 || this.reviewsCount > 0) : true;
     },
     shouldShowLikes() {
-      return this.isObfuscated || (this.userIsPremium && this.likesCount > 0);
+      return this.userIsPremium ? this.likesCount > 0 : true;
     },
     shouldShowReviews() {
-      return this.isObfuscated || (this.userIsPremium && this.reviewsCount > 0);
+      return this.userIsPremium ? this.reviewsCount > 0 : true;
     },
     formatLikesText() {
       if (this.isObfuscated) return '🔒 Curtidas Premium';
