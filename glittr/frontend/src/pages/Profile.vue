@@ -120,7 +120,7 @@ export default {
           
           this.currentProfileImage = user.profile_image_url.startsWith('http') 
             ? user.profile_image_url 
-            : `${baseUrl}/storage/${user.profile_image_url}`
+            : `${baseUrl}/storage/${user.profile_image_url.replace(/^\/storage\//, '').replace(/\/storage\//g, '')}`
         }
       } catch (error) {
         console.error('Erro ao carregar dados do usuário:', error)

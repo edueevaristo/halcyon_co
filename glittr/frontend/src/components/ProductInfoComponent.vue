@@ -200,6 +200,11 @@ export default {
   },
   computed: {
     userIsPremium() {
+      // Priorizar o status do backend, depois o store
+      if (this.product?.user_is_premium !== undefined) {
+        return this.product.user_is_premium;
+      }
+      
       try {
         const auth = useAuth();
         return auth.isPremium;
@@ -208,7 +213,7 @@ export default {
       }
     },
     isLikesObfuscated() {
-      return !this.userIsPremium || this.product?.product?.likes_count === '***' || this.product?.product?.premium_required;
+      return !this.userIsPremium;
     },
     formatLikesCount() {
       if (this.isLikesObfuscated) {
@@ -290,14 +295,15 @@ export default {
         const baseUrl = (hostname === 'localhost' || hostname === '127.0.0.1') 
             ? 'http://127.0.0.1:8000' 
             : 'https://api.glittr.com.br';
-        return `${baseUrl}/storage/${imagePath}`;
+        const cleanPath = imagePath.replace(/^\/storage\//, '').replace(/\/storage\//g, '');
+        return `${baseUrl}/storage/${cleanPath}`;
       }
       return '@/assets/images/product-test.png';
     },
     async fetchReviews() {
       try {
         const response = await PostReviewDataService.getAllForProduct(this.product.product.id);
-        if (response.data.obfuscated) {
+        if (response.data.obfuscated && !this.userIsPremium) {
           this.reviewsObfuscated = true;
           this.reviews = [];
         } else {

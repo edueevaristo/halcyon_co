@@ -208,12 +208,13 @@ const getProductImage = (product) => {
 
   if (Array.isArray(product.image_path)) {
     const firstImage = product.image_path[0]
-    return firstImage.startsWith('http') ? firstImage : `${baseUrl}/storage/${firstImage}`
+    const cleanPath = firstImage.replace(/^\/storage\//, '').replace(/\/storage\//g, '');
+    return firstImage.startsWith('http') ? firstImage : `${baseUrl}/storage/${cleanPath}`
   }
 
   return product.image_path.startsWith('http')
       ? product.image_path
-      : `${baseUrl}/storage/${product.image_path}`
+      : `${baseUrl}/storage/${product.image_path.replace(/^\/storage\//, '').replace(/\/storage\//g, '')}`
 }
 
 const loadAvailableProducts = async (categoryId, excludeId) => {

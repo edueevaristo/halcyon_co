@@ -150,13 +150,14 @@ export default {
               const baseUrl = window.location.hostname === 'localhost'
                 ? 'http://127.0.0.1:8000'
                 : 'https://api.glittr.com.br';
-              this.userProfileImage = `${baseUrl}/storage/${user.profile_image_url}`;
+              const cleanPath = user.profile_image_url.replace(/^\/storage\//, '').replace(/\/storage\//g, '');
+              this.userProfileImage = `${baseUrl}/storage/${cleanPath}`;
             }
           } else {
             this.userProfileImage = null;
           }
 
-          localStorage.setItem('user', user.name);
+          localStorage.setItem('user', JSON.stringify(user));
           localStorage.setItem('user_id', user.id);
           localStorage.setItem('email', user.email);
 

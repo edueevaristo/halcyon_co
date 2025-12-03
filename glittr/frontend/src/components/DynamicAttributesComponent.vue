@@ -126,9 +126,11 @@ const initializeFormAndOptions = async (attributesData) => {
 
   // Converter modelValue (array) para objeto para facilitar o acesso
   const modelValueObj = {};
-  props.modelValue.forEach(attr => {
-    modelValueObj[attr.name] = attr.value;
-  });
+  if (Array.isArray(props.modelValue)) {
+    props.modelValue.forEach(attr => {
+      modelValueObj[attr.name] = attr.value;
+    });
+  }
 
   const selectPromises = attributesData
       .filter(attr => attr.type === 'select')

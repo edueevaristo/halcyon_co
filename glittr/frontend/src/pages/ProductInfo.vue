@@ -50,8 +50,9 @@ export default {
     try {
       const response = await PostProductDataService.getById(productId);
       this.product = response.data;
-
-
+      
+      console.log('🔍 ProductInfo Response:', response.data);
+      console.log('🔍 User is Premium:', response.data.user_is_premium);
 
     } catch (err) {
       this.error = 'Erro ao carregar produto.';

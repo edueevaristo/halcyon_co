@@ -255,8 +255,9 @@ class ProductsController extends Controller
             ], 404);
         }
         
+        // Verificar se o usuário está autenticado
         $user = auth('sanctum')->user();
-        $isPremium = $user ? $user->is_premium : false;
+        $isPremium = $user ? (bool)$user->is_premium : false;
 
         return response()->json([
             'product' => $this->formatProductResponse($product, $isPremium),

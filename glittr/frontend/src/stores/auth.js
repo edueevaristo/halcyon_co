@@ -9,7 +9,12 @@ export const useAuth = defineStore('auth', () => {
     try {
       const userData = localStorage.getItem("user");
       if (userData && userData !== 'undefined' && userData !== 'null') {
-        return JSON.parse(userData);
+        // Se for um objeto JSON, parse. Se for string simples, criar objeto
+        if (userData.startsWith('{')) {
+          return JSON.parse(userData);
+        } else {
+          return { name: userData, is_premium: false };
+        }
       }
       return null;
     } catch {
