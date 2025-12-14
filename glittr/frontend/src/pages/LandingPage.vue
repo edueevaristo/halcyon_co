@@ -23,7 +23,7 @@
         </h1>
         <p class="hero-description">O Glittr te ajuda a encontrar os melhores produtos de beleza com comparações reais e<br class="desktop-only"> avaliações autênticas.</p>
         <div class="cta-buttons">
-          <button class="primary-button">Começar agora<img src="@/assets/icons/chevron-right.svg" alt=""></button>
+          <router-link to="/presentation" class="primary-button">Começar agora<img src="@/assets/icons/chevron-right.svg" alt=""></router-link>
           <button class="secondary-button" @click="scrollToHowItWorks">Como funciona</button>
         </div>
       </div>
@@ -375,7 +375,7 @@ onUnmounted(() => {
   font-weight: 600;
   font-size: 16px;
   color: #fff;
-  border-radius: 30px;
+  border-radius: 10px;
   text-decoration: none;
   transition: transform 0.3s ease;
   min-width: 160px;
